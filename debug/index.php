@@ -1,5 +1,6 @@
 <?php
 const _JEXEC = 1;
+$GLOBALS['request'] = ['post'=>$_POST,'get'=>$_GET,'request'=>$_REQUEST];
 
 $_SESSION['flag'] = TRUE;
 if (file_exists(__DIR__ . '/jbdefines.php'))
@@ -19,7 +20,6 @@ if(substr(JUri::root(), 0,16) != 'http://localhost'){
 /*echo '<script src="'.JUri::root().'assets/js/jquery.min.js"></script>';*/
 
 $controller = $app->input->getString('controller');
-
 $task = $app->input->getString('task');
 if($task){
 	$list = explode('.',$task);

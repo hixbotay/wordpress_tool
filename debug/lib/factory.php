@@ -568,6 +568,11 @@ abstract class JFactory
 					'user' => DB_USER,
 					'online_page' => defined('ONLINE_PAGE') ? ONLINE_PAGE : []
 				);
+				//anti wordpress change request variable
+				global $request;
+				$_POST = $request['post'];
+				$_GET = $request['get'];
+				$_REQUEST = $request['request'];
 			}
 		}
 		
