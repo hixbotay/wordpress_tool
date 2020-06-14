@@ -101,9 +101,8 @@ class ViewTasks
 		
 		echo "</ul>";
 		echo "</td></tr></table>";
-		echo '<a href="'.JUri::root(1).'">Back to trang chu</a><br>';
+		echo '<a href="'.JUri::home(1).'">Back to Home</a><br>';
 		echo '  <script type="text/javascript" src="'.JUri::root().'assets/js/jquery.min.js"></script>';
-		echo '<a href="http://localhost/'.$controller->init_test['localhost'].'/index.php?option=com_jbdebug&view=tasks">Back to localhost</a>';
 		echo '<script>jQuery(document).ready(function($){$("form").append("<input type=\"hidden\" name=\"secret\" value=\"'.$input->getString('secret').'\" />")});</script>';
 		exit;
 		

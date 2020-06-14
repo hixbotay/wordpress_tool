@@ -15,60 +15,6 @@ if(!function_exists('debug')){
 		echo '<pre>';print_r($var);echo '</pre>';
 	}
 }
-$sourcefolder = ABSPATH;
-$sourcePath = $sourcefolder.'website.zip';
-//does not include htaccess file to backup
-$htaccess = $sourcefolder.'.htaccess';
-$htaccess_bak = $sourcefolder.'.htaccess.bak';
-if(is_file($htaccess)){
-	if(is_file($htaccess_bak)){
-		unlink($htaccess_bak);
-	}
-	rename($htaccess,$htaccess_bak);
-}
-	
-
-$rootPath = realpath(__DIR__);
-echo $rootPath.'<br>';		
-// Initialize archive object
-//start zip
-$sourcefolder = $rootPath.DS;
-EXPORT_DATABASE(DB_HOST,DB_USER,DB_PASSWORD,DB_NAME);
-//copy installer file
-copy('installer.php',$sourcefolder.'installer.php');
-$strLen = strlen($sourcefolder);
-$zip = new ZipArchive();		
-$zip->open($sourcePath, ZipArchive::CREATE | ZipArchive::OVERWRITE);
-
-// Create recursive directory iterator
-/** @var SplFileInfo[] $files */
-$files = new RecursiveIteratorIterator(
-	new RecursiveDirectoryIterator($sourcefolder),
-	RecursiveIteratorIterator::LEAVES_ONLY
-);
-
-foreach ($files as $file)
-{
-	// Skip directories (they would be added automatically)
-	if (!$file->isDir())
-	{
-		// Get real and relative path for current file
-		$filePath = $file->getRealPath();
-		$relativePath = substr($filePath, $strLen);
-
-		// Add current file to archive
-		$zip->addFile($filePath, str_replace("\\","/",$relativePath));
-	}
-}
-$zip->close();
-//redo rename access file
-if(is_file($htaccess_bak)){
-	rename($htaccess_bak,$htaccess);
-}
-
-echo 'Zip download:<a href="'.get_option( 'siteurl' ).'/website.zip">Download</a>';
-exit;
-
 
 function EXPORT_DATABASE($host,$user,$pass,$name,$tables=false, $backup_name=false)
 { 
@@ -90,7 +36,65 @@ function EXPORT_DATABASE($host,$user,$pass,$name,$tables=false, $backup_name=fal
 		} $content .="\n\n\n";
 	}
 	$content .= "\r\n\r\n/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;\r\n/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;\r\n/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;";
-	$backup_name = $backup_name ? $backup_name : __DIR__.'/database.sql';
+	$backup_name = $backup_name ? $backup_name : ABSPATH.'database.sql';
 	file_put_contents($backup_name,$content);
 }
 	
+$sourcefolder = ABSPATH;
+$sourcePath = $sourcefolder.'website.zip';
+if(is_file($sourcePath)){
+	unlink($sourcePath);
+}
+if(is_file($sourcefolder.'database.sql')){
+	unlink($sourcefolder.'database.sql');
+}
+	
+
+EXPORT_DATABASE(DB_HOST,DB_USER,DB_PASSWORD,DB_NAME);
+//copy installer file
+if(!is_file($sourcefolder.'installer.php')){
+	copy($sourcefolder.'/debug/installer.php',$sourcefolder.'installer.php');
+}
+$strLen = strlen($sourcefolder);
+$zip = new ZipArchive();		
+$zip->open($sourcePath, ZipArchive::CREATE | ZipArchive::OVERWRITE);
+
+// Create recursive directory iterator
+/** @var SplFileInfo[] $files */
+$exclude = array('.git', '.htaccess');
+$filter = function ($file, $key, $iterator) use ($exclude) {
+    if ($iterator->hasChildren() && !in_array($file->getFilename(), $exclude)) {
+        return true;
+    }
+    return $file->isFile();
+};
+$innerIterator = new RecursiveDirectoryIterator(
+    $sourcefolder,
+    RecursiveDirectoryIterator::SKIP_DOTS
+);
+$files = new RecursiveIteratorIterator(
+	new RecursiveCallbackFilterIterator($innerIterator, $filter),
+	RecursiveIteratorIterator::LEAVES_ONLY
+);
+
+// $files = new RecursiveIteratorIterator(
+// 	new RecursiveDirectoryIterator($sourcefolder),
+// 	RecursiveIteratorIterator::LEAVES_ONLY
+// );
+
+foreach ($files as $file)
+{
+	// Skip directories (they would be added automatically)
+	if (!$file->isDir())
+	{
+		// Get real and relative path for current file
+		$filePath = $file->getRealPath();
+		$relativePath = substr($filePath, $strLen);
+
+		// Add current file to archive
+		$zip->addFile($filePath, str_replace("\\","/",$relativePath));
+	}
+}
+$zip->close();
+echo $sourcefolder.DS.'website.zip<br>';
+echo 'Zip download:<a href="'.get_option( 'siteurl' ).'/website.zip">Download</a><br>';
