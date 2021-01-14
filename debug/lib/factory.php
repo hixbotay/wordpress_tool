@@ -566,7 +566,7 @@ abstract class JFactory
 					'password' => DB_PASSWORD,
 					'secret' => AUTH_KEY,
 					'user' => DB_USER,
-					'online_page' => defined('ONLINE_PAGE') ? ONLINE_PAGE : []
+					'online_page' => defined('ONLINE_PAGE') ? explode(',',ONLINE_PAGE) : []
 				);
 				//anti wordpress change request variable
 				global $request;
