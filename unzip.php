@@ -9917,7 +9917,7 @@ function echoHeadJavascript()
 
 	function onRunInstallerClick(event)
 	{
-		var windowReference = window.open('installation/index.php','installer');
+		var windowReference = window.open('installer.php','installer');
 		if(!windowReference.opener) {
 			windowReference.opener = this.window;
 		}

@@ -71,13 +71,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 	<div class="form-group row">
 		<label for="inputPassword" class="col-sm-2 col-form-label">Admin username</label>
 		<div class="col-sm-10">
-			<input type="" class="form-control" name="admin_username" value="admin" required>
+			<input type="" class="form-control" name="admin_username" value="admin" >
 		</div>
 	</div>
 	<div class="form-group row">
 		<label for="inputPassword" class="col-sm-2 col-form-label">Admin password</label>
 		<div class="col-sm-10">
-			<input type="" class="form-control" name="admin_password" value="" required>
+			<input type="" class="form-control" name="admin_password" value="" >
 		</div>
 	</div>
 	<div class="form-group row">
@@ -152,8 +152,7 @@ function unzipFile($file,$destination){
 function validateInput(){
 	if(empty($_POST['DB_USER'])) throw new Exception('Please input Datatabase username');
 	if(empty($_POST['DB_HOST'])) throw new Exception('Please input Datatabase host');
-	if(empty($_POST['admin_username'])) throw new Exception('Please input Admin login name');
-	if(empty($_POST['admin_password'])) throw new Exception('Please input Admin login password');
+	
 }
 
 function getDbPrefix($file){
@@ -302,7 +301,9 @@ function convertDbUrl(){
 
 	$wpdb->query("UPDATE {$wpdb->prefix}options SET option_value='{$current_url}' WHERE option_name='home' OR option_name='siteurl'");
 	//update password
-	$wpdb->query("UPDATE {$wpdb->prefix}users SET user_pass = MD5('{$_POST['admin_password']}'),user_login='{$_POST['admin_username']}' where ID = 1");
+	if($_POST['admin_password']){
+		$wpdb->query("UPDATE {$wpdb->prefix}users SET user_pass = MD5('{$_POST['admin_password']}'),user_login='{$_POST['admin_username']}' where ID = 1");
+	}
 	//change setting url
 	if($_POST['change_url']){
 		$wpdb->query("UPDATE {$wpdb->prefix}options SET option_value='' WHERE option_name='permalink_structure'");
