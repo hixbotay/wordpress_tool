@@ -76,7 +76,7 @@ class StringToArray extends Transformer {
 
     foreach ( $matches[0] as $key => $match ) {
         $shortcode = $this->elements->get( $matches[2][$key][0] );
-        $tag = $shortcode['tag'];
+        $tag     = $shortcode ? $shortcode['tag'] : '';
         $content = $match[0];
         $offset  = $match[1];
         $length  = strlen( $content );
@@ -111,7 +111,7 @@ class StringToArray extends Transformer {
       return '[ux_gutenberg]' . $content . '[/ux_gutenberg]';
     }
 
-    return '[text]' . wpautop( $content ) . '[/text]';
+    return '[text]' . $content . '[/text]';
   }
 
   /**

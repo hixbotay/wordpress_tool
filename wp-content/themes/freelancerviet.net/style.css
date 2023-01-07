@@ -1,177 +1,305 @@
 /*
-Theme Name: freelancerviet.net
+Theme Name: Giới thiệu công ty
 Description: This is a child theme for Flatsome Theme
 Author: UX Themes
 Template: flatsome
-Version: 3.0
+Version: 10.1.1
 */
 
 /*************** ADD CUSTOM CSS HERE.   ***************/
-/*************** ADD MOBILE ONLY CSS HERE  ***************/
-/*@import url('https://fonts.googleapis.com/css?family=Niramit');*/
-/*header*/
-.nav>li>a, .nav-dropdown>li>a, .nav-column>li>a {
-    transition: all .2s;
-}
-.relative {
-    position: relative !important;
-}
-.main-nav .location-picker {
-    margin-left: 0;
-    margin-right: 10px;
-    padding-left: 31px;
-    font-size: 12px;
-    font-weight: 300;
-    width: 210px;
-}
 
-#wide-nav li.html .col{
-	padding-bottom:0;
-	padding-right:10px;
-	padding-left:0;
-	margin:0;
-	height: 31px;
+#main .text-primary{
+	color: #16367F !important;
 }
-#wide-nav li.html .small-10{
-	padding-left: 5px;
+#main .btn-primary,#main .bg-primary{
+	background: #16367F !important;
 }
-#wide-nav li.html .row{
-	margin: 0;
+.header-bottom .container{ max-width: 1140px;}
+.slider-section .img .caption{font-size: 20px;
+    padding: 10px 20px;}
+.large-columns-5 .post-item{    padding: 0 4px 3px !important;}
+.large-columns-5{margin-left:-4px; margin-right:-4px}
+@font-face {
+    font-family: 'Helvetica Neue';
+    src: url('/wp-content/themes/gioi-thieu-cong-ty/fonts/HelveticaNeue.eot');
+    src: url('/wp-content/themes/gioi-thieu-cong-ty/fonts/HelveticaNeue.eot?#iefix') format('embedded-opentype'),
+        url('/wp-content/themes/gioi-thieu-cong-ty/fonts/HelveticaNeue.woff2') format('woff2'),
+        url('/wp-content/themes/gioi-thieu-cong-ty/fonts/HelveticaNeue.woff') format('woff'),
+        url('/wp-content/themes/gioi-thieu-cong-ty/fonts/HelveticaNeue.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
 }
-#wide-nav li.html{
-	width:100%;
-	padding:0;
-	margin:0;
-}
-#wide-nav li.html i{
-	border-radius: 50%;
-	width:30px;
-	height: 30px;
-	padding-top:7px;
-	text-align:center;
-	
-}
-/*shop*/
-.shop-page-title .page-title-inner{
-	padding: 0;
-}
-.product-container .vertical-thumbnails{
-	margin-top: 20px
-}
-.block_widget section.product-sidebar-contact{
-	padding: 0 5px 2px 10px;
-margin: 10px 0 0;
-border-radius: 4px;
-border: 1px solid #eee;
-}
-/*home*/
-.home .section-title-container{
-	margin-bottom: 0;
-}
-.home .section-title-container h3{
-	border-bottom:none;
-}
-.home .page-wrapper{
-	padding-top:16px;
-}
-.home .home-banner-ad{
-	padding:0 !important;
-}
-.section-title-normal span{
-	border-bottom: none;
-}
-.center{
-	display:block;
-	margin: 0 auto;
-}
-.xemthem{
-	font-size: 13px;
-	display: block;
-	margin: 0 auto;
-	width: 200px !important;
-}
-.wpcf7 p {
-    margin: 0;
+body{    word-wrap: break-word;}
+h1,h2,h3,h4,h5,h6{font-family: 'Helvetica Neue';
+    font-weight: 500;}
+body, .nav > li > a{font-family: 'Helvetica Neue';
+    font-weight: normal;
+    font-style: normal;}
+.header-main .nav>li.html {
+    font-size: .85em;
+    FONT-SIZE: 20px;
     font-weight: bold;
+    color: #16367F;
+    line-height: 25px;}
+li.html input{font-size: 15px;
+    height: 40px;
+    border-top-left-radius: 5px;
+    border-bottom-left-radius: 5px;
+    box-shadow: none;}
+.searchform .button.icon {
+   
+    height: 40px;
+    font-size: 15px;
+    background: #16367F;
+    border-top-right-radius: 5px;
+    border-bottom-right-radius: 5px;
+}
+.header-bottom .nav>li{margin:0}
+.header-bottom .nav>li a{padding-left:23px; padding-right:23px;     border-right: 1px solid #9c0007;
+    border-left: 1px solid #ff5a5a; font-weight:bold; color:white}
+.section-title-container {
+    margin-bottom: 0;
+}.section-title-normal {
+    border-bottom: 1px solid #000000;
+}.section-title-normal span {
+
+    border-bottom: 0px  
+}.section-title a {
+ font-size:15px;
+    font-weight: normal;
+    color: gray;
+}
+.flickity-prev-next-button .arrow{fill: white !important}
+.flickity-prev-next-button svg{    background: #acacac;
+    border-radius: 99%;
+    fill: white !important}
+.box-blog-post .is-divider, .blog-single .entry-category, .is-divider, #comments{display:none}
+.blog-single .large-3, .page-right-sidebar .large-3, .blog-archive .large-3{border-left:0 !important; padding-left:0;}
+.blog-single .large-9, .page-right-sidebar .large-9, .blog-archive .large-9{padding-right:20px; border-right:0 !important}
+.du-an .flickity-viewport .post-item .post-title{color: #076db0;
+	margin-bottom: 6px;}.flickity-prev-next-button{top:62%}
+.tin-tuc .cot2 .vertical-list-post .post-item{padding-bottom:15px}.entry-header-text {
+    padding: 0;
+}
+.blog-single .entry-meta{    font-size: 14px;
+    text-transform: none;
+    margin-top: 10px;
+    letter-spacing: 0;}
+.blog-single .entry-content p{color: #262626; margin-bottom:10px}
+.tin-tuc .flickity-prev-next-button{top:auto !important}
+.tin-tuc .big-post .post-item .post-title{font-size:17px; color:#034068}
+.tin-tuc .cot4 .section-title{margin-bottom:0}
+.tin-tuc .cot4 .des{margin-top:10px; margin-bottom:10px}
+.tin-tuc .cot4 .section-title-container span{       margin: 0; width: 100%;
+    display: block;
+    background: #16367F;
+    margin-right: 0;
+    font-size: 16px;
+    padding: 2px;
+    text-align: center;
+    color: white;
+    font-weight: normal;
+    border-bottom: 2px solid black;}
+.tin-tuc .cot4 .section-title-container{margin-bottom:0}
+.tin-tuc .cot2 .vertical-list-post .post-item .post-title{color: #034068;
+    font-weight: normal;}
+.tin-tuc .cot2 .vertical-list-post .post-item .box-text{padding-right:0;padding-top:0; padding-bottom:0; padding-left:10px}
+.du-an .large-12{padding-bottom:0}
+.nut-1 a{border-radius: 5px;
+    background: #80b524;
+    font-weight: normal;
+    font-size: 15px;}
+.nut-2 a{border-radius: 5px;
+    font-size: 15px;
+    font-weight: normal;
+    background: #317ebb;}
+.linh-vuc .col{padding-bottom:0}
+.linh-vuc .large-12 .col-inner{background: #f7f7f7;
+    padding: 15px 0px;}
+.linh-vuc .icon-box .icon-box-text h3{    padding: 5px;
+    background: #034068;
+    font-size: 15px;
+    font-weight: normal;
+    color: white;}
+.linh-vuc .large-12 .col-inner .col-inner{padding:0}
+.linh-vuc .slider-nav-outside .flickity-page-dots{bottom:-23px}
+.tin-co-dong .post-item .box-text, .tin-thi-truong .post-item .box-text, .video-post .post-item .box-text, .tuyen-dung-post .post-item .box-text{padding-top:0; padding-right:0; padding-bottom:0; padding-left:10px}
+.linh-vuc .icon-box .icon-box-img{margin-bottom:0 !important}
+.tin-co-dong .post-item .post-title, .tin-thi-truong .post-item .post-title, .video-post .post-item .post-title, .tuyen-dung-post .post-item .post-title{font-size:15px;     color: #034068;
+    font-weight: normal;}
+.tuyen-dung-post .post-item .box-text{padding-left:0 !important; padding-bottom:10px}
+.video-post, .tuyen-dung-post{margin-top:15px}
+.tuyen-dung-post .post-item .post-title{    background: url(/wp-content/uploads/2019/03/dot.jpg);
+    background-repeat: no-repeat;
+    background-position-y: top;
+    background-position-y: 5px;
+    padding-left: 14px;}
+.tin-co-dong .post-item, .tin-thi-truong .post-item, .video-post .post-item {    margin-bottom: 10px;}
+.footer-section .thong-tin-cong-ty{background: rgba(22, 54, 127,0.9);
+    padding: 19px 0;}
+.footer-section .col{padding-bottom:0}
+.footer-secondary {
+    padding: 0;
+}
+.back-to-top{background:#16367F !important; border: 0 !important; color:white !important}
+.header-wrapper.stuck{box-shadow:none}
+.post-item .post-title:hover{text-decoration:underline}
+#breadcrumbs a{color:#337ab7}
+#breadcrumbs{  margin-bottom: 0;  font-size: 14px;    display: block;
+    padding: 10px 30px;
+    width: 100%;}
+
+.blog-single .entry-title{    margin-bottom: 0;
+    color: black;}
+.blog-single {
+    padding-top: 15px; 
+    padding-bottom: 0;
 }
 
-.wpcf7 label {
-    display: inline-block;
+.list-news .item-list h4{line-height:20px;     margin-bottom: 15px;margin-top: 5px; height: 46px;
+    overflow: hidden;}
+
+.list-news .item-list h4 a{    font-size: 15px;
+    line-height: 20px !important;
+    margin-top: 10px;
+    color: #365899;}
+.list-news{margin-left: -5px;
+	margin-right: -5px;display:inline-block; width:100%; clear:both}span.widget-title{width: 100%;
+    background: #16367F;
+    display: block;
+    padding: 7px 15px;
+    color: white;
+    text-align: center;
+    font-weight: normal;}
+.recent-blog-posts a{    font-size: 14px;
+    color: #365899;}
+.recent-blog-posts a:hover{text-decoration:underline}
+.widget_categories li{    background: url(/wp-content/uploads/2019/03/dot.jpg);
+    background-repeat: no-repeat;
+    background-position-y: center;
+    padding-left: 15px;
+    font-size: 15px;}
+.list-news li{padding: 0 7px; width:33.33%; float:left; display:inline-block; margin:0 !important}
+.page-right-sidebar .page-inner p{color:#333333; margin-bottom:10px}
+.page-right-sidebar #breadcrumbs{padding: 0  ;
+    margin-bottom: 10px !important;
+    border-bottom: 1px dashed #eeeeee;
+    padding-bottom: 10px !important;}
+.nav-dropdown{border: 0; padding:0;}
+.nav-dropdown li a{color:gray !important; font-size:15px; font-weight:normal !important; border-left: 0 !important; border-right: 0 !important}
+.blog-archive .archive-page-header .large-12{padding-bottom:0}
+.blog-archive .archive-page-header .large-12 .page-title{text-align:left; letter-spacing:0; text-transform:none; color:black}
+.blog-archive #breadcrumbs{padding-top:0}
+.blog-archive .large-9 .badge{display:none}
+.blog-archive .large-9 .post-item .post-title{    margin-bottom: 10px;
+    color: black;
+    font-size: 19px;}
+.chi-tiet-du-an{display:block}
+.chi-tiet-du-an .row-thong-tin{padding-bottom: 8px;    border-bottom: 1px dashed #ececec;color: black; display:inline-block; width:100% !important; clear:both}
+.chi-tiet-du-an .row-thong-tin .left{ width:20%; float:left; display:inline-block}
+.chi-tiet-du-an .row-thong-tin .right{float:right; width: 80%; display:inline-block; padding-left:15px}
+.chi-tiet-du-an h2, .chi-tiet-du-an h3, .bai-viet-lien-quan-title{font-size: 19px;
+    color: #16367F;
+   
+    padding-bottom: 6px;}
+ul.hinh-anh-du-an{display: inline-block;
     width: 100%;
+    clear: both;}
+ul.hinh-anh-du-an li{    margin-left: 0;
+    list-style: none;
+    width: 50%;
+    float: left;
+    display: inline-block;}
+ul.hinh-anh-du-an li:nth-child(2n+1){padding-right:5px}
+ul.hinh-anh-du-an li:nth-child(2n+2){padding-left:5px}
+.blog-archive .post-item:nth-child(1), .blog-archive .post-item:nth-child(2) {flex-basis:50%; max-width:50%}
+.blog-archive .post-item:nth-child(1) .box-image, .blog-archive .post-item:nth-child(2) .box-image{    width: 100% !important;
+    display: table-caption;}
+.blog-archive .post-item:nth-child(1) .box-text, .blog-archive .post-item:nth-child(2) .box-text{padding:0; padding-top:10px}
+.blog-archive .post-item .box-text{padding:0 ;padding-left:15px}
+.page-numbers.nav-pagination{text-align:left}
+.nav-pagination>li>.current{    background: #16367F;
+    border: 0;
+    border-radius: 0;}
+.nav-pagination>li a{background:#ececec; border: none; border-radius:0; }
+.nav-pagination>li>a:hover{    border-color: #16367F;
+    background-color: #16367F; font-weight:normal}
+.list-news .new-img img{height: 180px;
+    object-fit: cover;
+    object-position: 50% 50%;}
+.float-contact {
+    position: fixed;
+    bottom: 20px;
+    left: 20px;
+    z-index: 99999;
+}.chat-zalo {
+    background: #8eb22b;
+    border-radius: 20px;
+    padding: 0px 18px;
+    color: white;
+    display: block;
+    margin-bottom: 6px;
+}.chat-face {
+    background: #125c9e;
+    border-radius: 20px;
+    padding: 0px 18px;
+    color: white;
+    display: block;
+    margin-bottom: 6px;
+}.float-contact .hotline {
+    background: #d11a59 !important;
+    border-radius: 20px;
+    padding: 0 18px;
+    color: white;
+    display: block;
+    margin-bottom: 6px;
+}.chat-zalo a, .chat-face a, .hotline a {
+    font-size: 15px;
+    color: white;
+    font-weight: normal;
+    text-transform: none;
+    line-height: 0;
 }
-.wpcf7-form .wpcf7-submit{
-	margin: 0 auto;
-	display: block;
-	border-radius: 4px;
-}
-/*shortcode blog */
-.item-cat{
-	margin: 7px 0;
-	border: 1px solid #DEDEDE;	
-	position: relative;
-}
-.item-cat .post-item{
-	padding-left: 20px;
-}
-.item-cat .item{
-	display:block;
-}
-.item-cat .row{
-	padding: 12px;
-}
-.item-cat .item-avatar{
-	width: 42%;
-	float: left;
-	margin: 0 12px 12px 0;
-}
-.item-cat .item-content{
-	margin-bottom: 12px;
-	display: block;
-}
+@media only screen and (max-width: 48em) {
+/*************** ADD MOBILE ONLY CSS HERE  ***************/
 
+.col, .gallery-item, .columns{    padding: 0 5px 10px;}
+.section-title a {
+	font-size: 13px;}.slider-nav-push:not(.slider-nav-reveal) .flickity-prev-next-button {
+    margin-top: -41%;
+    display: block;
+}
+.tin-tuc .cot2 .vertical-list-post .post-item, .tin-co-dong .post-item, .tin-thi-truong .post-item, .video-post .post-item {
+    padding-bottom: 10px;
+    flex-basis: 50%;
+    max-width: 50%;
+}
+.nut-1 ,.nut-2{padding-bottom:0 !important}
+.cong-ty-thanh-vien{display:none}
+.tin-tuc .cot2 .vertical-list-post .post-item .box-text, .tin-co-dong .post-item .box-text, .tin-thi-truong .post-item .box-text, .video-post .post-item .box-text, .tuyen-dung-post .post-item .box-text{padding-left:0; padding-top:5px}
+#breadcrumbs{    padding: 10px !important;
+    background: #f0f0f0;
+    margin-bottom: 10px;}
+.blog-single .large-9, .page-right-sidebar .large-9, .blog-archive .large-9{padding-right:5px}
+.list-news li{width:50%}
+.list-news .new-img img{height:105px}.list-news {
+    margin-left: 0;
+	margin-right: 0;}.list-news li {
+		padding: 0 3px;}
+.blog-single .large-3, .page-right-sidebar .large-3, .blog-archive .large-3{padding-left:5px}
+.off-canvas .sidebar-menu {
+    padding: 0;
+}.off-canvas:not(.off-canvas-center) .nav-vertical li>a {
+    padding-left: 15px;
+}.page-wrapper {
+    padding-top: 10px;
+    padding-bottom: 10px;
+}
+.archive .large-9 .large-columns-1{margin-left:0 !important; margin-right:0 !important}
+.blog-archive .post-item:nth-child(1), .blog-archive .post-item:nth-child(2){flex-basis:100%; max-width:100%}
+.blog-archive .post-item:nth-child(1) .box-image, .blog-archive .post-item:nth-child(2) .box-image{width:100%; display: block;}
+.blog-archive .post-item .box-text{padding-left:0}
+.blog-archive .large-9 .post-item .post-title{margin-top:6px}
+.float-contact{display:none}
 
-.cat-name{
-	background: #EEEEEE;
-	line-height: 22px;
-	font-size: 18px;	
-}
-.item-cat-title{
-	padding-left: 12px;
-	padding-right: 30px;
-}
-.item-cat h2{
-	font-size: 12px;
-}
-.item-cat .clearfix{
-	height: 25px;
-	line-height: 25px;
-	background: linear-gradient(to top, #E9E9E9, #ffffff);
-}
-.item-cat .btn{
-	position: absolute;
-	bottom: 12px;right: 12px;
-	border: 1px solid #E9E9E9;
-	border-radius: 10px;
-	font-size: 12px;
-	padding: 6px 12px;
-	line-height:12px;
-	color: #0072BC;
-}
-/*footer*/
-footer{
-	margin-top: 10px;
-	font-size:14px;
-}
-footer .adwords-content a {
-    font-size: 11px;
-}
-footer p{
-	margin-bottom:0;
-}
-@media screen and (max-with: 709px) {
-	.header, .header-wrapper {
-		margin-left: 0px;
-		margin-right: 0px;
-		width:100%;
-	}
 }

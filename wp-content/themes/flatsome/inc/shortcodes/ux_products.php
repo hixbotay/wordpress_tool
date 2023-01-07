@@ -1,8 +1,7 @@
 <?php
 
 // Flatsome Products
-function ux_products($atts, $content = null, $tag) {
-	global $woocommerce;
+function ux_products($atts, $content = null, $tag = '' ) {
 	$sliderrandomid = rand();
 
   if ( ! is_array( $atts ) ) {
@@ -40,6 +39,7 @@ function ux_products($atts, $content = null, $tag) {
 		'infinitive' => 'true',
 		'depth' => '',
    		'depth_hover' => '',
+	 	'equalize_box' => 'false',
 	 	// posts
 	 	'products' => '8',
 		'cat' => '',
@@ -68,11 +68,27 @@ function ux_products($atts, $content = null, $tag) {
 	    'image_hover' => '',
 	    'image_hover_alt' => '',
 	    'image_overlay' => '',
+		'show_cat' => 'true',
+		'show_title' => 'true',
+		'show_rating' => 'true',
+		'show_price' => 'true',
+		'show_add_to_cart' => 'true',
+		'show_quick_view' => 'true',
 
 	), $atts));
 
 	// Stop if visibility is hidden
   if($visibility == 'hidden') return;
+
+	$items                             = flatsome_ux_product_box_items();
+	$items['cat']['show']              = $show_cat;
+	$items['title']['show']            = $show_title;
+	$items['rating']['show']           = $show_rating;
+	$items['price']['show']            = $show_price;
+	$items['add_to_cart']['show']      = $show_add_to_cart;
+	$items['add_to_cart_icon']['show'] = $show_add_to_cart;
+	$items['quick_view']['show']       = $show_quick_view;
+	$items                             = flatsome_box_item_toggle_start( $items );
 
 	ob_start();
 
@@ -82,6 +98,11 @@ function ux_products($atts, $content = null, $tag) {
 	$classes_box = array('box');
 	$classes_image = array();
 	$classes_text = array();
+	$classes_repeater = array( $class );
+
+	if ( $equalize_box === 'true' ) {
+		$classes_repeater[] = 'equalize-box';
+	}
 
 	// Fix product on small screens
 	if($style == 'overlay' || $style == 'shade'){
@@ -180,30 +201,29 @@ function ux_products($atts, $content = null, $tag) {
   	}
 
 	// Repeater styles
-	$repater['id'] = $_id;
-	$repater['title'] = $title;
-	$repater['tag'] = $tag;
-	$repater['class'] = $class;
-	$repater['visibility'] = $visibility;
-	$repater['type'] = $type;
-	$repater['style'] = $style;
-	$repater['slider_style'] = $slider_nav_style;
-	$repater['slider_nav_color'] = $slider_nav_color;
-	$repater['slider_nav_position'] = $slider_nav_position;
-	$repater['slider_bullets'] = $slider_bullets;
-  	$repater['auto_slide'] = $auto_slide;
-	$repater['row_spacing'] = $col_spacing;
-	$repater['row_width'] = $width;
-	$repater['columns'] = $columns;
-	$repater['columns__md'] = $columns__md;
-	$repater['columns__sm'] = $columns__sm;
-	$repater['filter'] = $filter;
-	$repater['depth'] = $depth;
-	$repater['depth_hover'] = $depth_hover;
+	$repeater['id'] = $_id;
+	$repeater['title'] = $title;
+	$repeater['tag'] = $tag;
+	$repeater['class'] = implode( ' ', $classes_repeater );
+	$repeater['visibility'] = $visibility;
+	$repeater['type'] = $type;
+	$repeater['style'] = $style;
+	$repeater['slider_style'] = $slider_nav_style;
+	$repeater['slider_nav_color'] = $slider_nav_color;
+	$repeater['slider_nav_position'] = $slider_nav_position;
+	$repeater['slider_bullets'] = $slider_bullets;
+  	$repeater['auto_slide'] = $auto_slide;
+	$repeater['infinitive'] = $infinitive;
+	$repeater['row_spacing'] = $col_spacing;
+	$repeater['row_width'] = $width;
+	$repeater['columns'] = $columns;
+	$repeater['columns__md'] = $columns__md;
+	$repeater['columns__sm'] = $columns__sm;
+	$repeater['filter'] = $filter;
+	$repeater['depth'] = $depth;
+	$repeater['depth_hover'] = $depth_hover;
 
-
-
-	get_flatsome_repeater_start($repater);
+	get_flatsome_repeater_start($repeater);
 
 	?>
 	<?php
@@ -248,7 +268,7 @@ function ux_products($atts, $content = null, $tag) {
 
 	            	$classes_col = array('col');
 
-      					$out_of_stock = get_post_meta(get_the_ID(), '_stock_status',true) == 'outofstock';
+      					$out_of_stock = ! $product->is_in_stock();
       					if($out_of_stock) $classes[] = 'out-of-stock';
 
 	            	if($type == 'grid'){
@@ -270,7 +290,7 @@ function ux_products($atts, $content = null, $tag) {
 						<div class="product-small <?php echo implode(' ', $classes_box); ?>">
 							<div class="box-image" <?php echo get_shortcode_inline_css($css_args_img); ?>>
 								<div class="<?php echo implode(' ', $classes_image); ?>" <?php echo get_shortcode_inline_css($css_image_height); ?>>
-									<a href="<?php echo get_the_permalink(); ?>">
+									<a href="<?php echo get_the_permalink(); ?>" aria-label="<?php echo esc_attr( $product->get_title() ); ?>">
 										<?php
 											if($back_image) flatsome_woocommerce_get_alt_product_thumbnail($image_size);
 											echo woocommerce_get_product_thumbnail($image_size);
@@ -288,7 +308,7 @@ function ux_products($atts, $content = null, $tag) {
 									</div>
 								<?php } ?>
 								<?php if($out_of_stock) { ?><div class="out-of-stock-label"><?php _e( 'Out of stock', 'woocommerce' ); ?></div><?php }?>
-							</div><!-- box-image -->
+							</div>
 
 							<div class="box-text <?php echo implode(' ', $classes_text); ?>" <?php echo get_shortcode_inline_css($css_args); ?>>
 								<?php
@@ -311,22 +331,23 @@ function ux_products($atts, $content = null, $tag) {
 									do_action( 'flatsome_product_box_after' );
 
 								?>
-							</div><!-- box-text -->
-						</div><!-- box -->
-						</div><!-- .col-inner -->
-					</div><!-- col -->
+							</div>
+						</div>
+						</div>
+					</div>
 					<?php } ?>
 	            <?php endwhile; // end of the loop. ?>
-
 	        <?php
 
 	        endif;
 	        wp_reset_query();
 
-	get_flatsome_repeater_end($repater);
+	get_flatsome_repeater_end($repeater);
+	flatsome_box_item_toggle_end( $items );
 
 	$content = ob_get_contents();
 	ob_end_clean();
+
 	return $content;
 }
 add_shortcode("ux_bestseller_products", "ux_products");

@@ -4,16 +4,55 @@ global $wc;
 
 Flatsome_Option::add_section( 'fl-my-account', array(
 	'title'       => __( 'My Account', 'flatsome-admin' ),
-	'panel' => 'woocommerce'
+	'description' => 'Note: Register form/link is only visible for non logged in users and the WooCommerce setting, "Allow customers to create an account on the "My account" page" is enabled.',
+	'panel'       => 'woocommerce',
 ) );
+
+Flatsome_Option::add_field( 'option', array(
+	'type'      => 'color-alpha',
+	'alpha'     => true,
+	'settings'  => 'my_account_title_bg_color',
+	'label'     => __( 'Title Background Color', 'flatsome-admin' ),
+	'section'   => 'fl-my-account',
+	'default'   => '',
+	'transport' => $transport,
+));
 
 Flatsome_Option::add_field( 'option',  array(
 	'type'        => 'image',
 	'settings'     => 'facebook_login_bg',
-	'label'       => __( 'Title background', 'flatsome-admin' ),
+	'label'       => __( 'Title Background Image', 'flatsome-admin' ),
 	'section'     => 'fl-my-account',
 	'transport' => $transport,
 	'default'     => ''
+));
+
+Flatsome_Option::add_field( 'option', array(
+	'type'        => 'radio-image',
+	'settings'    => 'my_account_title_align',
+	'label'       => __( 'Title Align', 'flatsome-admin' ),
+	'description' => __( 'For logged in users only.', 'flatsome-admin' ),
+	'section'     => 'fl-my-account',
+	'default'     => 'left',
+	'transport'   => $transport,
+	'choices'     => array(
+		'left'   => $image_url . 'align-left.svg',
+		'center' => $image_url . 'align-center.svg',
+		'right'  => $image_url . 'align-right.svg',
+	),
+));
+
+Flatsome_Option::add_field( 'option', array(
+	'type'      => 'radio-image',
+	'settings'  => 'my_account_title_text_color',
+	'label'     => __( 'Text color', 'flatsome-admin' ),
+	'section'   => 'fl-my-account',
+	'default'   => 'dark',
+	'transport' => $transport,
+	'choices'   => array(
+		'light' => $image_url . 'text-light.svg',
+		'dark'  => $image_url . 'text-dark.svg',
+	),
 ));
 
 Flatsome_Option::add_field( 'option',  array(
@@ -24,19 +63,6 @@ Flatsome_Option::add_field( 'option',  array(
 	'description' => __( '', 'flatsome-admin' ),
 	'section'     => 'fl-my-account',
 	'sanitize_callback' => 'flatsome_custom_sanitize',
-));
-
-Flatsome_Option::add_field( 'option',  array(
-  'type'        => 'select',
-  'settings'     => 'account_login_style',
-  'label'       => __( 'Login Style', 'flatsome-admin' ),
-  'section'     => 'fl-my-account',
-  'transport' => $transport,
-  'default'     => 'lightbox',
-  'choices'     => array(
-    'link' => __( 'Link', 'flatsome-admin' ),
-    'lightbox' => __( 'Lightbox', 'flatsome-admin' ),
-  ),
 ));
 
 Flatsome_Option::add_field( 'option',  array(
@@ -64,7 +90,7 @@ Flatsome_Option::add_field( 'option',  array(
 
 Flatsome_Option::add_field( '', array(
   'type'        => 'custom',
-  'settings' => 'custom_html_account_shortcut',
+  'settings' => 'custom_html_header_account_shortcut',
   'label'       => __( '', 'flatsome-admin' ),
   'section'     => 'fl-my-account',
   'default'     => '<button style="margin-top:30px; margin-bottom:15px" class="button button-primary" data-to-section="header_account">Header Element →</button>',

@@ -56,6 +56,20 @@ $options = array(
         ),
     ),
 
+    'lightbox_image_size' => array(
+	    'type'       => 'select',
+	    'heading'    => __( 'Lightbox Image Size' ),
+	    'conditions' => 'lightbox == "true"',
+	    'default'    => '',
+	    'options'    => array(
+		    ''          => 'Default',
+		    'large'     => 'Large',
+		    'medium'    => 'Medium',
+		    'thumbnail' => 'Thumbnail',
+		    'original'  => 'Original',
+	    )
+    ),
+
     'ids' => array(
         'type' => 'select',
         'heading' => 'Ids',
@@ -101,6 +115,7 @@ $options = array(
         'default' => 'menu_order',
         'conditions' => 'ids == ""',
         'options' => array(
+			'title' => 'Title',
             'name' => 'Name',
             'date' => 'Date',
             'menu_order' => 'Menu Order',
@@ -119,6 +134,7 @@ $options = array(
   ),
 ),
 'layout_options' => require( __DIR__ . '/commons/repeater-options.php' ),
+'layout_options_slider' => require( __DIR__ . '/commons/repeater-slider.php' ),
 );
 $box_styles = require( __DIR__ . '/commons/box-styles.php' );
 

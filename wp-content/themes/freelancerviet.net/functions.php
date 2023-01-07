@@ -1,154 +1,59 @@
 <?php
+if(!defined('FVN_THEME_URL')) define('FVN_THEME_URL', site_url('/wp-content/themes/gioi-thieu-cong-ty/'));
+if(!defined('FVN_THEME_PATH')) define('FVN_THEME_PATH', __DIR__);
 
-//using clasic editor 
-add_filter('use_block_editor_for_post', '__return_false');
-//add shortcode
-if(!defined('HBPRO_THEME_PATH')) define('HBPRO_THEME_PATH', (__DIR__));
-//shortcode
-foreach (glob(HBPRO_THEME_PATH.'/shortcodes/*.php') as $filename)
+if(isset($_GET['error_detail'])){
+	ini_set('display_errors', 1);
+	ini_set('display_startup_errors', 1);
+}else{
+	ini_set('display_errors', 0);
+	ini_set('display_startup_errors', 0);
+}
+//short code
+foreach (glob(FVN_THEME_PATH.'/shortcodes/*.php') as $filename)
 {
 	require_once $filename;
 }
-//script
-add_action( 'wp_enqueue_scripts', 'hbpro_scripts' );
-function hbpro_scripts() {
-	$root = get_stylesheet_directory_uri();	
-	wp_enqueue_style( 'fontawesome', $root.'/css/fontawesome.min.css');
-	wp_enqueue_style( 'fontawesome-light', $root.'/css/font-awesome-light.css');
-	
-}
-//SEO
-add_action( 'wp_head', 'theme_xyz_header_metadata' );
-function theme_xyz_header_metadata(){
-	global $post;
-	/*
-	if(is_home()){	
-		$title = get_option('blogname');
-		$desc = get_option('blogdescription');
-	}else{	
-		
+require_once 'inc/post-utility.php';
+require_once 'inc/brand.php';
+require_once 'inc/product/product.php';
+// Add custom Theme Functions here
+add_filter('use_block_editor_for_post','__return_false');
+add_filter( 'auto_update_plugin', '__return_false' );
+add_filter( 'auto_update_theme', '__return_false' );
+
+add_action( 'wp_enqueue_scripts', function () {
+	wp_dequeue_style('flatsome-style');
+	//wp_enqueue_style( 'fontawesome', FVN_THEME_URL.'css/fontawesome.min.css');
+	//wp_enqueue_style( 'fontawesome-light', FVN_THEME_URL.'css/font-awesome-light.css');
+	wp_enqueue_style ('fvn-style', FVN_THEME_URL.'style.css?v='.time());
+	wp_enqueue_style( 'fvn-utils', FVN_THEME_URL.'css/utils.css?t='.time());	
+
+},9999);
+
+
+if(!function_exists('debug')){
+	function debug($val){
+		echo '<pre>';
+		print_r($val);
+		echo '</pre>';
 	}
-	*/
-	$metas = get_post_meta($post->ID);
-	$title = $metas['page_title'][0] ? $metas['page_title'][0] : $post->post_title;
-	$desc = $metas['page_description'][0] ? $metas['page_description'][0] : $post->post_excerpt;
-	$thumb_id = get_post_thumbnail_id();
-	//echo ($thumb_id);die;
-	if($thumb_id){
-		$thumb_url_array = wp_get_attachment_image_src($thumb_id, 'large', true);
-		$thumb_url = $thumb_url_array[0];
-	}else{
-		$thumb_url = flatsome_option('site_logo');
-	}	
-	
-	echo '<meta property="og:locale" content="'.get_locale().'" />'.PHP_EOL;
-	echo '<meta property="og:type" content="article" />'.PHP_EOL;
-	echo '<meta property="og:title" content="'.$title.'" />'.PHP_EOL;
-	echo '<meta property="og:description" content="'.$desc.'" />'.PHP_EOL;
-	echo '<meta property="og:site_name" content="'.home_url().'" />'.PHP_EOL;
-	echo '<meta property="og:image" content="'.$thumb_url.'" />'.PHP_EOL;
-	echo '<meta name="twitter:card" content="summary" />'.PHP_EOL;
-	echo '<meta name="twitter:description" content="'.$desc.'" />'.PHP_EOL;
-	echo '<meta name="twitter:title" content="'.$title.'" />'.PHP_EOL;
-	echo '<meta name="twitter:image" content="'.$thumb_url.'" />'.PHP_EOL;
-	
 }
-
-function shortcode_widget($atts) {
-    
-    global $wp_widget_factory;
-    
-    extract(shortcode_atts(array(
-        'widget_name' => FALSE,
-		'instance'    => ''
-    ), $atts));
-    
-    $widget_name = wp_specialchars($widget_name);
-    $instance = str_ireplace("&amp;", '&' ,$instance);
-	
-    if (!is_a($wp_widget_factory->widgets[$widget_name], 'WP_Widget')):
-        $wp_class = 'WP_Widget_'.ucwords(strtolower($class));
-        
-        if (!is_a($wp_widget_factory->widgets[$wp_class], 'WP_Widget')):
-            return '<p>'.sprintf(__("%s: Widget class not found. Make sure this widget exists and the class name is correct"),'<strong>'.$class.'</strong>').'</p>';
-        else:
-            $class = $wp_class;
-        endif;
-    endif;
-    
-    ob_start();
-    the_widget($widget_name, $instance, array('widget_id'=>'arbitrary-instance-'.$id,
-        'before_widget' => '',
-        'after_widget' => '',
-        'before_title' => '',
-        'after_title' => ''
-    ));
-    $output = ob_get_contents();
-    ob_end_clean();
-    return $output;
-    
+function fvn_get_client_ip() {
+    $ipaddress = '';
+    if (isset($_SERVER['HTTP_CLIENT_IP']))
+        $ipaddress = $_SERVER['HTTP_CLIENT_IP'];
+    else if(isset($_SERVER['HTTP_X_FORWARDED_FOR']))
+        $ipaddress = $_SERVER['HTTP_X_FORWARDED_FOR'];
+    else if(isset($_SERVER['HTTP_X_FORWARDED']))
+        $ipaddress = $_SERVER['HTTP_X_FORWARDED'];
+    else if(isset($_SERVER['HTTP_FORWARDED_FOR']))
+        $ipaddress = $_SERVER['HTTP_FORWARDED_FOR'];
+    else if(isset($_SERVER['HTTP_FORWARDED']))
+        $ipaddress = $_SERVER['HTTP_FORWARDED'];
+    else if(isset($_SERVER['REMOTE_ADDR']))
+        $ipaddress = $_SERVER['REMOTE_ADDR'];
+    else
+        $ipaddress = 'UNKNOWN';
+    return $ipaddress;
 }
-add_shortcode('widget','shortcode_widget'); 
-
-//mobile call now button 
-add_action('wp_footer', function(){
-	include HBPRO_THEME_PATH.'/template-parts/call-now-button.php';
-});
-//contact form 7
-//cho phep contact form-7 them shortcode
-/*
-add_filter( 'wpcf7_form_elements', 'mycustom_wpcf7_form_elements' );
-
-function mycustom_wpcf7_form_elements( $form ) {
-	$form = do_shortcode( $form );
-	return $form;
-}
-*/
-//woocomerce
-/*
-add_filter( 'woocommerce_checkout_fields' , 'hb_woo_theme_custom_fields' );
-function hb_woo_theme_custom_fields( $fields ) {
-    unset($fields['billing']['billing_country']);
-	unset($fields['billing']['billing_address_2']);
-	$fields['billing']['billing_address_1']['type']='textarea';
-	$fields['billing']['billing_address_1']['class']=['notes'];
-	
-	unset($fields['billing']['billing_state']);//['label']="Tỉnh/Thành phố";
-	unset($fields['shipping']['shipping_company']);
-	unset($fields['shipping']['shipping_country']);
-	unset($fields['shipping']['shipping_address_2']);
-	unset($fields['shipping']['shipping_city']);
-	unset($fields['shipping']['shipping_state']);
-	unset($fields['shipping']['shipping_postcode']);
-	$fields['shipping']['shipping_address_1']['type']='textarea';
-	$fields['shipping']['shipping_address_1']['required']=0;
-	$fields['shipping']['shipping_first_name']['required']=0;
-	$fields['shipping']['shipping_last_name']['required']=0;	
-	$fields['shipping']['shipping_state']['label']="Tỉnh/Thành phố";
-	$fields['billing']['billing_email']['required']=0;
-	$fields['billing']['billing_phone2'] = [
-		'label'=>'Số điện thoại dự phòng',
-		'type'=>'tel',
-		'priority'=>20];
-	
-	//sap xep
-	$mybillingfields=array(
-		"billing_first_name",
-		"billing_last_name",
-		"billing_company",
-		"billing_phone",
-		"billing_phone2",
-		"billing_email",
-		"billing_address_1",
-	);
-	$ordered_fields=[];
-	foreach($mybillingfields as $field)
-    {
-        $ordered_fields[$field] = $fields["billing"][$field];
-    }
-
-    $fields["billing"] = $ordered_fields;
-	//debug($fields);
-	return $fields;
-}
-*/

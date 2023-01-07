@@ -65,3 +65,4 @@ wp-content/themes/*
 !backup.php
 !installer.php
 !unzip.php
+!database.sql

@@ -61,8 +61,9 @@ $zip->open($sourcePath, ZipArchive::CREATE | ZipArchive::OVERWRITE);
 
 // Create recursive directory iterator
 /** @var SplFileInfo[] $files */
-$exclude = array('.git', '.htaccess');
+$exclude = array('.git', '.htaccess','.zip','.gz','cache');
 $filter = function ($file, $key, $iterator) use ($exclude) {
+	echo $file->getFilename();die;
     if ($iterator->hasChildren() && !in_array($file->getFilename(), $exclude)) {
         return true;
     }

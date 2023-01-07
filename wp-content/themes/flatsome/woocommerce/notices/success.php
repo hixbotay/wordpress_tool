@@ -10,31 +10,26 @@
  * happen. When this occurs the version of the template file will be bumped and
  * the readme will list any important changes.
  *
- * @see         https://docs.woocommerce.com/document/template-structure/
- * @package     WooCommerce/Templates
- * @version     3.5.0
+ * @see     https://docs.woocommerce.com/document/template-structure/
+ * @package WooCommerce/Templates
+ * @version 3.9.0
  */
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-if ( ! $messages ) {
+if ( ! $notices ) {
 	return;
 }
 
 ?>
 
-<?php foreach ( $messages as $message ) : ?>
-	<div class="woocommerce-message message-wrapper" role="alert">
+<?php foreach ( $notices as $notice ) : ?>
+	<div class="woocommerce-message message-wrapper"<?php echo wc_get_notice_data_attr( $notice ); ?> role="alert">
 		<div class="message-container container success-color medium-text-center">
-			<?php echo get_flatsome_icon( 'icon-checkmark' ); ?>
-			<?php
-				echo fl_woocommerce_version_check('3.5.0') ? wc_kses_notice( $message ) : wp_kses_post( $message );
-			?>
-			<?php if ( is_product() && get_theme_mod( 'cart_dropdown_show', 1 ) ) { ?>
-				<span class="added-to-cart" data-timer=""></span>
-			<?php } ?>
+			<?php echo get_flatsome_icon( 'icon-checkmark' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
+			<?php echo wc_kses_notice( $notice['notice'] ); ?>
 		</div>
 	</div>
 <?php endforeach; ?>

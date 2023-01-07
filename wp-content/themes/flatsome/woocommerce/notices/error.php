@@ -10,29 +10,28 @@
  * happen. When this occurs the version of the template file will be bumped and
  * the readme will list any important changes.
  *
- * @see         https://docs.woocommerce.com/document/template-structure/
- * @package     WooCommerce/Templates
- * @version     3.5.0
+ * @see     https://docs.woocommerce.com/document/template-structure/
+ * @package WooCommerce/Templates
+ * @version 3.9.0
  */
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-if ( ! $messages ) {
+if ( ! $notices ) {
 	return;
 }
 
 ?>
 <ul class="woocommerce-error message-wrapper" role="alert">
-	<?php foreach ( $messages as $message ) : ?>
-		<li>
+	<?php foreach ( $notices as $notice ) : ?>
+		<li<?php echo wc_get_notice_data_attr( $notice ); ?>>
 			<div class="message-container container alert-color medium-text-center">
 				<span class="message-icon icon-close"></span>
-				<?php
-					echo fl_woocommerce_version_check('3.5.0') ? wc_kses_notice( $message ) : wp_kses_post( $message );
-				?>
+				<?php echo wc_kses_notice( $notice['notice'] ); ?>
 			</div>
 		</li>
 	<?php endforeach; ?>
 </ul>
+
