@@ -12,7 +12,7 @@
 - Vào trình duyệt web, chạy đường dẫn <your domain>/backup.php
 - Download file website.zip về đó chính là file backup của website
 
-## Backup website
+## Khôi phục website
 - Upload file unzip.php lên host của bạn
 - Upload file website.zip lên host của bạn
 - Vào trình duyệt web, chạy đường dẫn <your domain>/unzip.php và giải nén file website.zip
