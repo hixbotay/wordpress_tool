@@ -5,19 +5,19 @@
           <ul class="nav nav-left medium-nav-center nav-small <?php flatsome_nav_classes('top'); ?>">
               <?php flatsome_header_elements('topbar_elements_left'); ?>
           </ul>
-      </div>
+      </div><!-- flex-col left -->
 
       <div class="flex-col hide-for-medium flex-center">
           <ul class="nav nav-center nav-small <?php flatsome_nav_classes('top'); ?>">
               <?php flatsome_header_elements('topbar_elements_center'); ?>
           </ul>
-      </div>
+      </div><!-- center -->
 
       <div class="flex-col hide-for-medium flex-right">
          <ul class="nav top-bar-nav nav-right nav-small <?php flatsome_nav_classes('top'); ?>">
               <?php flatsome_header_elements('topbar_elements_right'); ?>
           </ul>
-      </div>
+      </div><!-- .flex-col right -->
 
       <?php if(get_theme_mod('header_mobile_elements_top')) { ?>
       <div class="flex-col show-for-medium flex-grow">
@@ -27,6 +27,6 @@
       </div>
       <?php } ?>
 
-    </div>
-</div>
+    </div><!-- .flex-row -->
+</div><!-- #header-top -->
 <?php } ?>

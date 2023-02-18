@@ -316,14 +316,9 @@ msgstr ""
 msgid "New"
 msgstr ""
 
+
 #: inc/woocommerce/tempalte-tags-global:36
 #@ flatsome
-msgid "Home"
-msgstr ""
-
-#: inc/structure/structure-portfolio.php:50
-#@ flatsome
-msgctxt "breadcrumb"
 msgid "Home"
 msgstr ""
 
@@ -638,17 +633,13 @@ msgstr ""
 msgid "Zoom"
 msgstr ""
 
-#: structure-wc-global.php:280
-#: inc/woocommerce/structure-wc-global.php:280
+
+#: structure-wc-global.php:188
+#: inc/woocommerce/structure-wc-global.php:188
 #@ flatsome
-msgid "Posts found"
+msgid "Pages and posts found"
 msgstr ""
 
-#: structure-wc-global.php:281
-#: inc/woocommerce/structure-wc-global.php:281
-#@ flatsome
-msgid "Pages found"
-msgstr ""
 
 #: structure-wc-global.php:139
 #: inc/shortcodes/portfolio.php:139
@@ -677,9 +668,4 @@ msgstr ""
 #: inc/extensions/flatsome-infinite-scroll/templates/button.php:2
 #@ flatsome
 msgid "View more"
-msgstr ""
-
-#: template-parts/header/partials/element-menu-icon.php:8
-#@ flatsome
-msgid "Menu"
 msgstr ""

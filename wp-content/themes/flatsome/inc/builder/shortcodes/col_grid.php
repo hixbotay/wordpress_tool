@@ -61,6 +61,12 @@ add_ux_builder_shortcode( 'col_grid', array(
             'options' => require( __DIR__ . '/values/animate.php' ),
         ),
 
+        'class' => array(
+            'type' => 'textfield',
+            'heading' => 'Class',
+            'default' => '',
+        ),
+
         'depth' => array(
             'type' => 'slider',
             'vertical' => true,
@@ -78,6 +84,5 @@ add_ux_builder_shortcode( 'col_grid', array(
             'max' => 5,
             'min' => 0,
         ),
-        'advanced_options' => require( __DIR__ . '/commons/advanced.php'),
     ),
 ) );

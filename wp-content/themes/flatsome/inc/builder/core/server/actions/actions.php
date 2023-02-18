@@ -1,30 +1,25 @@
 <?php
 
 /**
- * Register post type for custom templates.
+ * Add custom page to render UX Builder on.
  */
-function ux_builder_register_post_types() {
-	register_post_type( 'ux_template', array(
-		'labels'             => array(
-			'name' => __( 'UX Templates', 'flatsome' ),
-		),
-		'description'        => '',
-		'public'             => false,
-		'publicly_queryable' => false,
-		'show_ui'            => false,
-		'show_in_menu'       => false,
-		'query_var'          => true,
-		'rewrite'            => false,
-		'capability_type'    => 'page',
-		'has_archive'        => false,
-		'hierarchical'       => false,
-		'menu_position'      => null,
-		'menu_icon'          => false,
-		'supports'           => array( 'title', 'editor', 'author', 'thumbnail' ),
-		'taxonomies'         => array(),
-	) );
+add_action( 'admin_menu', function () {
+		add_submenu_page(
+			null,
+			'UX Builder',
+			'UX Builder',
+			'edit_posts',
+			'uxbuilder',
+			'ux_builder_edit_page_callback'
+		);
+} );
+
+/**
+ *  UX Builder edit page callback
+ */
+function ux_builder_edit_page_callback() {
+	echo 'uxbuilder';
 }
-add_action( 'init', 'ux_builder_register_post_types' );
 
 /**
  * Register breakpoints.
@@ -61,16 +56,11 @@ add_action( 'admin_init', 'ux_builder_admin_setup' );
 function ux_builder_admin_bar_link() {
 	global $wp_admin_bar;
 	global $post;
-	global $wpdb;
-	$is_woocommerce = function_exists( 'is_woocommerce' );
+
 	if ( ! is_page() && ! is_single() ) {
 		return;
 	}
 	if ( ! current_user_can( 'edit_post', $post->ID ) ) {
-		return;
-	}
-	// Do not show UX Builder link on homepage if it's Shop page.
-	if ( $is_woocommerce && is_shop() && is_front_page() ) {
 		return;
 	}
 
@@ -83,20 +73,6 @@ function ux_builder_admin_bar_link() {
 			'title'  => 'Edit with UX Builder',
 			'href'   => ux_builder_edit_url( $post->ID ),
 		) );
-	}
-
-	// Add link for editing custom product layout block.
-	if ( $is_woocommerce && is_product() && array_key_exists( 'blocks', $post_types ) ) {
-		$block    = flatsome_product_block( $post->ID );
-		$the_post = $block ? get_post( $block['id'] ) : null;
-		if ( $the_post ) {
-			$wp_admin_bar->add_menu( array(
-				'parent' => 'edit',
-				'id'     => 'edit_uxbuilder_product_layout',
-				'title'  => 'Edit product layout with UX Builder',
-				'href'   => ux_builder_edit_url( $post->ID, $block['id'] ),
-			) );
-		}
 	}
 }
 
@@ -219,35 +195,3 @@ function ux_builder_post_search( $search, $wp_query ) {
 }
 
 add_filter( 'posts_search', 'ux_builder_post_search', 500, 2 );
-
-function ux_builder_rest_api_wrap_html_blocks( $response, $post, $request ) {
-  $context = $request->get_param( 'context' );
-
-  if (
-    $context === 'edit' &&
-    function_exists( 'use_block_editor_for_post' ) &&
-    use_block_editor_for_post( $post ) &&
-    isset( $response->data['content']['raw'] )
-  ) {
-    $content = $response->data['content']['raw'];
-
-    if ( ! has_blocks( $content ) ) {
-      $start = '<!-- wp:html -->';
-      $end = '<!-- /wp:html -->';
-
-      $response->data['content']['raw'] = "{$start}{$content}{$end}";
-    }
-  }
-
-  return $response;
-}
-
-function ux_builder_rest_api_init() {
-  $post_types = get_ux_builder_post_types();
-
-  foreach ( $post_types as $post_type => $key ) {
-    add_filter( "rest_prepare_{$post_type}", 'ux_builder_rest_api_wrap_html_blocks', 10, 3 );
-  }
-}
-
-add_action( 'rest_api_init',  'ux_builder_rest_api_init' );

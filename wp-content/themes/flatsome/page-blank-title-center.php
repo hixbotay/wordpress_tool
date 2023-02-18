@@ -1,8 +1,8 @@
 <?php
 /*
-Template name: Page - Container - Center Title
+Template name: Default Template (Center title)
 */
-get_header();
+get_header(); 
 ?>
 
 <?php do_action( 'flatsome_before_page' ); ?>
@@ -22,14 +22,12 @@ get_header();
 						<?php if ( comments_open() || '0' != get_comments_number() ){
 							comments_template(); } ?>
 					</div>
-
+					
 
 		<?php endwhile; // end of the loop. ?>
 
 
-</div>
-</div>
-
-<?php do_action( 'flatsome_after_page' ); ?>
+</div><!-- #content -->
+</div><!-- .row -->
 
 <?php get_footer(); ?>

@@ -4,9 +4,9 @@
  *
  * @package     Kirki
  * @category    Core
- * @author      Ari Stathopoulos (@aristath)
- * @copyright   Copyright (c) 2020, David Vongries
- * @license     https://opensource.org/licenses/MIT
+ * @author      Aristeides Stathopoulos
+ * @copyright   Copyright (c) 2017, Aristeides Stathopoulos
+ * @license     http://opensource.org/licenses/https://opensource.org/licenses/MIT
  * @since       1.0
  */
 
@@ -48,6 +48,7 @@ class Kirki_L10n {
 		// If we got this far, then Kirki is embedded in a plugin.
 		// We want the theme's textdomain to handle translations.
 		add_filter( 'override_load_textdomain', array( $this, 'override_load_textdomain' ), 5, 3 );
+
 	}
 
 	/**
@@ -56,10 +57,12 @@ class Kirki_L10n {
 	 * @access public
 	 */
 	public function load_textdomain() {
+
 		if ( null !== $this->get_path() ) {
 			load_textdomain( $this->textdomain, $this->get_path() );
 		}
 		load_plugin_textdomain( $this->textdomain, false, Kirki::$path . '/languages' );
+
 	}
 
 	/**
@@ -81,7 +84,9 @@ class Kirki_L10n {
 				$found_path = $path;
 			}
 		}
+
 		return $found_path;
+
 	}
 
 	/**
@@ -91,10 +96,12 @@ class Kirki_L10n {
 	 * @return array
 	 */
 	protected function get_paths() {
+
 		return array(
 			WP_LANG_DIR . '/' . $this->textdomain . '-' . get_locale() . '.mo',
 			Kirki::$path . '/languages/' . $this->textdomain . '-' . get_locale() . '.mo',
 		);
+
 	}
 
 	/**
@@ -108,9 +115,11 @@ class Kirki_L10n {
 	 * @return bool
 	 */
 	public function override_load_textdomain( $override, $domain, $mofile ) {
+
 		global $l10n;
 		if ( isset( $l10n[ $this->get_theme_textdomain() ] ) ) {
-			$l10n['kirki'] = $l10n[ $this->get_theme_textdomain() ]; // phpcs:ignore WordPress.WP.GlobalVariablesOverride
+			// @codingStandardsIgnoreLine WordPress.Variables.GlobalVariables.OverrideProhibited
+			$l10n['kirki'] = $l10n[ $this->get_theme_textdomain() ];
 		}
 
 		// Check if the domain is "kirki".
@@ -118,6 +127,7 @@ class Kirki_L10n {
 			return true;
 		}
 		return $override;
+
 	}
 
 	/**
@@ -128,10 +138,11 @@ class Kirki_L10n {
 	 * @return string
 	 */
 	private function get_theme_textdomain() {
+
 		if ( '' === $this->theme_textdomain ) {
 
 			// Get the textdomain.
-			$theme                  = wp_get_theme();
+			$theme = wp_get_theme();
 			$this->theme_textdomain = $theme->get( 'TextDomain' );
 
 			// If no texdomain was found, use the template folder name.
@@ -140,5 +151,6 @@ class Kirki_L10n {
 			}
 		}
 		return $this->theme_textdomain;
+
 	}
 }

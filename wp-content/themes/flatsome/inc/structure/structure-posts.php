@@ -7,13 +7,7 @@ function flatsome_remove_recent_comments_style() {
     }
 add_action( 'widgets_init', 'flatsome_remove_recent_comments_style' );
 
-/**
- * Apply custom post excerpt suffix based on user setting.
- */
-function flatsome_excerpt_suffix() {
-	return get_theme_mod( 'blog_excerpt_suffix', ' [...]' );
-}
-add_filter( 'excerpt_more', 'flatsome_excerpt_suffix' );
+
 
 
 // Blog Article Classes
@@ -50,7 +44,7 @@ add_filter('flatsome_header_class','flatsome_blog_header_classes', 10);
 // Add Big blog header
 function flatsome_single_page_header(){
   if(is_singular('post') && get_theme_mod('blog_post_style') == 'top'){
-	   get_template_part( 'template-parts/posts/partials/single-featured', get_theme_mod('blog_post_style'));
+		echo get_template_part( 'template-parts/posts/partials/single-featured', get_theme_mod('blog_post_style'));
 	}
 }
 add_action('flatsome_after_header','flatsome_single_page_header', 10);
@@ -59,7 +53,7 @@ add_action('flatsome_after_header','flatsome_single_page_header', 10);
 // Add Blog Archive title
 function flatsome_archive_title(){
     if(flatsome_option('blog_archive_title') && (is_archive() || is_search())){
-        get_template_part( 'template-parts/posts/partials/archive-title');
+        echo get_template_part( 'template-parts/posts/partials/archive-title');
     }
 }
 add_action('flatsome_before_blog','flatsome_archive_title', 15);

@@ -4,8 +4,6 @@ function flatsome_shortcode_map($atts, $content=null, $code) {
 
 	$atts = shortcode_atts(array(
     '_id' => 'map-'.rand(),
-    'class' => '',
-    'visibility' => '',
 		'lat'  => '40.79028',
     'long' => '-73.95972',
     'height' => '400px',
@@ -32,11 +30,6 @@ function flatsome_shortcode_map($atts, $content=null, $code) {
 	), $atts);
 
   extract( $atts );
-
-  $classes = array('google-map', 'relative', 'mb');
-  if( $class ) $classes[] = $class;
-  if( $visibility ) $classes[] = $visibility;
-  $classes = implode(' ', $classes);
 
   $content_classes = array( 'map_inner', 'map-inner', 'last-reset absolute' );
   $content_classes[] = flatsome_position_classes( 'x', $position_x, $position_x__sm, $position_x__md );
@@ -119,17 +112,12 @@ function flatsome_shortcode_map($atts, $content=null, $code) {
         });
     }
 
-    // Required to proceed
-    if (!(typeof google === 'object' && typeof google.maps === 'object')) {
-      return
-    }
-
     google.maps.event.addDomListener(window, 'load', initialize);
     google.maps.event.addDomListener(window, 'resize', initialize);
     });
     </script>
 
-    <div class="<?php echo $classes; ?>" id="<?php echo $_id; ?>">
+    <div class="google-map relative mb" id="<?php echo $_id; ?>">
         <div class="map-height" id="<?php echo $_id; ?>-inner"></div>
         <div id="map_overlay_top"></div>
         <div id="map_overlay_bottom"></div>

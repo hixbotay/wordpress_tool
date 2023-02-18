@@ -30,7 +30,5 @@ add_ux_builder_shortcode( 'ux_sidebar', array(
                 'boxed' => 'Boxed'
             )
         ),
-        'advanced_options' => require( __DIR__ . '/commons/advanced.php'),
-
     ),
 ) );

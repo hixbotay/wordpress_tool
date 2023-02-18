@@ -12,7 +12,7 @@
 				<p class="from_the_blog_excerpt small-font show-next">
 					<?php
 					$excerpt      = get_the_excerpt();
-					$excerpt_more = apply_filters( 'excerpt_more', ' [...]' );
+					$excerpt_more = apply_filters( 'excerpt_more', ' ' . '[...]' );
 					echo flatsome_string_limit_words( $excerpt, 15 ) . $excerpt_more;
 					?>
 				</p>

@@ -6,10 +6,10 @@
  */
 
 
-if(flatsome_option('pages_template') != 'default') {
+if(flatsome_option('pages_layout') != 'default') {
 	
 	// Get default template from theme options.
-	get_template_part('page', flatsome_option('pages_template'));
+	echo get_template_part('page', flatsome_option('pages_layout'));
 	return;
 
 } else {
@@ -24,7 +24,7 @@ do_action( 'flatsome_before_page' ); ?>
 				<?php if(get_theme_mod('default_title', 0)){ ?>
 				<header class="entry-header">
 					<h1 class="entry-title mb uppercase"><?php the_title(); ?></h1>
-				</header>
+				</header><!-- .entry-header -->
 				<?php } ?>
 
 				<?php while ( have_posts() ) : the_post(); ?>
@@ -37,9 +37,9 @@ do_action( 'flatsome_before_page' ); ?>
 
 					<?php do_action( 'flatsome_after_page_content' ); ?>
 				<?php endwhile; // end of the loop. ?>
-			</div>
-		</div>
-	</div>
+			</div><!-- .col-inner -->
+		</div><!-- .large-12 -->
+	</div><!-- .row -->
 </div>
 
 <?php

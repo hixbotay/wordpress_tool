@@ -25,15 +25,7 @@ class PostSaver {
     $post_content = '';
 
     if( array_key_exists( 'children', $data['content'] ) ) {
-      $post = get_post( $data['id'] );
-      $elements = ux_builder( 'elements' );
-      $use_blocks = function_exists( 'use_block_editor_for_post' )
-        ? use_block_editor_for_post( $post )
-        : false;
-
-      $stringify = new ArrayToString( $elements, $use_blocks );
-
-      $post_content = $stringify->transform( $data['content']['children'] );
+      $post_content = ux_builder( 'to-string' )->transform( $data['content']['children'] );
     }
 
     // Publish post if user has permission to do it.

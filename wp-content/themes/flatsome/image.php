@@ -36,8 +36,8 @@ get_header();
 									}
 								?>
 								<?php edit_post_link( __( 'Edit', 'flatsome' ), '<span class="sep"> | </span> <span class="edit-link">', '</span>' ); ?>
-							</div>
-						</header>
+							</div><!-- .entry-meta -->
+						</header><!-- .entry-header -->
 
 						<div class="entry-content">
 
@@ -79,21 +79,24 @@ get_header();
 										$attachment_size = apply_filters( 'flatsome_attachment_size', array( 1200, 1200 ) ); // Filterable image size.
 										echo wp_get_attachment_image( $post->ID, $attachment_size );
 									?></a>
-								</div>
+								</div><!-- .attachment -->
 
 								<?php if ( ! empty( $post->post_excerpt ) ) : ?>
 								<div class="entry-caption">
 									<?php the_excerpt(); ?>
-								</div>
+								</div><!-- .entry-caption -->
 								<?php endif; ?>
-							</div>
+							</div><!-- .entry-attachment -->
 
 							<?php the_content(); ?>
 							<?php
-								wp_link_pages();
+								wp_link_pages( array(
+									'before' => '<div class="page-links">' . __( 'Pages:', 'flatsome' ),
+									'after'  => '</div>',
+								) );
 							?>
 
-						</div>
+						</div><!-- .entry-content -->
 
 						<footer class="entry-meta">
 							<?php if ( comments_open() && pings_open() ) : // Comments and trackbacks open ?>
@@ -106,14 +109,14 @@ get_header();
 								<?php _e( 'Both comments and trackbacks are currently closed.', 'flatsome' ); ?>
 							<?php endif; ?>
 							<?php edit_post_link( __( 'Edit', 'flatsome' ), ' <span class="edit-link">', '</span>' ); ?>
-						</footer>
+						</footer><!-- .entry-meta -->
 
 						
 							<nav role="navigation" id="image-navigation" class="navigation-image">
 								<div class="nav-previous"><?php previous_image_link( false, __( '<span class="meta-nav">&larr;</span> Previous', 'flatsome' ) ); ?></div>
 								<div class="nav-next"><?php next_image_link( false, __( 'Next <span class="meta-nav">&rarr;</span>', 'flatsome' ) ); ?></div>
-							</nav>
-					</article>
+							</nav><!-- #image-navigation -->
+					</article><!-- #post-<?php the_ID(); ?> -->
 
 					<?php
 						// If comments are open or we have at least one comment, load up the comment template
@@ -122,9 +125,9 @@ get_header();
 					?>
 
 				<?php endwhile; // end of the loop. ?>
-			</div>
-			</div>
-		</div>
-	</div>
+			</div><!-- .large-12 -->
+			</div><!-- .row -->
+		</div><!-- #content -->
+	</div><!-- #primary -->
 
 <?php get_footer(); ?>

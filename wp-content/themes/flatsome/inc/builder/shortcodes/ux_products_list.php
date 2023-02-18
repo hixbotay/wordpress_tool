@@ -6,7 +6,7 @@ $options = array(
 'filter_posts' => array(
     'type' => 'group',
     'heading' => __( 'Filter Posts' ),
-    'conditions' => 'ids == ""',
+    'conditions' => 'ids === ""',
     'options' => array(
          'orderby' => array(
             'type' => 'select',
@@ -38,16 +38,7 @@ $options = array(
                 'featured' => 'Featured',
                 'onsale' => 'On Sale',
             )
-        ),
-         'out_of_stock' => array(
-	         'type'    => 'select',
-	         'heading' => __( 'Out Of Stock' ),
-	         'default' => '',
-	         'options' => array(
-		         ''        => 'Include',
-		         'exclude' => 'Exclude',
-	         ),
-         ),
+        )
     )
 )
 );
@@ -55,7 +46,7 @@ $options = array(
 $options['post_options']['options']['tags'] = array(
   'type' => 'select',
   'heading' => 'Tag',
-  'conditions' => 'ids == ""',
+  'conditions' => 'ids === ""',
   'default' => '',
   'config' => array(
       'placeholder' => 'Select...',

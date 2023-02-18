@@ -41,7 +41,7 @@ if ( post_password_required() ) {
 			<?php
 				wp_list_comments( array( 'callback' => 'flatsome_comment' ) );
 			?>
-		</ol>
+		</ol><!-- .comment-list -->
 
 		<?php if ( get_comment_pages_count() > 1 && get_option( 'page_comments' ) ) : // Are there comments to navigate through? ?>
 		<nav id="comment-nav-below" class="navigation comment-navigation" role="navigation">
@@ -49,8 +49,8 @@ if ( post_password_required() ) {
 			<div class="nav-links nex-prev-nav">
 				<div class="nav-previous"><?php previous_comments_link( esc_html__( 'Older Comments', 'flatsome' ) ); ?></div>
 				<div class="nav-next"><?php next_comments_link( esc_html__( 'Newer Comments', 'flatsome' ) ); ?></div>
-			</div>
-		</nav>
+			</div><!-- .nav-links -->
+		</nav><!-- #comment-nav-below -->
 		<?php endif; // Check for comment navigation. ?>
 
 	<?php endif; // Check for have_comments(). ?>
@@ -64,4 +64,4 @@ if ( post_password_required() ) {
 
 	<?php comment_form(); ?>
 
-</div>
+</div><!-- #comments -->

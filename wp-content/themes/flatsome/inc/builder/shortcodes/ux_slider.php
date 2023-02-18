@@ -55,6 +55,7 @@ add_ux_builder_shortcode( 'ux_slider', array(
           'type' => 'group',
           'heading' => __( 'Layout' ),
           'options' => array(
+            'visibility'  => require( __DIR__ . '/commons/visibility.php' ),
             'style' => array(
               'type' => 'select',
               'heading' => 'Style',
@@ -262,6 +263,5 @@ add_ux_builder_shortcode( 'ux_slider', array(
             ),
           ),
         ),
-        'advanced_options' => require( __DIR__ . '/commons/advanced.php'),
     ),
 ) );

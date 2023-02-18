@@ -8,40 +8,23 @@
 
 if ( ! function_exists( 'is_nextend_facebook_login' ) ) {
 	/**
-	 * Returns true if Nextend facebook provider is enabled for v3
+	 * Returns true if Nextend Facebook Connect plugin is activated
 	 *
 	 * @return bool
 	 */
 	function is_nextend_facebook_login() {
-		if ( class_exists( 'NextendSocialLogin', false ) && ! class_exists( 'NextendSocialLoginPRO', false ) ) {
-			return NextendSocialLogin::isProviderEnabled( 'facebook' );
-		}
-		return false;
+		return in_array( 'nextend-facebook-connect/nextend-facebook-connect.php', apply_filters( 'active_plugins', get_option( 'active_plugins' ) ) );
 	}
 }
 
 if ( ! function_exists( 'is_nextend_google_login' ) ) {
 	/**
-	 * Returns true if Nextend google provider is enabled for v3
+	 * Returns true if Nextend Google Connect plugin is activated
 	 *
 	 * @return bool
 	 */
 	function is_nextend_google_login() {
-		if ( class_exists( 'NextendSocialLogin', false ) && ! class_exists( 'NextendSocialLoginPRO', false ) ) {
-			return NextendSocialLogin::isProviderEnabled( 'google' );
-		}
-		return false;
-	}
-}
-
-if ( ! function_exists( 'is_yith_wishlist_premium' ) ) {
-	/**
-	 * Returns true if YITH Wishlist Premium is installed and free version is not activated.
-	 *
-	 * @return bool
-	 */
-	function is_yith_wishlist_premium() {
-		return ! defined( 'YITH_WCWL_FREE_INIT' ) && file_exists( WP_PLUGIN_DIR . '/yith-woocommerce-wishlist-premium/init.php' );
+		return in_array( 'nextend-google-connect/nextend-google-connect.php', apply_filters( 'active_plugins', get_option( 'active_plugins' ) ) );
 	}
 }
 
@@ -71,12 +54,10 @@ if ( ! function_exists( 'is_extension_activated' ) ) {
 	/**
 	 * Returns true if extension is activated
 	 *
-	 * @param string $extension The class name. The name is matched in a case-insensitive manner.
-	 * @param bool   $autoload  Whether or not to call __autoload by default.
-	 *
+	 * @param string $extension Extension Class name.
 	 * @return bool
 	 */
-	function is_extension_activated( $extension, $autoload = true ) {
-		return class_exists( $extension, $autoload );
+	function is_extension_activated( $extension ) {
+		return class_exists( $extension );
 	}
 }

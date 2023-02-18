@@ -24,22 +24,6 @@ Flatsome_Option::add_field( 'option',  array(
 	),
 ));
 
-Flatsome_Option::add_field( 'option',  array(
-	'type'        => 'checkbox',
-	'settings'     => 'cart_dropdown_show',
-	'label'       => __( 'Auto reveal mini cart', 'flatsome-admin' ),
-	'description' => __( 'Reveal mini cart after a product is added', 'flatsome-admin' ),
-	'section'     => 'header_cart',
-	'active_callback' => array(
-		array(
-			'setting'  => 'header_cart_style',
-			'operator' => '!==',
-			'value'    => 'link',
-		),
-	),
-	'default'     => 1,
-));
-
 Flatsome_Option::add_field( 'option', array(
 	'type'        => 'radio-image',
 	'settings'     => 'cart_icon_style',
@@ -122,7 +106,7 @@ function flatsome_refresh_header_cart_partials( WP_Customize_Manager $wp_customi
 	    'container_inclusive' => true,
 	    'settings' => array('cart_icon','header_cart_style','cart_icon_style','custom_cart_icon','header_cart_total','header_cart_title','html_cart_header'),
 	    'render_callback' => function() {
-	        get_template_part('template-parts/header/partials/element','cart');
+	        return get_template_part('template-parts/header/partials/element','cart');
 	    },
 	) );
 
@@ -132,7 +116,7 @@ function flatsome_refresh_header_cart_partials( WP_Customize_Manager $wp_customi
 	    'container_inclusive' => true,
 	    'settings' => array('cart_icon','header_cart_style','cart_icon_style','custom_cart_icon','header_cart_total','header_cart_title','html_cart_header'),
 	    'render_callback' => function() {
-	        get_template_part('template-parts/header/partials/element','cart');
+	        return get_template_part('template-parts/header/partials/element','cart');
 	    },
 	) );
 
@@ -141,7 +125,7 @@ function flatsome_refresh_header_cart_partials( WP_Customize_Manager $wp_customi
 	    'container_inclusive' => true,
 	    'settings' => array('cart_icon','header_cart_style','cart_icon_style','custom_cart_icon','header_cart_total','header_cart_title','html_cart_header'),
 	    'render_callback' => function() {
-	        get_template_part('template-parts/header/partials/element','cart-mobile');
+	        return get_template_part('template-parts/header/partials/element','cart-mobile');
 	    },
 	) );
 

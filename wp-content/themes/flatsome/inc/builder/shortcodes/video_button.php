@@ -19,7 +19,6 @@ add_ux_builder_shortcode( 'video_button', array(
         'max' => '500',
         'min' => '0',
         'on_change' => array(
-	        'selector' => '.video-button-wrapper',
             'style' => 'font-size: {{ value }}%'
         )
       ),

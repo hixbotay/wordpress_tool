@@ -4,8 +4,8 @@
  *
  * @package     Kirki
  * @subpackage  Controls
- * @copyright   Copyright (c) 2020, David Vongries
- * @license     https://opensource.org/licenses/MIT
+ * @copyright   Copyright (c) 2017, Aristeides Stathopoulos
+ * @license     http://opensource.org/licenses/https://opensource.org/licenses/MIT
  * @since       2.2.7
  */
 
@@ -20,23 +20,19 @@ class Kirki_Field_Preset extends Kirki_Field_Select {
 	 * @access protected
 	 */
 	protected function set_type() {
-		$this->type = 'kirki-select';
+
+		$this->type = 'kirki-preset';
+
 	}
 
 	/**
-	 * Set the preset.
+	 * Sets the $multiple
 	 *
 	 * @access protected
-	 * @since 3.0.28
 	 */
-	protected function set_preset() {
+	protected function set_multiple() {
 
-		// Set preset from the choices.
-		$this->preset = $this->choices;
+		$this->multiple = 1;
 
-		// We're using a flat select.
-		foreach ( $this->choices as $key => $args ) {
-			$this->choices[ $key ] = $args['label'];
-		}
 	}
 }

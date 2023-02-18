@@ -8,7 +8,6 @@
  * @author      Syamil MJ
  */
 require_once( ADMIN_PATH . 'functions/functions.php' );
-require_once( ADMIN_PATH . 'functions/functions.facebook.php' );
 require_once( ADMIN_PATH . 'functions/functions.interface.php' );
 require_once( ADMIN_PATH . 'functions/functions.options.php' );
 require_once( ADMIN_PATH . 'functions/functions.admin.php' );

@@ -55,6 +55,20 @@ function flatsome_page_header_options($classes){
 
 add_filter('flatsome_header_class','flatsome_page_header_options', 10);
 
+
+// Pages Breadcrumbs
+function get_flatsome_breadcrumbs($classes = ''){
+      // Yoast Breadcrumbs
+      if ( function_exists('yoast_breadcrumb') ) {
+        yoast_breadcrumb('<nav class="breadcrumbs page-breadcrumbs">','</nav>');
+      }
+      // WooCommerce breadcrumbs
+      else if(function_exists('woocommerce_breadcrumb') ){
+        woocommerce_breadcrumb();
+      }
+}
+
+
 // Pages SubNav
 function get_flatsome_subnav($style = '', $string = '', $parent = ''){
    if(is_page()){

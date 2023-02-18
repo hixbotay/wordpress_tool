@@ -2,15 +2,12 @@
 function ux_image_box( $atts, $content = null ) {
 	extract( shortcode_atts( array(
 		'_id'             => null,
-		'class'						=> '',
-		'visibility'			=> '',
 		'img'             => '',
 		'style'           => '',
 		'depth'           => '',
 		'depth_hover'     => '',
 		'link'            => '',
 		'target'          => '_self',
-		'rel'             => '',
 		// Box styles
 		'animate'         => '',
 		'text_pos'        => 'bottom',
@@ -36,20 +33,12 @@ function ux_image_box( $atts, $content = null ) {
 	$classes_text = array();
 	$classes_image = array();
 
-	$classes_box[] =  $class;
-	$classes_box[] =  $visibility;
-
 	// Set box style.
 	$classes_box[] = 'has-hover';
 	if ( $depth ) $classes_box[] = 'box-shadow-' . $depth;
 	if ( $depth_hover ) $classes_box[] = 'box-shadow-' . $depth_hover . '-hover';
 
-	$link_atts = array(
-		'target' => $target,
-		'rel'    => array( $rel ),
-	);
-
-	$link_start = '<a href="' . $link . '"' . flatsome_parse_target_rel( $link_atts ) . '>';
+	$link_start = '<a href="' . $link . '" target="' . $target . '">';
 	$link_end   = '</a>';
 
 	if ( $style ) $classes_box[] = 'box-' . $style;

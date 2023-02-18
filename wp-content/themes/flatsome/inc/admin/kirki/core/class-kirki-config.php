@@ -4,9 +4,9 @@
  *
  * @package     Kirki
  * @category    Core
- * @author      Ari Stathopoulos (@aristath)
- * @copyright   Copyright (c) 2020, David Vongries
- * @license     https://opensource.org/licenses/MIT
+ * @author      Aristeides Stathopoulos
+ * @copyright   Copyright (c) 2017, Aristeides Stathopoulos
+ * @license     http://opensource.org/licenses/https://opensource.org/licenses/MIT
  */
 
 /**
@@ -34,10 +34,10 @@ final class Kirki_Config {
 	/**
 	 * The configuration ID.
 	 *
-	 * @access public
+	 * @access protected
 	 * @var string
 	 */
-	public $id = 'global';
+	protected $id = 'global';
 
 	/**
 	 * Capability (fields will inherit this).
@@ -94,8 +94,8 @@ final class Kirki_Config {
 		// Skip what we don't need in this context.
 		unset( $defaults['config_final'] );
 		unset( $defaults['instances'] );
-		// Apply any kirki_config global filters.
-		$defaults = apply_filters( 'kirki_config', $defaults );
+		// Apply any kirki/config global filters.
+		$defaults = apply_filters( 'kirki/config', $defaults );
 		// Merge our args with the defaults.
 		$args = wp_parse_args( $args, $defaults );
 
@@ -106,7 +106,6 @@ final class Kirki_Config {
 				$args[ $key ] = $value;
 			}
 		}
-		$this->id = $config_id;
 
 		$this->config_final = wp_parse_args(
 			array(
@@ -139,30 +138,16 @@ final class Kirki_Config {
 	 * @return Kirki_Config
 	 */
 	public static function get_instance( $id = 'global', $args = array() ) {
-		if ( empty( $id ) ) {
-			$id = 'global';
-		}
+
+		$id = trim( esc_attr( $id ) );
+		$id = ( '' === $id ) ? 'global' : $id;
+
 		$id_md5 = md5( $id );
 		if ( ! isset( self::$instances[ $id_md5 ] ) ) {
 			self::$instances[ $id_md5 ] = new self( $id, $args );
 		}
 		return self::$instances[ $id_md5 ];
-	}
 
-	/**
-	 * Get the IDs of all current configs.
-	 *
-	 * @static
-	 * @access public
-	 * @since 3.0.22
-	 * @return array
-	 */
-	public static function get_config_ids() {
-		$configs = array();
-		foreach ( self::$instances as $instance ) {
-			$configs[] = $instance->id;
-		}
-		return array_unique( $configs );
 	}
 
 	/**
@@ -172,6 +157,7 @@ final class Kirki_Config {
 	 * @return array
 	 */
 	public function get_config() {
+
 		return $this->config_final;
 	}
 }

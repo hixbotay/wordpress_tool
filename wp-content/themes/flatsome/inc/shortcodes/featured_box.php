@@ -5,15 +5,12 @@ function featured_box( $atts, $content = null ) {
 		'title'       => '',
 		'title_small' => '',
 		'font_size'   => '',
-		'class'				=> '',
-		'visibility'	=> '',
 		'img'         => '',
 		'inline_svg'  => 'true',
 		'img_width'   => '60',
 		'pos'         => 'top',
 		'link'        => '',
 		'target'      => '_self',
-		'rel'         => '',
 		'tooltip'     => '',
 		'margin'      => '',
 		'icon_border' => '',
@@ -21,16 +18,10 @@ function featured_box( $atts, $content = null ) {
 		), $atts )
 	);
 
-	if($visibility == 'hidden') return;
-
 	$classes     = array( 'featured-box' );
 	$classes_img = array( 'icon-box-img' );
-	
-	if( $class ) $classes[] = $class;
-	if( $visibility ) $classes[] = $visibility;
 
 	$classes[] = 'icon-box-' . $pos;
-
 	if ( $tooltip ) $classes[] = 'tooltip';
 	if ( $pos == 'center' ) $classes[] = 'text-center';
 	if ( $pos == 'left' || $pos == 'top' ) $classes[] = 'text-left';
@@ -60,15 +51,11 @@ function featured_box( $atts, $content = null ) {
 
 	$classes     = implode( ' ', $classes );
 	$classes_img = implode( ' ', $classes_img );
-	$link_atts   = array(
-		'target' => $target,
-		'rel'    => array( $rel ),
-	);
 
 	ob_start();
 	?>
 
-	<?php if ( $link ) echo '<a class="plain" href="' . $link . '"' . flatsome_parse_target_rel( $link_atts ) . '>'; ?>
+	<?php if ( $link ) echo '<a class="plain" href="' . $link . '" target="' . $target . '">'; ?>
 	<div class="icon-box <?php echo $classes; ?>" <?php if ( $tooltip )
 		echo 'title="' . $tooltip . '"' ?> <?php echo get_shortcode_inline_css( $css_args_out ); ?>>
 		<?php if ( $img ) { ?>

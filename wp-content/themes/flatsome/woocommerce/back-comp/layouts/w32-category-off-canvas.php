@@ -57,7 +57,7 @@
 		 */
 		do_action( 'woocommerce_after_main_content' );
 		?>
-
+		<?php do_action( 'flatsome_products_page_loader' ); ?>
 	</div><!-- col-fit  -->
 
 	<div id="shop-sidebar" class="mfp-hide">

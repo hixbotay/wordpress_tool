@@ -4,9 +4,9 @@
  *
  * @package     Kirki
  * @category    Core
- * @author      Ari Stathopoulos (@aristath)
- * @copyright   Copyright (c) 2020, David Vongries
- * @license     https://opensource.org/licenses/MIT
+ * @author      Aristeides Stathopoulos
+ * @copyright   Copyright (c) 2017, Aristeides Stathopoulos
+ * @license     http://opensource.org/licenses/https://opensource.org/licenses/MIT
  * @since       1.0
  */
 
@@ -49,7 +49,6 @@ class Kirki_Settings {
 
 		// Set the setting_types.
 		$this->set_setting_types();
-
 		// Add the settings.
 		$this->add_settings( $args );
 
@@ -64,7 +63,7 @@ class Kirki_Settings {
 	 * @access private
 	 * @param array $args The field definition as sanitized in Kirki_Field.
 	 */
-	private function add_settings( $args = array() ) {
+	final private function add_settings( $args = array() ) {
 
 		// Get the classname we'll be using to create our setting(s).
 		$classname = false;
@@ -85,7 +84,7 @@ class Kirki_Settings {
 				$args['default'] = array();
 			}
 			foreach ( $args['settings'] as $key => $value ) {
-				$default = ( isset( $defaults[ $key ] ) ) ? $defaults[ $key ] : '';
+				$default   = ( isset( $defaults[ $key ] ) ) ? $defaults[ $key ] : '';
 				$this->add_setting( $classname, $value, $default, $args['option_type'], $args['capability'], $args['transport'], $args['sanitize_callback'] );
 			}
 		}
@@ -106,36 +105,31 @@ class Kirki_Settings {
 	 * @param string       $transport           Use refresh|postMessage.
 	 * @param string|array $sanitize_callback   A callable sanitization function or method.
 	 */
-	private function add_setting( $classname, $setting, $default, $type, $capability, $transport, $sanitize_callback ) {
+	final private function add_setting( $classname, $setting, $default, $type, $capability, $transport, $sanitize_callback ) {
 
 		$this->wp_customize->add_setting(
-			new $classname(
-				$this->wp_customize,
-				$setting,
-				array(
-					'default'           => $default,
-					'type'              => $type,
-					'capability'        => $capability,
-					'transport'         => $transport,
-					'sanitize_callback' => $sanitize_callback,
-				)
-			)
+			new $classname( $this->wp_customize, $setting, array(
+				'default'           => $default,
+				'type'              => $type,
+				'capability'        => $capability,
+				'transport'         => $transport,
+				'sanitize_callback' => $sanitize_callback,
+			) )
 		);
 
 	}
 
 	/**
 	 * Sets the $this->setting_types property.
-	 * Makes sure the kirki_setting_types filter is applied
+	 * Makes sure the kirki/setting_types filter is applied
 	 * and that the defined classes actually exist.
 	 * If a defined class does not exist, it is removed.
 	 */
-	private function set_setting_types() {
+	final private function set_setting_types() {
 
-		// Apply the kirki_setting_types filter.
+		// Apply the kirki/setting_types filter.
 		$this->setting_types = apply_filters(
-			'kirki_setting_types',
-			array(
+			'kirki/setting_types', array(
 				'default'     => 'WP_Customize_Setting',
 				'repeater'    => 'Kirki_Settings_Repeater_Setting',
 				'user_meta'   => 'Kirki_Setting_User_Meta',

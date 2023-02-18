@@ -4,38 +4,25 @@
  *
  * @package     Kirki
  * @subpackage  Controls
- * @copyright   Copyright (c) 2020, David Vongries
- * @license     https://opensource.org/licenses/MIT
+ * @copyright   Copyright (c) 2017, Aristeides Stathopoulos
+ * @license     http://opensource.org/licenses/https://opensource.org/licenses/MIT
  * @since       3.0.0
  */
 
 /**
  * Field overrides.
  */
-class Kirki_Field_FontAwesome extends Kirki_Field_Select {
+class Kirki_Field_FontAwesome extends Kirki_Field {
 
 	/**
-	 * Set dropdown choices from the FA JSON.
+	 * Sets the control type.
 	 *
 	 * @access protected
-	 * @since 3.0.42
-	 * @return void
 	 */
-	protected function set_choices() {
-		ob_start();
-		$json_path = wp_normalize_path( Kirki::$path . '/assets/vendor/fontawesome/fontawesome.json' );
-		include $json_path; // phpcs:ignore WPThemeReview.CoreFunctionality.FileInclude
-		$font_awesome_json = ob_get_clean();
+	protected function set_type() {
 
-		$fa_array = (array) json_decode( $font_awesome_json, true );
+		$this->type = 'kirki-fontawesome';
 
-		$this->choices = array();
-		foreach ( $fa_array['icons'] as $icon ) {
-			if ( ! isset( $icon['id'] ) || ! isset( $icon['name'] ) ) {
-				continue;
-			}
-			$this->choices[ $icon['id'] ] = $icon['name'];
-		}
 	}
 
 	/**
@@ -50,6 +37,7 @@ class Kirki_Field_FontAwesome extends Kirki_Field_Select {
 		if ( ! empty( $this->sanitize_callback ) ) {
 			return;
 		}
-		$this->sanitize_callback = 'sanitize_text_field';
+		$this->sanitize_callback = 'esc_attr';
+
 	}
 }

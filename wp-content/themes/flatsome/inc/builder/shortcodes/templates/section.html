@@ -1,11 +1,11 @@
-<section id="{{:: shortcode.$id }}" class="section mask-{{ shortcode.options.mask }} {{ shortcode.options.visibility }} {{ shortcode.options.class }}" ng-class="{dark: shortcode.options.dark == 'true', 'has-mask': shortcode.options.mask,'has-parallax' : shortcode.options.parallax, 'uxb-sticky-section': shortcode.options.sticky == 'true', 'has-hover': shortcode.options.borderHover}">
+<section id="{{:: shortcode.$id }}" class="section mask-{{ shortcode.options.mask }} {{ shortcode.options.visibility }} {{ shortcode.options.class }} has-hover" ng-class="{dark: shortcode.options.dark == 'true', 'has-mask': shortcode.options.mask,'has-parallax' : shortcode.options.parallax, 'uxb-sticky-section': shortcode.options.sticky == 'true'}">
       <div class="bg section-bg bg-fill fill" data-parallax-container=".section"
         ng-attr-data-parallax="-{{ shortcode.options.parallax }}" data-parallax-background wp-attachment="shortcode.options.bg" wp-attachment-size="shortcode.options.bgSize">
 
             <div ng-if="shortcode.options.videoMp4" class="video-overlay fill"></div>
 
             <video ng-if="shortcode.options.videoMp4"
-                class="video-bg no-click {{shortcode.options.videoVisibility}}"
+                class="video-bg no-click hide-for-small"
                 preload="auto" autoplay="true" loop="loop" muted="muted">
                 <source ng-if="shortcode.options.videoMp4" ng-src="{{shortcode.options.videoMp4}}" type="video/mp4">
                 <source ng-if="shortcode.options.videoOgg" ng-src="{{shortcode.options.videoOgg}}" type="video/ogg">
@@ -29,11 +29,11 @@
             <button ng-if="shortcode.options.scrollForMore" class="scroll-for-more icon absolute bottom h-center z-5">
                 <i class="icon-angle-down" style="font-size:42px;"></i>
             </button>
-      </div>
+      </div><!-- .background -->
 
       <div class="section-content relative">
-        	<content></content>
-      </div>
+        	<content/>
+      </div><!-- .content -->
 
      <style scope="scope">
         #{{:: shortcode.$id }} {min-height: {{ shortcode.options.height }};}
@@ -43,4 +43,4 @@
         #{{:: shortcode.$id }} .section-bg-overlay {background-color: {{ shortcode.options.bgOverlay }} }
         #{{:: shortcode.$id }} .section-bg{background-position: {{ shortcode.options.bgPos }} }
      </style>
-</section>
+</section><!-- .section -->

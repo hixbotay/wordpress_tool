@@ -36,7 +36,6 @@ function flatsome_text_box( $atts, $content = null ){
     'radius' => '',
     'rotate' => '',
     'class' => '',
-    'visibility' => '',
     'border_radius' => '',
     // Borders
     'border' => '',
@@ -66,7 +65,6 @@ function flatsome_text_box( $atts, $content = null ){
 
     if($style) $classes[] = 'text-box-'.$style;
     if($class) $classes[] = $class;
-    if($visibility) $classes[] = $visibility;
 
     // Set positions
     $classes[] = flatsome_position_classes( 'x', $position_x, $position_x__sm, $position_x__md );
@@ -94,12 +92,12 @@ function flatsome_text_box( $atts, $content = null ){
        <?php if($hover) echo '<div class="hover-'.$hover.'">'; ?>
        <?php if($parallax) echo '<div '.$parallax.'>'; ?>
        <?php if($animate) echo '<div data-animate="'.$animate.'">'; ?>
-           <div class="text-box-content text <?php echo $classes_inner; ?>">
+           <div class="text <?php echo $classes_inner; ?>">
               <?php require( __DIR__ . '/commons/border.php' ) ;?>
               <div class="<?php echo $classes_text; ?>">
-                  <?php echo do_shortcode( $content ); ?>
+                  <?php echo flatsome_contentfix($content); ?>
               </div>
-           </div>
+           </div><!-- text-box-inner -->
        <?php if($animate) echo '</div>'; ?>
        <?php if($parallax) echo '</div>'; ?>
        <?php if($hover) echo '</div>'; ?>
@@ -110,7 +108,7 @@ function flatsome_text_box( $atts, $content = null ){
               'property' => 'margin',
             ),
             'bg' => array(
-              'selector' => '.text-box-content',
+              'selector' => '.text',
               'property' => 'background-color',
             ),
             'padding' => array(
@@ -118,7 +116,7 @@ function flatsome_text_box( $atts, $content = null ){
               'property' => 'padding',
             ),
             'radius' => array(
-              'selector' => '.text-box-content',
+              'selector' => '.text',
               'property' => 'border-radius',
               'unit' => 'px',
             ),
@@ -133,12 +131,12 @@ function flatsome_text_box( $atts, $content = null ){
               'unit' => '%',
             ),
             'scale' => array(
-              'selector' => '.text-box-content',
+              'selector' => '.text',
               'property' => 'font-size',
               'unit' => '%',
             ),
             'rotate' => array(
-              'selector' => '.text-box-content',
+              'selector' => '.text',
               'property' => 'rotate',
               'unit' => 'deg',
             ),
@@ -146,7 +144,7 @@ function flatsome_text_box( $atts, $content = null ){
           );
           echo ux_builder_element_style_tag( $id, $args, $atts);
         ?>
-    </div>
+    </div><!-- text-box -->
  <?php
   $content = ob_get_contents();
   ob_end_clean();

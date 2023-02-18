@@ -4,8 +4,7 @@
 function flatsome_page_header_shortcode($atts) {
   $atts = shortcode_atts( array(
     '_id' => 'page-header-'.rand(),
-    'class' => '',
-    'visibility' => '',
+
     // Layout
     'height' => '',
     'height__sm' => '',
@@ -55,8 +54,6 @@ function flatsome_page_header_shortcode($atts) {
   $subtitle_classes = array();
   $content_classes = array();
 
-  if( $class ) $classes[] = $class;
-  if( $visibility ) $classes[] = $visibility;
 
   if ($text_color == 'light') $classes[] = 'dark';
   if ($text_color == 'dark') $classes[] = 'light';
@@ -106,7 +103,7 @@ function flatsome_page_header_shortcode($atts) {
    // Breadcrumbs
    if ( $type == 'breadcrumbs' ) {
      echo '<div class="title-breadcrumbs pb-half pt-half">';
-     flatsome_breadcrumb( 'page-breadcrumbs' );
+     get_flatsome_breadcrumbs();
      echo '</div>';
    } else if ( $type == 'subnav' ) {
      get_flatsome_subnav( $nav_class );

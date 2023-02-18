@@ -171,7 +171,6 @@ return array(
             'text_color' => array(
                 'type' => 'radio-buttons',
                 'heading' => __( 'Color' ),
-                'conditions' => 'style !== "shade" && style !== "overlay"',
                 'default' => 'light',
                 'options' => array(
                     'light' => array( 'title' => 'Dark' ),
@@ -194,5 +193,4 @@ return array(
             ),
         ),
     ),
-    'advanced_options' => require( __DIR__ . '/../commons/advanced.php')
 );

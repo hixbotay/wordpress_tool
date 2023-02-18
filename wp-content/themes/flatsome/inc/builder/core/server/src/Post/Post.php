@@ -30,13 +30,7 @@ class Post {
    * @return string
    */
   public function permalink() {
-    $permalink = get_permalink( $this->post );
-
-    if ( is_ssl() ) {
-      $permalink = preg_replace( '/^http:/', 'https:', $permalink );
-    }
-
-    return $permalink;
+    return get_permalink( $this->post );
   }
 
   /**

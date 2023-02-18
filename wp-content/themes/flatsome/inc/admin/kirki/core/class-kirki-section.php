@@ -4,9 +4,9 @@
  *
  * @package     Kirki
  * @category    Core
- * @author      Ari Stathopoulos (@aristath)
- * @copyright   Copyright (c) 2020, David Vongries
- * @license     https://opensource.org/licenses/MIT
+ * @author      Aristeides Stathopoulos
+ * @copyright   Copyright (c) 2017, Aristeides Stathopoulos
+ * @license     http://opensource.org/licenses/https://opensource.org/licenses/MIT
  * @since       1.0
  */
 
@@ -30,8 +30,10 @@ class Kirki_Section {
 	 * @param array $args The section parameters.
 	 */
 	public function __construct( $args ) {
-		$this->section_types = apply_filters( 'kirki_section_types', $this->section_types );
+
+		$this->section_types = apply_filters( 'kirki/section_types', $this->section_types );
 		$this->add_section( $args );
+
 	}
 
 	/**
@@ -41,6 +43,7 @@ class Kirki_Section {
 	 * @param array $args The section parameters.
 	 */
 	public function add_section( $args ) {
+
 		global $wp_customize;
 
 		// The default class to be used when creating a section.
@@ -49,12 +52,9 @@ class Kirki_Section {
 		if ( isset( $args['type'] ) && array_key_exists( $args['type'], $this->section_types ) ) {
 			$section_classname = $this->section_types[ $args['type'] ];
 		}
-		if ( isset( $args['type'] ) && 'kirki-outer' === $args['type'] ) {
-			$args['type']      = 'outer';
-			$section_classname = 'WP_Customize_Section';
-		}
 
 		// Add the section.
-		$wp_customize->add_section( new $section_classname( $wp_customize, $args['id'], $args ) );
+		$wp_customize->add_section( new $section_classname( $wp_customize, sanitize_key( $args['id'] ), $args ) );
+
 	}
 }

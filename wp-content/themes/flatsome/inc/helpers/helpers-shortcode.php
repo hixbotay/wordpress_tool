@@ -26,7 +26,6 @@ function flatsome_position_classes ( $axis, $default, $sm, $md ) {
 function get_flatsome_repeater_start( $atts ) {
     $atts = wp_parse_args( $atts, array(
       'class' => '',
-      'visibility' => '',
       'title' => '',
       'style' => '',
       'columns' => '',
@@ -39,18 +38,11 @@ function get_flatsome_repeater_start( $atts ) {
       'format' => '',
     ) );
 
-	$row_classes      = array();
-	$row_classes_full = array();
+    $row_classes = array();
+    $row_classes_full = array();
 
-	if ( $atts['class'] ) {
-		$row_classes[]      = $atts['class'];
-		$row_classes_full[] = $atts['class'];
-	}
-
-	if ( $atts['visibility'] ) {
-		$row_classes[]      = $atts['visibility'];
-		$row_classes_full[] = $atts['visibility'];
-	}
+    if($atts['class']) $row_classes[] = $atts['class'];
+    if($atts['class']) $row_classes_full[] = $atts['class'];
 
     if($atts['type'] == 'slider-full'){
       $atts['columns'] = false;
@@ -103,7 +95,6 @@ function get_flatsome_repeater_start( $atts ) {
           $row_classes[] = 'row-box-shadow-'.$atts['depth'];
     }
     if(!empty($atts['depth_hover'])){
-       $row_classes[] = 'has-shadow';
           $row_classes_full[] = 'box-shadow-'.$atts['depth_hover'].'-hover';
           $row_classes[] = 'row-box-shadow-'.$atts['depth_hover'].'-hover';
     }
@@ -142,11 +133,8 @@ function get_flatsome_repeater_start( $atts ) {
       $slider_options = '{"imagesLoaded": true, "dragThreshold" : 5, "cellAlign": "left","wrapAround": true,"prevNextButtons": true,"percentPosition": true,"pageDots": '.$atts['slider_bullets'].', "rightToLeft": '.$rtl.', "autoPlay" : '.$atts['auto_slide'].'}';
     }
 
-	$row_classes_full = array_unique( $row_classes_full );
-	$row_classes      = array_unique( $row_classes );
-
-	$row_classes_full = implode( ' ', $row_classes_full );
-	$row_classes      = implode( ' ', $row_classes );
+    $row_classes_full = implode(' ', $row_classes_full);
+    $row_classes = implode(' ', $row_classes);
   ?>
 
   <?php if($atts['title']){?>
@@ -193,10 +181,6 @@ function flatsome_contentfix($content){
             ']<br />' => ']',
             '<p>[' => '[',
             '<br />[' => '[',
-
-            // For Gutenberg blocks that is encoded by UX Builder.
-            '&lt;!&#8211;' => '<!--',
-            '&#8211;&gt;' => '-->',
     );
     //$content = wpautop( preg_replace( '/<\/?p\>/', "\n", $content ) . "\n" );
     $content = strtr($content, $fix);
@@ -422,34 +406,3 @@ function flatsome_get_gradient($primary){ ?>
   </style>
   <?php
 } */
-
-/**
- * Parse rel attribute values based on target value.
- * Adds 'noopener noreferrer' to rel when target is _blank.
- *
- * @param array $link_atts Link attributes 'target' and 'rel'.
- * @param bool  $trim      Trim start and end whitespaces?
- *
- * @return null|string Parsed target/rel string or null when no target defined.
- */
-function flatsome_parse_target_rel( array $link_atts, $trim = false ) {
-	if ( ! $link_atts['target'] ) {
-		return null;
-	}
-	if ( $link_atts['target'] == '_blank' ) {
-		$link_atts['rel'][] = 'noopener';
-		$link_atts['rel'][] = 'noreferrer';
-	}
-
-	if ( isset( $link_atts['rel'] ) && is_array( $link_atts['rel'] ) && ! empty( array_filter( $link_atts['rel'] ) ) ) {
-		$relations = array_unique( array_filter( $link_atts['rel'] ) );
-		$rel       = implode( ' ', $relations );
-		$atts      = " target=\"{$link_atts['target']}\" rel=\"{$rel}\" ";
-
-		return $trim ? trim( $atts ) : $atts;
-	}
-
-	$atts = " target=\"{$link_atts['target']}\" ";
-
-	return $trim ? trim( $atts ) : $atts;
-}

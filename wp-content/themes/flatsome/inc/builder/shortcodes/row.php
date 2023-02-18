@@ -88,7 +88,7 @@ add_ux_builder_shortcode( 'row', array(
     ),
 
     'options' => array(
-
+        
         'label' => array(
             'full_width' => true,
             'type' => 'textfield',
@@ -129,17 +129,6 @@ add_ux_builder_shortcode( 'row', array(
             'alpha' => true,
             'position' => 'bottom right',
             'helpers' => require( __DIR__ . '/helpers/colors.php' ),
-        ),
-
-        'col_bg_radius' => array(
-	        'type'       => 'slider',
-	        'vertical'   => true,
-	        'full_width' => true,
-	        'heading'    => __( 'Column Radius' ),
-	        'unit'       => 'px',
-	        'default'    => 0,
-	        'min'        => 0,
-	        'max'        => 100,
         ),
 
         'width' => array(
@@ -197,6 +186,8 @@ add_ux_builder_shortcode( 'row', array(
             'step' => 1,
         ),
 
+   
+
         'depth' => array(
             'type' => 'slider',
             'vertical' => true,
@@ -217,6 +208,12 @@ add_ux_builder_shortcode( 'row', array(
             'min' => 0,
         ),
 
-       'advanced_options' => require( __DIR__ . '/commons/advanced.php'),
+        'class' => array(
+            'type' => 'textfield',
+            'heading' => 'Custom Class',
+            'full_width' => true,
+            'placeholder' => 'class-name',
+            'default' => '',
+        ),
     ),
 ) );

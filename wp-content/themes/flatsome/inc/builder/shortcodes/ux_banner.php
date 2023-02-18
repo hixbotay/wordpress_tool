@@ -112,6 +112,7 @@ add_ux_builder_shortcode( 'ux_banner', array(
         'heading' => 'Admin label',
         'placeholder' => 'Enter admin label...'
     ),
+    'visibility'  => require( __DIR__ . '/commons/visibility.php' ),
 
     'layout_options' => array(
       'type' => 'group',
@@ -135,15 +136,19 @@ add_ux_builder_shortcode( 'ux_banner', array(
     'border_options' => require( __DIR__ . '/commons/border.php' ),
     'link_options' => require( __DIR__ . '/commons/links.php' ),
     'video_options' => require( __DIR__ . '/commons/video.php' ),
-    'advanced_options' => require( __DIR__ . '/commons/advanced.php'),
+    'class' => array(
+        'type' => 'textfield',
+        'heading' => 'Class',
+        'default' => '',
+    ),
     'sticky' => array(
-      'type' => 'radio-buttons',
-      'heading' => 'Sticky',
-      'default' => '',
-      'options' => array(
-          'true'   => array( 'title' => 'On'),
-          ''  => array( 'title' => 'Off'),
+        'type' => 'radio-buttons',
+        'heading' => 'Sticky',
+        'default' => '',
+        'options' => array(
+            'true'   => array( 'title' => 'On'),
+            ''  => array( 'title' => 'Off'),
         ),
-      ),
+    ),
     ),
 ) );

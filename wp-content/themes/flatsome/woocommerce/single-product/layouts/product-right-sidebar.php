@@ -32,7 +32,7 @@
 			do_action( 'woocommerce_single_product_summary' );
 		?>
 
-	</div>
+	</div><!-- .summary -->
 
 	<div id="product-sidebar" class="col large-3 hide-for-medium <?php flatsome_sidebar_classes(); ?>">
 		<?php
@@ -50,8 +50,8 @@
 		?>
 	</div>
 
-</div>
-</div>
+</div><!-- .row -->
+</div><!-- .product-main -->
 
 <div class="product-footer">
 	<div class="container">
@@ -65,6 +65,6 @@
 			 */
 			do_action( 'woocommerce_after_single_product_summary' );
 		?>
-	</div>
-</div>
-</div>
+	</div><!-- container -->
+</div><!-- product-footer -->
+</div><!-- .product-container -->

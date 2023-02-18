@@ -11,26 +11,27 @@
  * the readme will list any important changes.
  *
  * @see     https://docs.woocommerce.com/document/template-structure/
+ * @author  WooThemes
  * @package WooCommerce/Templates
- * @version 3.5.1
+ * @version 3.0.0
  */
 
-defined( 'ABSPATH' ) || exit;
+if ( ! defined( 'ABSPATH' ) ) {
+  exit;
+}
 
-// FL: Disable check, Note: `wc_get_gallery_image_html` was added in WC 3.3.2 and did not exist prior. This check protects against theme overrides being used on older versions of WC.
-//if ( ! function_exists( 'wc_get_gallery_image_html' ) ) {
-//	return;
-//}
-
-global $product;
-
+global $post, $product;
 $columns           = apply_filters( 'woocommerce_product_thumbnails_columns', 4 );
-$post_thumbnail_id = $product->get_image_id();
+$post_thumbnail_id = get_post_thumbnail_id( $post->ID );
+$full_size_image   = wp_get_attachment_image_src( $post_thumbnail_id, 'full' );
+$thumbnail_post    = get_post( $post_thumbnail_id );
+$image_title       = $thumbnail_post->post_content;
+$placeholder       = has_post_thumbnail() ? 'with-images' : 'without-images';
 $wrapper_classes   = apply_filters( 'woocommerce_single_product_image_gallery_classes', array(
-	'woocommerce-product-gallery',
-	'woocommerce-product-gallery--' . ( $product->get_image_id() ? 'with-images' : 'without-images' ),
-	'woocommerce-product-gallery--columns-' . absint( $columns ),
-	'images',
+  'woocommerce-product-gallery',
+  'woocommerce-product-gallery--' . $placeholder,
+  'woocommerce-product-gallery--columns-' . absint( $columns ),
+  'images',
 ) );
 
 $slider_classes = array('product-gallery-slider','slider','slider-nav-small','mb-0');
@@ -69,18 +70,26 @@ if(get_theme_mod('product_zoom', 0)){
                 "rightToLeft": <?php echo $rtl; ?>
        }'>
     <?php
-    if ( $product->get_image_id() ) {
-      $html  = flatsome_wc_get_gallery_image_html( $post_thumbnail_id, true );
+    $attributes = array(
+      'title'             => $image_title,
+      'data-large_image'        => $full_size_image[0],
+      'data-large_image_width'  => $full_size_image[1],
+      'data-large_image_height' => $full_size_image[2],
+    );
+
+    if ( has_post_thumbnail() ) {
+      $html  = '<div data-thumb="' . get_the_post_thumbnail_url( $post->ID, 'shop_thumbnail' ) . '" class="first slide woocommerce-product-gallery__image"><a href="' . esc_url( $full_size_image[0] ) . '">';
+      $html .= get_the_post_thumbnail( $post->ID, 'shop_single', $attributes );
+      $html .= '</a></div>';
     } else {
       $html  = '<div class="woocommerce-product-gallery__image--placeholder">';
-      $html .= sprintf( '<img src="%s" alt="%s" class="wp-post-image" />', esc_url( wc_placeholder_img_src( 'woocommerce_single' ) ), esc_html__( 'Awaiting product image', 'woocommerce' ) );
+      $html .= sprintf( '<img src="%s" alt="%s" class="wp-post-image" />', esc_url( wc_placeholder_img_src() ), esc_html__( 'Awaiting product image', 'woocommerce' ) );
       $html .= '</div>';
     }
 
-		echo apply_filters( 'woocommerce_single_product_image_thumbnail_html', $html, $post_thumbnail_id ); // phpcs:disable WordPress.XSS.EscapeOutput.OutputNotEscaped
+    echo apply_filters( 'woocommerce_single_product_image_thumbnail_html', $html, get_post_thumbnail_id( $post->ID ) );
 
     do_action( 'woocommerce_product_thumbnails' );
-
     ?>
   </figure>
 
@@ -130,37 +139,27 @@ if(get_theme_mod('product_zoom', 0)){
             }'
       ><?php
 
-       if ( has_post_thumbnail() ) : ?>
-      <?php
-        $image_size = 'gallery_thumbnail';
-        $gallery_thumbnail = wc_get_image_size( $image_size ); ?>
-        <div class="col is-nav-selected first">
-          <a>
-            <?php
-              $image_id = get_post_thumbnail_id($post->ID);
-              $image =  wp_get_attachment_image_src( $image_id, apply_filters( 'woocommerce_gallery_thumbnail_size', 'woocommerce_'.$image_size ) );
-              $image_alt = get_post_meta( $image_id, '_wp_attachment_image_alt', true );
-              $image = '<img src="'.$image[0].'" alt="'.$image_alt.'" width="'.$gallery_thumbnail['width'].'" height="'.$gallery_thumbnail['height'].'" class="attachment-woocommerce_thumbnail" />';
-
-              echo $image;
-            ?>
-          </a>
-        </div>
+      if ( has_post_thumbnail() ) : ?>
+        <div class="col is-nav-selected first"><a><?php echo get_the_post_thumbnail( $post->ID, apply_filters( 'single_product_small_thumbnail_size', 'shop_thumbnail' ) ) ?></a></div>
       <?php endif;
 
       foreach ( $attachment_ids as $attachment_id ) {
 
         $classes = array( '' );
+        $image_title  = esc_attr( get_the_title( $attachment_id ) );
+        $image_caption  = esc_attr( get_post_field( 'post_excerpt', $attachment_id ) );
         $image_class = esc_attr( implode( ' ', $classes ) );
-        $image =  wp_get_attachment_image_src( $attachment_id, apply_filters( 'woocommerce_gallery_thumbnail_size', 'woocommerce_'.$image_size ));
-        $image_alt = get_post_meta( $attachment_id, '_wp_attachment_image_alt', true );
-        $image = '<img src="'.$image[0].'" alt="'.$image_alt.'" width="'.$gallery_thumbnail['width'].'" height="'.$gallery_thumbnail['height'].'"  class="attachment-woocommerce_thumbnail" />';
 
-        echo apply_filters( 'woocommerce_single_product_image_thumbnail_html', sprintf( '<div class="col"><a>%s</a></div>', $image ), $attachment_id, $post->ID, $image_class );
+        $image       = wp_get_attachment_image( $attachment_id, apply_filters( 'single_product_small_thumbnail_size', 'shop_thumbnail' ), 0, $attr = array(
+          'title' => $image_title,
+          'alt' => $image_title
+          ) );
+
+        echo apply_filters( 'woocommerce_single_product_image_thumbnail_html', sprintf( '<div class="col"><a class="%s" title="%s" >%s</a></div>', $image_class, $image_caption, $image ), $attachment_id, $post->ID, $image_class );
 
         $loop++;
       }
-      ?>
+    ?>
     </div><!-- .product-thumbnails -->
     </div><!-- .col -->
 <?php } ?>

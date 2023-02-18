@@ -22,14 +22,18 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 // Fallback to old
 if(!fl_woocommerce_version_check('3.0.0')){
-	wc_get_template_part( 'single-product/related-old');
-	return;
+  return wc_get_template_part( 'single-product/related-old');
 }
 
 // Get Type
 $type = get_theme_mod('related_products', 'slider');
 if($type == 'hidden') return;
 if($type == 'grid') $type = 'row';
+
+// Disable slider if less than selected products pr row.
+if ( sizeof( $related_products ) < (get_theme_mod('related_products_pr_row', 4)+1) ) {
+  $type = 'row';
+}
 
 $repater['type'] = $type;
 $repater['columns'] = get_theme_mod('related_products_pr_row', 4);
@@ -45,7 +49,7 @@ if ( $related_products ) : ?>
       <?php esc_html_e( 'Related products', 'woocommerce' ); ?>
     </h3>
 
-      <?php get_flatsome_repeater_start($repater); ?>
+      <?php echo get_flatsome_repeater_start($repater); ?>
 
       <?php foreach ( $related_products as $related_product ) : ?>
 
@@ -58,7 +62,7 @@ if ( $related_products ) : ?>
 
       <?php endforeach; ?>
 
-      <?php get_flatsome_repeater_end($repater); ?>
+      <?php echo get_flatsome_repeater_end($repater); ?>
 
   </div>
 

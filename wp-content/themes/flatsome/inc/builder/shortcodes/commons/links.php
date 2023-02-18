@@ -17,9 +17,5 @@ return array(
               '_blank' => 'New window',
           )
         ),
-        'rel' => array(
-	        'type' => 'textfield',
-	        'heading' => __( 'Rel' ),
-        ),
     )
 ); 

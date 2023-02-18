@@ -8,15 +8,15 @@
 global $flatsome_opt;
 ?>
 
-</main>
+</main><!-- #main -->
 
 <footer id="footer" class="footer-wrapper">
 
 	<?php do_action('flatsome_footer'); ?>
 
-</footer>
+</footer><!-- .footer-wrapper -->
 
-</div>
+</div><!-- #wrapper -->
 
 <?php wp_footer(); ?>
 

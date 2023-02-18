@@ -104,7 +104,7 @@ function flatsome_refresh_header_search_partials( WP_Customize_Manager $wp_custo
 	    'container_inclusive' => true,
 	    'settings' => array('search_icon_style','header_search_style'),
 	    'render_callback' => function() {
-	        get_template_part('template-parts/header/partials/element','search');
+	        return get_template_part('template-parts/header/partials/element','search');
 	    },
 	) );
 
@@ -113,7 +113,7 @@ function flatsome_refresh_header_search_partials( WP_Customize_Manager $wp_custo
 	    'container_inclusive' => true,
 	    'settings' => array('header_search_categories'),
 	    'render_callback' => function() {
-	        get_template_part('template-parts/header/partials/element','search-form');
+	        return get_template_part('template-parts/header/partials/element','search-form');
 	    },
 	) );
 }

@@ -3,7 +3,7 @@
 
 	<div class="page-title-inner container flex-row medium-flex-wrap medium-text-center">
 	 	<div class="flex-col flex-grow">
-	 		<?php flatsome_breadcrumb( 'page-breadcrumbs' ); ?>
+	 		<?php get_flatsome_breadcrumbs(); ?>
 	 	</div>
 	</div><!-- flex-row -->
 </div><!-- .page-title -->

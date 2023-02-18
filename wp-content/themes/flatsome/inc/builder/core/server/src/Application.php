@@ -66,13 +66,13 @@ class Application {
 
     $this->container->service( 'current-post', function( $container ) {
       return $container->create( 'UxBuilder\Post\Post', array(
-        'post' => get_post( $_GET['post'] ),
+        'post' => get_post( $_GET['post_id'] ),
       ) );
     } );
 
     $this->container->service( 'editing-post', function( $container ) {
       return $container->create( 'UxBuilder\Post\Post', array(
-        'post' => get_post( isset( $_GET['edit_post_id'] ) ? $_GET['edit_post_id'] : $_GET['post'] ),
+        'post' => get_post( isset( $_GET['edit_post_id'] ) ? $_GET['edit_post_id'] : $_GET['post_id'] ),
       ) );
     } );
 

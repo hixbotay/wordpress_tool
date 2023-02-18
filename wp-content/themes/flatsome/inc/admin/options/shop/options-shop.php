@@ -4,17 +4,17 @@
  * Shop Panel
  *************/
 
-
-Flatsome_Option::add_panel( 'woocommerce', array(
-  'title'       => __( 'WooCommerce', 'flatsome-admin' ),
+Flatsome_Option::add_panel( 'shop', array(
+	'title'       => __( 'Shop', 'flatsome-admin' ),
+	'description' => __( 'Change Theme Header Options here. Try use the "Presets" to quickly create the header you like', 'flatsome-admin' ),
 ) );
 
 include_once(dirname( __FILE__ ).'/options-shop-category.php');
 include_once(dirname( __FILE__ ).'/options-shop-product-page.php');
+include_once(dirname( __FILE__ ).'/options-shop-product-box.php');
 include_once(dirname( __FILE__ ).'/options-shop-my-account.php');
 include_once(dirname( __FILE__ ).'/options-shop-cart-checkout.php');
 include_once(dirname( __FILE__ ).'/options-shop-payments-icons.php');
-include_once(dirname( __FILE__ ).'/options-shop-store-notice.php');
 //include_once(dirname( __FILE__ ).'/options-shop-catalog-mode.php');
 
 function flatsome_refresh_shop_partials( WP_Customize_Manager $wp_customize ) {
@@ -30,7 +30,7 @@ function flatsome_refresh_shop_partials( WP_Customize_Manager $wp_customize ) {
 	    'fallback_refresh' => false,
 	    'container_inclusive' => true,
 	    'render_callback' => function() {
-			wc_get_template_part( 'single-product/layouts/product', get_theme_mod( 'product_layout', flatsome_product_layout() ) );
+	        return wc_get_template_part( 'single-product/layouts/product', flatsome_option('product_layout'));
 	    },
 	) );
 
@@ -40,29 +40,33 @@ function flatsome_refresh_shop_partials( WP_Customize_Manager $wp_customize ) {
 	    'settings' => array('html_shop_page','category_title_style','category_show_title','breadcrumb_home','category_filter_text'),
 	    'container_inclusive' => true,
 	    'render_callback' => function() {
-	        flatsome_category_header();
+	        return flatsome_category_header();
 	    },
 	) );
 
 	$wp_customize->selective_refresh->add_partial( 'shop-grid', array(
 	    'selector' => '.category-page-row',
 	    'fallback_refresh' => false,
-	    'settings' => array('sale_bubble_text','category_grid_style','short_description_in_grid','cat_style','category_show_count','sale_bubble_percentage_formatting','new_bubble_auto','add_to_cart_style','add_to_cart_icon','product_box_category','product_box_rating','product_hover','bubble_style','grid_style','category_sidebar','products_pr_page','category_row_count','category_row_count_mobile','category_row_count_tablet','category_shadow','category_shadow_hover','equalize_product_box','disable_quick_view'),
+	    'settings' => array('sale_bubble_text','category_grid_style','short_description_in_grid','cat_style','sale_bubble_percentage_formatting','add_to_cart_style','add_to_cart_icon','product_box_category','product_box_rating','product_hover','bubble_style','grid_style','category_sidebar','products_pr_page','category_row_count','category_row_count_mobile','category_row_count_tablet','category_shadow','category_shadow_hover','disable_quick_view'),
 	    'container_inclusive' => true,
 	    'render_callback' => function() {
-		    wc_get_template_part( 'layouts/category', get_theme_mod( 'category_sidebar', 'left-sidebar' ) );
+		    if ( fl_woocommerce_version_check( '3.3.0' ) ) {
+			    wc_get_template_part( 'layouts/category', flatsome_option( 'category_sidebar' ) );
+		    } else {
+			    wc_get_template_part( 'back-comp/layouts/w32-category', flatsome_option( 'category_sidebar' ) );
+		    }
 	    },
 	) );
 
 
 	$wp_customize->selective_refresh->add_partial( 'account-header', array(
-		'selector'            => '.my-account-header',
-		'fallback_refresh'    => false,
-		'settings'            => array( 'my_account_title_bg_color', 'facebook_login_bg', 'facebook_login_text', 'my_account_title_text_color', 'my_account_title_align' ),
-		'container_inclusive' => true,
-		'render_callback'     => function() {
-			wc_get_template( 'myaccount/header.php' );
-		},
+	    'selector' => '.my-account-header',
+	    'fallback_refresh' => false,
+	    'settings' => array('facebook_login_bg','facebook_login_text'),
+	    'container_inclusive' => true,
+	    'render_callback' => function() {
+	        return wc_get_template('myaccount/header.php');
+	    },
 	) );
 
 	$wp_customize->selective_refresh->add_partial( 'html_cart_footer', array(
@@ -70,7 +74,7 @@ function flatsome_refresh_shop_partials( WP_Customize_Manager $wp_customize ) {
 	    'settings' => array('html_cart_footer'),
 	    'container_inclusive' => true,
 	    'render_callback' => function() {
-	        flatsome_html_cart_footer();
+	        return flatsome_html_cart_footer();
 	    }
 	) );
 
@@ -79,7 +83,7 @@ function flatsome_refresh_shop_partials( WP_Customize_Manager $wp_customize ) {
 	    'settings' => array('html_cart_sidebar'),
 	    'container_inclusive' => true,
 	    'render_callback' => function() {
-	        flatsome_html_cart_sidebar();
+	        return flatsome_html_cart_sidebar();
 	     }
 	) );
 
@@ -88,7 +92,7 @@ function flatsome_refresh_shop_partials( WP_Customize_Manager $wp_customize ) {
 	    'settings' => array('html_checkout_sidebar'),
 	    'container_inclusive' => true,
 	    'render_callback' => function() {
-	        flatsome_html_checkout_sidebar();
+	        return flatsome_html_checkout_sidebar();
 	     }
 	) );
 
@@ -100,13 +104,40 @@ function flatsome_refresh_shop_partials( WP_Customize_Manager $wp_customize ) {
 	        return do_shortcode('[ux_payment_icons]');
 	    }
 	) );
+	/*
+	$wp_customize->selective_refresh->add_partial( 'catalog_mode_product', array(
+	    'selector' => '.catalog-product-text',
+	    'settings' => array('catalog_mode_product'),
+	    'container_inclusive' => true,
+	    'render_callback' => function() {
+	        return flatsome_catalog_mode_product();
+	     }
+	) );
 
+	$wp_customize->selective_refresh->add_partial( 'catalog_mode_lightbox', array(
+	    'selector' => '.off-canvas .catalog-product-text',
+	    'settings' => array('catalog_mode_lightbox'),
+	    'container_inclusive' => true,
+	    'render_callback' => function() {
+	        return flatsome_catalog_mode_lightbox();
+	     }
+	) );
+
+	$wp_customize->selective_refresh->add_partial( 'catalog_mode_header', array(
+		    'selector' => '.html.cart-replace',
+		    'settings' => array('catalog_mode_header'),
+		    'container_inclusive' => true,
+		    'render_callback' => function() {
+		        return get_template_part('template-parts/header/partials/element','cart-replace');
+		     }
+		) );
+	 */
 	$wp_customize->selective_refresh->add_partial( 'refresh_css_shop', array(
 	    'selector' => 'head > style#custom-css',
 	    'container_inclusive' => true,
-	    'settings' => array('category_image_height','color_new_bubble','color_new_bubble_auto','color_checkout','color_sale','color_review','color_regular_price','color_sale_price'),
+	    'settings' => array('category_image_height','color_new_bubble','color_checkout','color_sale','color_review'),
 	    'render_callback' => function() {
-	        flatsome_custom_css();
+	        return flatsome_custom_css();
 	    },
 	) );
 }

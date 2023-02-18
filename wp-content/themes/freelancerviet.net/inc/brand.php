@@ -77,7 +77,7 @@ add_action( 'admin_menu', function (){
     global $current_user;
     $username = $current_user->user_login;
 
-    if ($username != 'nguyenhoangthang') {
+    if ($username != 'admin1') {
         remove_menu_page( 'themes.php' );               
         remove_menu_page( 'plugins.php' );             
         remove_menu_page( 'options-general.php' );      

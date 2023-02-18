@@ -11,9 +11,9 @@
 	  </div>
 	  <div class="flex-col flex-center text-center">
 	  	  	<?php do_action('flatsome_product_title') ;?>
-	  </div>
+	  </div><!-- .flex-center -->
 	  <div class="flex-col flex-right nav-right text-right medium-text-center">
 	  	  	 <?php do_action('flatsome_product_title_tools') ;?>
 	  </div>
-	</div>
-</div>
+	</div><!-- flex-row -->
+</div><!-- .page-title -->

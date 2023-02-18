@@ -78,7 +78,6 @@ add_ux_builder_shortcode( 'tabgroup', array(
             'heading' => 'Tabs Align',
             'default' => 'left',
             'options' => require( __DIR__ . '/values/align-radios.php' ),
-        ),
-        'advanced_options' => require( __DIR__ . '/commons/advanced.php'),
+        )
     ),
 ) );

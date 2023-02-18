@@ -7,11 +7,9 @@
 
 <?php the_excerpt();?>
 
-<?php if ( get_theme_mod( 'portfolio_share', 1 ) ) : ?>
-	<div class="portfolio-share">
-		<?php echo do_shortcode( '[share style="small"]' ) ?>
-	</div>
-<?php endif; ?>
+<div class="portfolio-share">
+	<?php echo do_shortcode('[share style="small"]')?>
+</div>
 
 <?php if(get_the_term_list( get_the_ID(), 'featured_item_tag')) { ?>
 <div class="item-tags is-small bt pt-half uppercase">

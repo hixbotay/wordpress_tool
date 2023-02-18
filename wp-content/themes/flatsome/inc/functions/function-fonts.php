@@ -5,7 +5,7 @@ function flatsome_get_google_fonts_link_lazy(){
     $type_nav = get_theme_mod('type_nav', array('font-family'=> 'Lato','variant' => '700'));
     $type_texts = get_theme_mod('type_texts', array('font-family'=> 'Lato','variant' => '400'));
     $type_headings = get_theme_mod('type_headings',array('font-family'=> 'Lato','variant' => '700'));
-    $type_alt = get_theme_mod('type_alt', array('font-family'=> 'Dancing Script','variant' => '400'));
+    $type_alt = get_theme_mod('type_alt', array('font-family'=> 'Dancing Script'));
 
     // Fix old
     if(!is_array($type_nav)) {
@@ -54,7 +54,7 @@ function flatsome_google_fonts_lazy(){
   ?>
     <script type="text/javascript">
     WebFontConfig = {
-      google: { families: [ <?php flatsome_get_google_fonts_link_lazy(); ?> ] }
+      google: { families: [ <?php echo flatsome_get_google_fonts_link_lazy(); ?> ] }
     };
     (function() {
       var wf = document.createElement('script');

@@ -4,8 +4,8 @@
  *
  * @package     Kirki
  * @subpackage  Controls
- * @copyright   Copyright (c) 2020, David Vongries
- * @license     https://opensource.org/licenses/MIT
+ * @copyright   Copyright (c) 2017, Aristeides Stathopoulos
+ * @license     http://opensource.org/licenses/https://opensource.org/licenses/MIT
  * @since       2.0
  */
 
@@ -43,7 +43,12 @@ class Kirki_Settings_Repeater_Setting extends WP_Customize_Setting {
 	 * @return mixed The value.
 	 */
 	public function value() {
-		return (array) parent::value();
+		$value = parent::value();
+		if ( ! is_array( $value ) ) {
+					$value = array();
+		}
+
+		return $value;
 	}
 
 	/**
@@ -54,26 +59,26 @@ class Kirki_Settings_Repeater_Setting extends WP_Customize_Setting {
 	 * @return array
 	 */
 	public function sanitize_repeater_setting( $value ) {
+
 		if ( ! is_array( $value ) ) {
 			$value = json_decode( urldecode( $value ) );
 		}
-		if ( empty( $value ) || ! is_array( $value ) ) {
-			$value = array();
-		}
+		$sanitized = ( empty( $value ) || ! is_array( $value ) ) ? array() : $value;
 
 		// Make sure that every row is an array, not an object.
-		foreach ( $value as $key => $val ) {
-			$value[ $key ] = (array) $val;
-			if ( empty( $val ) ) {
-				unset( $value[ $key ] );
+		foreach ( $sanitized as $key => $_value ) {
+			$sanitized[ $key ] = (array) $_value;
+			if ( empty( $_value ) ) {
+				unset( $sanitized[ $key ] );
 			}
 		}
 
 		// Reindex array.
-		if ( is_array( $value ) ) {
-			$value = array_values( $value );
+		if ( is_array( $sanitized ) ) {
+			$sanitized = array_values( $sanitized );
 		}
 
-		return $value;
+		return $sanitized;
+
 	}
 }

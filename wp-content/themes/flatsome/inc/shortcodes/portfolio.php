@@ -1,7 +1,7 @@
 <?php
 
 // [featured_items_slider]
-function flatsome_portfolio_shortcode($atts, $content = null, $tag = '' ) {
+function flatsome_portfolio_shortcode($atts, $content = null, $tag) {
 
   extract(shortcode_atts(array(
         // meta
@@ -11,7 +11,6 @@ function flatsome_portfolio_shortcode($atts, $content = null, $tag = '' ) {
         '_id' => 'portfolio-'.rand(),
         'link' => '',
         'class' => '',
-        'visibility' => '',
         'orderby' => 'menu_order',
         'order' => '',
         'offset' => '',
@@ -20,7 +19,6 @@ function flatsome_portfolio_shortcode($atts, $content = null, $tag = '' ) {
         'ids' => '',
         'cat' => '',
         'lightbox' => '',
-        'lightbox_image_size' => 'original',
 
         // Layout
         'style' => '',
@@ -66,8 +64,6 @@ function flatsome_portfolio_shortcode($atts, $content = null, $tag = '' ) {
         'height' => '',
 ), $atts));
 
-	ob_start();
-
   if($height && !$image_height) $image_height = $height;
 
   // Get Default Theme style
@@ -76,11 +72,13 @@ function flatsome_portfolio_shortcode($atts, $content = null, $tag = '' ) {
   // Fix old
   if($tag == 'featured_items_slider') $type = 'slider';
 
-	// Set Classes.
-	$wrapper_class = array( 'portfolio-element-wrapper', 'has-filtering' );
-	$classes_box   = array( 'portfolio-box', 'box', 'has-hover' );
-	$classes_image = array();
-	$classes_text  = array( 'box-text' );
+  // Fix order
+  if($orderby == 'menu_order') $order = 'asc';
+
+  // Set Classes
+  $classes_box = array('portfolio-box','box','has-hover');
+  $classes_image = array();
+  $classes_text = array('box-text');
 
   // Fix Grid type
   if($type == 'grid'){
@@ -88,11 +86,8 @@ function flatsome_portfolio_shortcode($atts, $content = null, $tag = '' ) {
     $current_grid = 0;
     $grid = flatsome_get_grid($grid);
     $grid_total = count($grid);
-    flatsome_get_grid_height($grid_height, $_id);
+    echo flatsome_get_grid_height($grid_height, $_id);
   }
-
-	// Wrapper classes.
-	if ( $visibility ) $wrapper_class[] = $visibility;
 
   // Set box style
   if($style) $classes_box[] = 'box-'.$style;
@@ -134,7 +129,9 @@ function flatsome_portfolio_shortcode($atts, $content = null, $tag = '' ) {
 
  if($animate) {$animate = 'data-animate="'.$animate.'"';}
 
- echo '<div id="' . $_id . '" class="' . implode( ' ', $wrapper_class ) . '">';
+ ob_start();
+
+ echo '<div id="' . $_id . '" class="portfolio-element-wrapper has-filtering">';
 
  // Add filter
  if($filter && $filter != 'disabled' && empty($cat) && $type !== 'grid' && $type !== 'slider' && $type !== 'full-slider'){
@@ -143,11 +140,11 @@ function flatsome_portfolio_shortcode($atts, $content = null, $tag = '' ) {
   ?>
   <div class="container mb-half">
   <ul class="nav nav-<?php echo $filter;?> nav-<?php echo $filter_align ;?> nav-<?php echo $filter_nav;?> nav-uppercase filter-nav">
-    <li class="active"><a href="#" data-filter="*"><?php echo __('All','flatsome'); ?></a></li>
+    <li class="active"><a href="#" data-filter="[data-id]"><?php echo __('All','flatsome'); ?></a></li>
     <?php
       $tax_terms = get_terms('featured_item_category');
       foreach ($tax_terms as $key => $value) {
-         ?><li><a href="#" data-filter="[data-terms*='<?php echo "&quot;" . $value->name . "&quot;"; ?>']"><?php echo $value->name; ?></a></li><?php
+         ?><li><a href="#" data-filter="[data-id*='<?php echo $value->name; ?>']"><?php echo $value->name; ?></a></li><?php
       }
     ?>
   </ul>
@@ -162,14 +159,11 @@ $repeater['id'] = $_id;
 $repeater['tag'] = $tag;
 $repeater['type'] = $type;
 $repeater['style'] = $style;
-$repeater['class'] = $class;
-$repeater['visibility'] = $visibility;
 $repeater['slider_style'] = $slider_nav_style;
 $repeater['slider_nav_color'] = $slider_nav_color;
 $repeater['slider_nav_position'] = $slider_nav_position;
 $repeater['slider_bullets'] = $slider_bullets;
 $repeater['auto_slide'] = $auto_slide;
-$repeater['infinitive'] = $infinitive;
 $repeater['row_spacing'] = $col_spacing;
 $repeater['row_width'] = $width;
 $repeater['columns'] = $columns;
@@ -213,8 +207,15 @@ if ( isset( $atts['ids'] ) ) {
 
 $wp_query = new WP_Query( $args );
 
+
+// Disable slider if less than selected products pr row.
+if ( $wp_query->post_count < ($repeater['columns']+1) ) {
+  if($repeater['type'] == 'slider') $repeater['type'] = 'row';
+}
+
+
 // Get repeater structure
-get_flatsome_repeater_start($repeater);
+echo get_flatsome_repeater_start($repeater);
 
  ?>
   <?php
@@ -226,7 +227,7 @@ get_flatsome_repeater_start($repeater);
 
           $has_lightbox = '';
           if($lightbox == 'true'){
-            $link = wp_get_attachment_image_src( get_post_thumbnail_id( get_the_ID() ), $lightbox_image_size );
+            $link = wp_get_attachment_image_src( get_post_thumbnail_id( get_the_ID() ), 'single-post-thumbnail' );
             $link = $link[0];
             $has_lightbox = 'lightbox-gallery';
           }
@@ -250,18 +251,18 @@ get_flatsome_repeater_start($repeater);
           }
 
           ?>
-          <div class="<?php echo implode(' ', $classes_col); ?>" data-terms="<?php echo strip_tags( get_the_term_list( get_the_ID(), 'featured_item_category', "[&quot;", "&quot;,&quot;", "&quot;]" ) ); ?>" <?php echo $animate; ?>>
+          <div class="<?php echo implode(' ', $classes_col); ?>" data-id="<?php  echo strip_tags( get_the_term_list( get_the_ID(), 'featured_item_category', "",", " ) );?>" <?php echo $animate; ?>>
           <div class="col-inner" <?php echo get_shortcode_inline_css($css_col); ?>>
           <a href="<?php echo $link; ?>" class="plain <?php echo $has_lightbox; ?>">
           <div class="<?php echo implode(' ', $classes_box); ?>">
-            <div class="box-image" <?php echo get_shortcode_inline_css( $css_args_img ); ?>>
-                <div class="<?php echo implode(' ', $classes_image); ?>" <?php echo get_shortcode_inline_css($css_image_height); ?>>
+            <div class="box-image">
+                <div class="<?php echo implode(' ', $classes_image); ?>"<?php echo get_shortcode_inline_css($css_image_height); ?>>
                 <?php echo wp_get_attachment_image($image, $image_size); ?>
                 <?php if($image_overlay) { ?><div class="overlay" style="background-color:<?php echo $image_overlay; ?>"></div><?php } ?>
                 <?php if($style == 'shade'){ ?><div class="shade"></div><?php } ?>
                 </div>
-            </div>
-            <div class="<?php echo implode(' ', $classes_text); ?>" <?php echo get_shortcode_inline_css( $css_args ); ?>>
+            </div><!-- box-image -->
+            <div class="<?php echo implode(' ', $classes_text); ?>">
                   <div class="box-text-inner">
                       <h6 class="uppercase portfolio-box-title"><?php the_title(); ?></h6>
                       <p class="uppercase portfolio-box-category is-xsmall op-6">
@@ -269,18 +270,18 @@ get_flatsome_repeater_start($repeater);
                          <?php  echo strip_tags( get_the_term_list( get_the_ID(), 'featured_item_category', "",", " ) );?>
                         </span>
                       </p>
-                  </div>
-            </div>
-           </div>
+                  </div><!-- box-text-inner -->
+            </div><!-- box-text -->
+           </div><!-- .box  -->
            </a>
-           </div>
-           </div>
+           </div><!-- .col-inner -->
+           </div><!-- .col -->
           <?php
           endwhile;
           endif;
           wp_reset_query();
 
-  get_flatsome_repeater_end($repeater);
+  echo get_flatsome_repeater_end($repeater);
   echo '</div>';
 
   $args = array(

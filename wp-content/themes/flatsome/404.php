@@ -2,18 +2,13 @@
 /**
  * The template for displaying 404 pages (not found).
  *
- * @link    https://codex.wordpress.org/Creating_an_Error_404_Page
+ * @link https://codex.wordpress.org/Creating_an_Error_404_Page
  *
  * @package flatsome
  */
 
 get_header(); ?>
-<?php do_action( 'flatsome_before_404' ); ?>
-<?php
-if ( get_theme_mod( '404_block' ) ) :
-	echo do_shortcode( '[block id="' . get_theme_mod( '404_block' ) . '"]' );
-else :
-?>
+	<?php do_action('flatsome_before_404') ;?>
 	<div id="primary" class="content-area">
 		<main id="main" class="site-main container pt" role="main">
 			<section class="error-404 not-found mt mb">
@@ -22,16 +17,21 @@ else :
 					<div class="col medium-9">
 						<header class="page-title">
 							<h1 class="page-title"><?php esc_html_e( 'Oops! That page can&rsquo;t be found.', 'flatsome' ); ?></h1>
-						</header>
+						</header><!-- .page-title -->
+
 						<div class="page-content">
 							<p><?php esc_html_e( 'It looks like nothing was found at this location. Maybe try one of the links below or a search?', 'flatsome' ); ?></p>
+
 							<?php get_search_form(); ?>
-						</div>
+
+						</div><!-- .page-content -->
 					</div>
-				</div>
-			</section>
-		</main>
-	</div>
-<?php endif; ?>
-<?php do_action( 'flatsome_after_404' ); ?>
+				</div><!-- .row -->
+				
+				
+			</section><!-- .error-404 -->
+
+		</main><!-- #main -->
+	</div><!-- #primary -->
+	<?php do_action('flatsome_after_404') ;?>
 <?php get_footer(); ?>

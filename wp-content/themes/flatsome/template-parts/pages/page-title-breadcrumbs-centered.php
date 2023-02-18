@@ -5,7 +5,7 @@
 	<div class="page-title-inner container flex-row medium-text-center">
 	 	<div class="flex-col flex-grow text-center">
 	 		<h1 class="page-title uppercase"><?php echo get_the_title() ?></h1>
-	 		<?php flatsome_breadcrumb( 'page-breadcrumbs' ); ?>
+	 		<?php get_flatsome_breadcrumbs(); ?>
 	 	</div>
 
 	 

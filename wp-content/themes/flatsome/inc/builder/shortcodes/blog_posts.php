@@ -59,9 +59,9 @@ $options =  array(
             'type' => 'select',
             'heading' => 'Color',
             'conditions' => 'readmore',
-            'default' => '',
+            'default' => 'primary',
             'options' => array(
-                '' => 'Default',
+                '' => 'Blank',
                 'primary' => 'Primary',
                 'secondary' => 'Secondary',
                 'alert' => 'Alert',
@@ -162,13 +162,10 @@ $options =  array(
         )
     ),
     ),
-),
-);
-
+));
 
 $box_styles = require( __DIR__ . '/commons/box-styles.php' );
 $options = array_merge($options, $box_styles);
-
 
 add_ux_builder_shortcode( 'blog_posts', array(
     'name' => __( 'Blog posts' ),

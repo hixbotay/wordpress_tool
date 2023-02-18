@@ -4,9 +4,9 @@
  *
  * @package     Kirki
  * @category    Core
- * @author      Ari Stathopoulos (@aristath)
- * @copyright   Copyright (c) 2020, David Vongries
- * @license     https://opensource.org/licenses/MIT
+ * @author      Aristeides Stathopoulos
+ * @copyright   Copyright (c) 2017, Aristeides Stathopoulos
+ * @license     http://opensource.org/licenses/https://opensource.org/licenses/MIT
  * @since       1.0
  */
 
@@ -32,8 +32,10 @@ class Kirki_Panel {
 	 * @param array $args The panel arguments.
 	 */
 	public function __construct( $args ) {
-		$this->panel_types = apply_filters( 'kirki_panel_types', $this->panel_types );
+
+		$this->panel_types = apply_filters( 'kirki/panel_types', $this->panel_types );
 		$this->add_panel( $args );
+
 	}
 
 	/**
@@ -49,6 +51,7 @@ class Kirki_Panel {
 		}
 		$panel_classname = $this->panel_types[ $args['type'] ];
 
-		$wp_customize->add_panel( new $panel_classname( $wp_customize, $args['id'], $args ) );
+		$wp_customize->add_panel( new $panel_classname( $wp_customize, sanitize_key( $args['id'] ), $args ) );
+
 	}
 }

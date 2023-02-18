@@ -18,7 +18,7 @@
 				<div class="large-7 col">
 					<div class="entry-summary <?php flatsome_product_summary_classes();?>">
 						<?php
-							 flatsome_breadcrumb();
+							 woocommerce_breadcrumb();
 							 woocommerce_template_single_title();
 							 woocommerce_template_single_rating();
 							 woocommerce_template_single_excerpt();
@@ -30,7 +30,7 @@
 					</div>
 				</div>
 				<div class="large-5 col">
-					<div class="is-well add-to-cart-wrapper <?php flatsome_product_summary_classes( false, false, true );?>">
+					<div class="is-well add-to-cart-wrapper">
 						<?php
 
 							if(!flatsome_option('catalog_mode')){

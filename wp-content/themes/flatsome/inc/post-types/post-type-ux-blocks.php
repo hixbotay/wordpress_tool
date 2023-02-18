@@ -4,7 +4,7 @@ register_post_type( 'blocks',
 	array(
 		'labels'              => array(
 			'add_new_item'       => __( 'Add block', "blocks" ),
-			'name'               => __( 'UX Blocks', "blocks" ),
+			'name'               => __( 'Blocks', "blocks" ),
 			'singular_name'      => __( 'Block', "blocks" ),
 			'edit_item'          => __( 'Edit Block', "blocks" ),
 			'view_item'          => __( 'View Block', "blocks" ),
@@ -57,23 +57,6 @@ function my_manage_blocks_columns( $column, $post_id ) {
 
 add_action( 'manage_blocks_posts_custom_column', 'my_manage_blocks_columns', 10, 2 );
 
-
-/**
- * Disable gutenberg support for now.
- *
- * @param bool   $use_block_editor Whether the post type can be edited or not. Default true.
- * @param string $post_type        The post type being checked.
- *
- * @return bool
- */
-function flatsome_blocks_disable_gutenberg( $use_block_editor, $post_type ) {
-	return $post_type === 'blocks' ? false : $use_block_editor;
-}
-
-add_filter( 'use_block_editor_for_post_type', 'flatsome_blocks_disable_gutenberg', 10, 2 );
-add_filter( 'gutenberg_can_edit_post_type', 'flatsome_blocks_disable_gutenberg', 10, 2 );
-
-
 /**
  * Update block preview URL
  */
@@ -85,7 +68,7 @@ function ux_block_scripts() {
           jQuery(document).ready(function ($) {
             var block_id = $('input#post_name').val()
             $('#submitdiv').
-              after('<div class="postbox"><h2 class="hndle">Shortcode</h2><div class="inside"><p><textarea style="width:100%; max-height:30px;">[block id="' + block_id +
+              after('<div class="postbox"><div class="inside"><p><b>Shortcode:</b><br><textarea style="width:100%; max-height:30px;">[block id="' + block_id +
                 '"]</textarea></p></div></div>')
           })
 		</script>
@@ -143,10 +126,6 @@ function block_shortcode( $atts, $content = null ) {
 		if ( $lang_id ) {
 			$post_id = $lang_id;
 		}
-	}
-
-	if ( is_woocommerce_activated() && is_shop() ) {
-		$post = get_post( wc_get_page_id( 'shop' ) );
 	}
 
 	if ( $post_id ) {

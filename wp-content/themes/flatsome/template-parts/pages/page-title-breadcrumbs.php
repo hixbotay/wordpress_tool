@@ -8,8 +8,8 @@
 	 	</div>
 
 	 	<div class="flex-col">
-	 		<?php flatsome_breadcrumb( 'page-breadcrumbs' ); ?>
+	 		<?php get_flatsome_breadcrumbs(); ?>
 	 	</div>
 
-	</div>
-</div>
+	</div><!-- flex-row -->
+</div><!-- .page-title -->

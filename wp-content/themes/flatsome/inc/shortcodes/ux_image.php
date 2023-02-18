@@ -2,16 +2,12 @@
 function ux_image( $atts, $content = null ) {
 	extract( shortcode_atts( array(
 		'_id'             => 'image_' . rand(),
-		'class'						=> '',
-		'visibility'			=> '',
 		'id'              => '',
 		'org_img'         => '',
 		'caption'         => '',
 		'animate'         => '',
 		'animate_delay'   => '',
 		'lightbox'        => '',
-		'lightbox_image_size' => 'large',
-		'lightbox_caption'    => '',
 		'height'          => '',
 		'image_overlay'   => '',
 		'image_hover'     => '',
@@ -31,7 +27,6 @@ function ux_image( $atts, $content = null ) {
 		'depth_hover'     => '',
 		'link'            => '',
 		'target'          => '_self',
-		'rel'             => '',
 	), $atts ) );
 
 	if ( empty( $id ) ) {
@@ -44,25 +39,18 @@ function ux_image( $atts, $content = null ) {
 		$atts['width'] = '100';
 	}
 
-	$classes = array();
-	if ( $class ) $classes[] = $class;
-  if ( $visibility ) $classes[] = $visibility;
-
+	$classes       = array();
 	$classes_inner = array( 'img-inner' );
 	$classes_img   = array();
 	$image_meta    = wp_prepare_attachment_for_js( $id );
-	$link_atts     = array(
-		'target' => $target,
-		'rel'    => array( $rel ),
-	);
 
 	if ( is_numeric( $id ) ) {
 		if ( ! $org_img ) {
-			$org_img = wp_get_attachment_image_src( $id, $lightbox_image_size );
-			$org_img = $org_img ? $org_img[0] : '';
+			$org_img = wp_get_attachment_image_src( $id, 'large' );
+			$org_img = $org_img[0];
 		}
 		if ( $caption && $caption == 'true' ) {
-			$caption = is_array( $image_meta ) ? $image_meta['caption'] : '';
+			$caption = $image_meta['caption'];
 		}
 	} else {
 		if ( ! $org_img ) {
@@ -83,11 +71,10 @@ function ux_image( $atts, $content = null ) {
 				$image_overlay = 'rgba(0,0,0,.2)';
 			}
 		}
-		$link_start = '<a class="' . $link_class . '" href="' . $link . '"' . flatsome_parse_target_rel( $link_atts ) . '>';
+		$link_start = '<a href="' . $link . '" target="' . $target . '" class="' . $link_class . '">';
 		$link_end   = '</a>';
 	} elseif ( $lightbox ) {
-		$title      = $lightbox_caption ? $image_meta['caption'] : '';
-		$link_start = '<a class="image-lightbox lightbox-gallery" title="' . esc_attr( $title ) . '" href="' . $org_img . '">';
+		$link_start = '<a class="image-lightbox lightbox-gallery" href="' . $org_img . '" title="' . $caption . '">';
 		$link_end   = '</a>';
 	}
 

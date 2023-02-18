@@ -1,7 +1,8 @@
 <?php
 
 // Flatsome Products
-function ux_product_flip($atts, $content = null, $tag = '' ) {
+function ux_product_flip($atts, $content = null, $tag) {
+  global $woocommerce;
   $sliderrandomid = rand();
   extract(shortcode_atts(array(
     '_id' => 'product-flip-'.rand(),
@@ -47,10 +48,6 @@ function ux_product_flip($atts, $content = null, $tag = '' ) {
 
     if(empty($ids)){
 
-	    if ( ! is_array( $atts ) ) {
-		    $atts = array();
-	    }
-
       // Get products
       $atts['products'] = $products;
       $atts['offset'] = $offset;
@@ -66,7 +63,6 @@ function ux_product_flip($atts, $content = null, $tag = '' ) {
         'post__in' => $ids,
         'post_type' => 'product',
         'numberposts' => -1,
-		'posts_per_page' => -1,
         'orderby' => 'post__in',
         'ignore_sticky_posts' => true,
       );

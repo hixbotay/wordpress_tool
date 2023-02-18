@@ -4,7 +4,7 @@
  *
  * @author     UX Themes
  * @category   Extension
- * @package    Flatsome/Extensions
+ * @package    Flatsome/Extentions
  * @since      3.5.0
  */
 
@@ -22,7 +22,7 @@ class Flatsome_Infinite_Scroll {
 	 *
 	 * @var string
 	 */
-	private $version;
+	private $version = '1.0';
 
 	/**
 	 * Holds loader type selected from theme settings.
@@ -31,14 +31,6 @@ class Flatsome_Infinite_Scroll {
 	 * @var string
 	 */
 	private $loader_type;
-
-	/**
-	 * Holds category list style from theme settings.
-	 * ex. grid, list, masonry
-	 *
-	 * @var string
-	 */
-	private $list_style;
 
 	/**
 	 * Static instance
@@ -51,9 +43,6 @@ class Flatsome_Infinite_Scroll {
 	 * Flatsome_Infinite_Scroll constructor.
 	 */
 	private function __construct() {
-		$theme         = wp_get_theme( get_template() );
-		$this->version = $theme->get( 'Version' );
-
 		add_action( 'init', array( $this, 'init' ) );
 	}
 
@@ -79,10 +68,9 @@ class Flatsome_Infinite_Scroll {
 		} // Disable for admin
 
 		$this->loader_type = get_theme_mod( 'infinite_scroll_loader_type', 'spinner' );
-		$this->list_style  = get_theme_mod( 'category_grid_style', 'grid' );
 
 		add_action( 'wp_enqueue_scripts', array( $this, 'add_scripts' ), 99 );
-		add_action( 'woocommerce_after_shop_loop', array( $this, 'add_page_loader' ), 20 );
+		add_action( 'flatsome_products_page_loader', array( $this, 'add_page_loader' ), 10 );
 		add_action( 'wp_head', array( $this, 'add_css' ), 110 );
 	}
 
@@ -91,15 +79,13 @@ class Flatsome_Infinite_Scroll {
 	 */
 	public function add_scripts() {
 		global $extensions_uri;
-		wp_enqueue_script( 'flatsome-infinite-scroll-js', get_template_directory_uri() . '/assets/libs/infinite-scroll.pkgd.min.js', array( 'jquery', 'flatsome-js' ), '4.0.1', true );
-		wp_enqueue_script( 'flatsome-infinite-scroll', $extensions_uri . '/flatsome-infinite-scroll/flatsome-infinite-scroll.js', array( 'jquery', 'flatsome-js' ), $this->version, true );
+		wp_enqueue_script( 'flatsome-infinite-scroll', $extensions_uri . '/flatsome-infinite-scroll/flatsome-infinite-scroll.js', array( 'jquery', 'flatsome-js' ), $this->version,
+			true );
 
 		$params = array(
 			'scroll_threshold' => 400,
 			'fade_in_duration' => 300,
 			'type'             => $this->loader_type,
-			'list_style'       => $this->list_style,
-			'history'          => 'push',
 		);
 
 		wp_localize_script( 'flatsome-infinite-scroll', 'flatsome_infinite_scroll', apply_filters( 'flatsome_infinite_scroll_params', $params ) );
@@ -120,7 +106,7 @@ class Flatsome_Infinite_Scroll {
 		?>
 		<style id="infinite-scroll-css" type="text/css">
 			.page-load-status,
-			.archive .woocommerce-pagination {
+			.woocommerce-pagination {
 				display: none;
 			}
 		</style>

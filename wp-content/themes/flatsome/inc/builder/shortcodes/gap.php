@@ -11,7 +11,6 @@ add_ux_builder_shortcode( 'gap', array(
 
         'height' => array(
             'type' => 'scrubfield',
-            'responsive' => true,
             'heading' => __( 'Height' ),
             'default' => '30px',
             'min' => 0,
@@ -19,6 +18,6 @@ add_ux_builder_shortcode( 'gap', array(
                 'style' => 'padding-top: {{ value }}'
             ),
         ),
-        'advanced_options' => require( __DIR__ . '/commons/advanced.php'),
+     
     ),
 ) );

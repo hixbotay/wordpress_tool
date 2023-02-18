@@ -30,12 +30,12 @@ class Upsell_Widget extends WP_Widget {
 	 * @param array $instance Saved values from database.
 	 */
 	public function widget( $args, $instance ) {
-		global $product;
+		global $product, $woocommerce, $woocommerce_loop;
 
 		/* Disable if not on product page */
 		if(!function_exists('is_product') || !is_product()) return;
 
-        $upsells = $product->get_upsell_ids();
+    $upsells = fl_woocommerce_version_check('3.0.0') ?  $product->get_upsell_ids() :  $product->get_upsells();
 
 		if ( sizeof( $upsells ) == 0 ) return;
 
@@ -48,7 +48,7 @@ class Upsell_Widget extends WP_Widget {
 			$title = __( 'Complete the look', 'flatsome' );
 		}
 
-		$meta_query = WC()->query->get_meta_query();
+		$meta_query = $woocommerce->query->get_meta_query();
 
 		$args = array(
 			'post_type'           => 'product',

@@ -6,16 +6,16 @@
 
 		<div class="portfolio-summary entry-summary pb">
 			<?php get_template_part('template-parts/portfolio/portfolio-summary','full'); ?>
-		</div>
+		</div><!-- .entry-summary -->
 
 		<div class="portfolio-inner">
 			<?php get_template_part('template-parts/portfolio/portfolio-content'); ?>
-		</div>
+		</div><!-- .portfolio-inner -->
 
-	</div>
+	</div><!-- #portfolio-content .large-12 -->
 
-	</div>
-</div>
+	</div><!-- .row -->
+</div><!-- .portfolio-top -->
 
 <div class="portfolio-bottom">
 	<?php get_template_part('template-parts/portfolio/portfolio-next-prev'); ?>

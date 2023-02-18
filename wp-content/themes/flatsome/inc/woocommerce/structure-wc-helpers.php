@@ -28,6 +28,16 @@ function ux_list_products( $args ) {
 			$order = 'asc';
 		}
 
+		// Get Category.
+		$cat = '';
+		if ( isset( $options['cat'] ) ) {
+			if ( is_numeric( $options['cat'] ) && get_term( $options['cat'] ) ) {
+				$cat = get_term( $options['cat'] )->slug;
+			} else {
+				$cat = $options['cat'];
+			}
+		}
+
 		$tags = '';
 		if ( isset( $options['tags'] ) ) {
 			if ( is_numeric( $options['tags'] ) ) {
@@ -103,16 +113,8 @@ function ux_list_products( $args ) {
 			$query_args['orderby'] = 'date';
 	}
 
-	$query_args = ux_maybe_add_category_args( $query_args, $options['cat'], 'IN' );
-
-	if ( isset( $options['out_of_stock'] ) && $options['out_of_stock'] === 'exclude' ) {
-		$product_visibility_term_ids = wc_get_product_visibility_term_ids();
-		$query_args['tax_query'][]   = array(
-			'taxonomy' => 'product_visibility',
-			'field'    => 'term_taxonomy_id',
-			'terms'    => $product_visibility_term_ids['outofstock'],
-			'operator' => 'NOT IN',
-		);
+	if ( ! empty( $cat ) ) {
+		$query_args = ux_maybe_add_category_args( $query_args, $cat, 'IN' );
 	}
 
 	$results = new WP_Query( $query_args );
@@ -120,46 +122,23 @@ function ux_list_products( $args ) {
 	return $results;
 } // List products
 
-/**
- * Set categories query args if not empty.
- *
- * @param array  $query_args Query args.
- * @param string $category   Shortcode category attribute value.
- * @param string $operator   Query Operator.
- *
- * @return array $query_args
- */
-function ux_maybe_add_category_args( $query_args, $category, $operator ) {
+
+function ux_maybe_add_category_args( $args, $category, $operator ) {
 	if ( ! empty( $category ) ) {
-
-		if ( empty( $query_args['tax_query'] ) ) {
-			$query_args['tax_query'] = array(); // @codingStandardsIgnoreLine
+		if ( empty( $args['tax_query'] ) ) {
+			$args['tax_query'] = array(); // @codingStandardsIgnoreLine
 		}
-
-		$categories = array_map( 'sanitize_title', explode( ',', $category ) );
-		$field      = 'slug';
-
-		if ( is_numeric( $categories[0] ) ) {
-			$field      = 'term_id';
-			$categories = array_map( 'absint', $categories );
-			// Check numeric slugs.
-			foreach ( $categories as $cat ) {
-				$the_cat = get_term_by( 'slug', $cat, 'product_cat' );
-				if ( false !== $the_cat ) {
-					$categories[] = $the_cat->term_id;
-				}
-			}
-		}
-
-		$query_args['tax_query'][] = array(
-			'taxonomy' => 'product_cat',
-			'terms'    => $categories,
-			'field'    => $field,
-			'operator' => $operator,
+		$args['tax_query'][] = array(
+			array(
+				'taxonomy' => 'product_cat',
+				'terms'    => array_map( 'sanitize_title', explode( ',', $category ) ),
+				'field'    => 'slug',
+				'operator' => $operator,
+			),
 		);
 	}
 
-	return $query_args;
+	return $args;
 }
 
 global $pagenow;
@@ -169,25 +148,25 @@ if ( is_admin() && isset( $_GET['activated'] ) && $pagenow == 'themes.php' ) {
 	 */
 	function flatsome_woocommerce_image_dimensions() {
 		$single = array(
-			'width'  => '510', // px
+			'width'  => '600', // px
 			'height' => '600', // px
 			'crop'   => 1    // true
 		);
 		$catalog = array(
-			'width'  => '247', // px
+			'width'  => '300', // px
 			'height' => '300', // px
 			'crop'   => 1    // true
 		);
 		$thumbnail = array(
-			'width'  => '114', // px
-			'height' => '130', // px
+			'width'  => '150', // px
+			'height' => '150', // px
 			'crop'   => 1    // true
 		);
 
 		if ( fl_woocommerce_version_check( '3.3.0' ) ) {
 			update_option( 'woocommerce_single_image_width', $single['width'] );
 			update_option( 'woocommerce_thumbnail_image_width', $catalog['width'] );
-			update_option( 'woocommerce_thumbnail_cropping', 'custom' );
+			update_option( 'woocommerce_thumbnail_cropping', 'uncropped' );
 			update_option( 'woocommerce_thumbnail_cropping_custom_width', 5 );
 			update_option( 'woocommerce_thumbnail_cropping_custom_height', 6 );
 		} else {

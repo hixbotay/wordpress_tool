@@ -36,7 +36,7 @@
 
 		<?php
 
-		if ( fl_woocommerce_version_check( '3.4.0' ) ? woocommerce_product_loop() : have_posts() ) {
+		if ( have_posts() ) {
 
 			/**
 			 * Hook: woocommerce_before_shop_loop.
@@ -97,5 +97,6 @@
 			do_action( 'woocommerce_after_main_content' );
 		?>
 
+		<?php do_action( 'flatsome_products_page_loader' ); ?>
 		</div>
 </div>

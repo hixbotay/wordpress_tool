@@ -5,9 +5,9 @@
  *
  * @package     Kirki
  * @category    Core
- * @author      Ari Stathopoulos (@aristath)
- * @copyright   Copyright (c) 2020, David Vongries
- * @license     https://opensource.org/licenses/MIT
+ * @author      Aristeides Stathopoulos
+ * @copyright   Copyright (c) 2017, Aristeides Stathopoulos
+ * @license     http://opensource.org/licenses/https://opensource.org/licenses/MIT
  * @since       1.0
  */
 
@@ -20,6 +20,21 @@ if ( ! defined( 'ABSPATH' ) ) {
  * A simple wrapper class for static methods.
  */
 class Kirki_Sanitize_Values {
+
+	/**
+	 * Fallback for non-existing methods.
+	 *
+	 * @static
+	 * @access public
+	 * @param string $name The method we're trying to access.
+	 * @param mixed  $arguments The arguments the method we're trying to call accepts.
+	 * @return mixed The $arguments provided.
+	 */
+	public static function __callStatic( $name, $arguments ) {
+		/* translators: %s represents the method that was called and does not exist. */
+		_doing_it_wrong( __METHOD__, sprintf( esc_attr__( 'Kirki_Sanitize_Values::%s does not exist', 'kirki' ), esc_attr( $name ) ), '3.0.10' );
+		return $arguments;
+	}
 
 	/**
 	 * Checkbox sanitization callback.
@@ -70,7 +85,6 @@ class Kirki_Sanitize_Values {
 	 * @return int|string Page ID if the page is published; otherwise, the setting default.
 	 */
 	public static function dropdown_pages( $page_id, $setting ) {
-
 		// Ensure $input is an absolute integer.
 		$page_id = absint( $page_id );
 
@@ -102,9 +116,9 @@ class Kirki_Sanitize_Values {
 			return '';
 		}
 
-		// If auto, inherit or initial, return the value.
-		if ( 'auto' === $value || 'initial' === $value || 'inherit' === $value || 'normal' === $value ) {
-			return $value;
+		// If auto, return auto.
+		if ( 'auto' === $value ) {
+			return 'auto';
 		}
 
 		// Return empty if there are no numbers in the value.
@@ -122,7 +136,7 @@ class Kirki_Sanitize_Values {
 		$unit_used = '';
 
 		// An array of all valid CSS units. Their order was carefully chosen for this evaluation, don't mix it up!!!
-		$units = array( 'fr', 'rem', 'em', 'ex', '%', 'px', 'cm', 'mm', 'in', 'pt', 'pc', 'ch', 'vh', 'vw', 'vmin', 'vmax' );
+		$units = array( 'rem', 'em', 'ex', '%', 'px', 'cm', 'mm', 'in', 'pt', 'pc', 'ch', 'vh', 'vw', 'vmin', 'vmax' );
 		foreach ( $units as $unit ) {
 			if ( false !== strpos( $value, $unit ) ) {
 				$unit_used = $unit;
@@ -171,20 +185,16 @@ class Kirki_Sanitize_Values {
 	 * @return string
 	 */
 	public static function color( $value ) {
-
 		// If the value is empty, then return empty.
 		if ( '' === $value ) {
 			return '';
 		}
-
 		// If transparent, then return 'transparent'.
 		if ( is_string( $value ) && 'transparent' === trim( $value ) ) {
 			return 'transparent';
 		}
-
 		// Instantiate the object.
 		$color = ariColor::newColor( $value );
-
 		// Return a CSS value, using the auto-detected mode.
 		return $color->toCSS( $color->mode );
 	}

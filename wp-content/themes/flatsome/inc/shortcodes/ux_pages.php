@@ -4,8 +4,6 @@ function ux_pages($atts) {
     extract(shortcode_atts(array(
       // meta
       '_id' => 'pages-'.rand(),
-      'class' => '',
-      'visibility' => '',
       'parent' => '',
       'orderby' => 'menu_order',
       'order' => 'asc',
@@ -15,8 +13,6 @@ function ux_pages($atts) {
       // Layout
       'style' => '',
       'columns' => '4',
-      'columns__md' => '',
-      'columns__sm' => '',
       'col_spacing' => '',
       'type' => 'row', // slider, row, masonery, grid
       'width' => '',
@@ -91,7 +87,7 @@ function ux_pages($atts) {
         $current_grid = 0;
         $grid = flatsome_get_grid($grid);
         $grid_total = count($grid);
-        flatsome_get_grid_height($grid_height, $_id);
+        echo flatsome_get_grid_height($grid_height, $_id);
       }
 
       // Add Animations
@@ -134,26 +130,23 @@ function ux_pages($atts) {
       );
 
       // Repeater options
-      $repeater['id'] = $_id;
-      $repeater['type'] = $type;
-      $repeater['style'] = $style;
-      $repeater['class'] = $class;
-      $repeater['visibility'] = $visibility;
-      $repeater['slider_style'] = $slider_nav_style;
-      $repeater['slider_nav_color'] = $slider_nav_color;
-      $repeater['slider_nav_position'] = $slider_nav_position;
-      $repeater['slider_bullets'] = $slider_bullets;
-      $repeater['auto_slide'] = $auto_slide;
-	  $repeater['infinitive'] = $infinitive;
-      $repeater['row_spacing'] = $col_spacing;
-      $repeater['row_width'] = $width;
-      $repeater['columns'] = $columns;
-      $repeater['columns__md'] = $columns__md;
-      $repeater['columns__sm'] = $columns__sm;
-      $repeater['depth'] = $depth;
-      $repeater['depth_hover'] = $depth_hover;
+      $repater['id'] = $_id;
+      $repater['type'] = $type;
+      $repater['style'] = $style;
+      $repater['slider_style'] = $slider_nav_style;
+      $repater['slider_nav_color'] = $slider_nav_color;
+      $repater['slider_nav_position'] = $slider_nav_position;
+      $repater['slider_bullets'] = $slider_bullets;
+      $repater['auto_slide'] = $auto_slide;
+      $repater['row_spacing'] = $col_spacing;
+      $repater['row_width'] = $width;
+      $repater['columns'] = $columns;
+      $repater['depth'] = $depth;
+      $repater['depth_hover'] = $depth_hover;
 
-      get_flatsome_repeater_start($repeater);
+      ob_start();
+
+      echo get_flatsome_repeater_start($repater);
 
       foreach (  $childpages as $page ) {
 
@@ -180,19 +173,19 @@ function ux_pages($atts) {
                   <div class="box-image" <?php echo get_shortcode_inline_css($css_args_img); ?>>
                       <div class="<?php echo implode(' ', $classes_image); ?>" <?php echo get_shortcode_inline_css($css_image_height); ?>>
                       <?php $img_id = get_post_thumbnail_id($page->ID); echo wp_get_attachment_image($img_id, $image_size); ?>
-                      </div>
+                      </div><!-- image -->
                       <?php if($image_overlay){ ?><div class="overlay" style="background-color: <?php echo $image_overlay;?>"></div><?php } ?>
                       <?php if($style == 'shade'){ ?><div class="shade"></div><?php } ?>
-                  </div>
+                  </div><!-- box-image -->
                   <div class="<?php echo implode(' ', $classes_text); ?>" <?php echo get_shortcode_inline_css($css_args); ?>>
                         <div class="box-text-inner">
                             <p><?php echo $page->post_title; ?></p>
-                        </div>
-                  </div>
-              </div>
+                        </div><!-- box-text-inner -->
+                  </div><!-- box-text -->
+              </div><!-- .image-box .box -->
             </a>
-            </div>
-          </div>
+            </div><!-- .col-inner -->
+          </div><!-- .col -->
          <?php
     } // Loop
     echo '</div>';

@@ -5,7 +5,7 @@ Flatsome.behavior('wishlist', {
 
       jQuery(element).on('click', function (e) {
         if (jQuery(this).parent().find('.yith-wcwl-wishlistexistsbrowse').hasClass('show')) {
-          var link = jQuery(this).parent().find('.yith-wcwl-wishlistexistsbrowse a').attr('href')
+          let link = jQuery(this).parent().find('.yith-wcwl-wishlistexistsbrowse a').attr('href')
           window.location.href = link
           return
         }
@@ -19,7 +19,7 @@ Flatsome.behavior('wishlist', {
 })
 
 jQuery(document).ready(function () {
-  var flatsomeAddToWishlist = function () {
+  let flatsomeAddToWishlist = function () {
     jQuery('.wishlist-button').removeClass('loading')
     jQuery('.wishlist-button').addClass('wishlist-added')
 

@@ -61,13 +61,14 @@ $zip->open($sourcePath, ZipArchive::CREATE | ZipArchive::OVERWRITE);
 
 // Create recursive directory iterator
 /** @var SplFileInfo[] $files */
-$exclude = array('.git', '.htaccess','.zip','.gz','cache');
-$filter = function ($file, $key, $iterator) use ($exclude) {
-	echo $file->getFilename();die;
-    if ($iterator->hasChildren() && !in_array($file->getFilename(), $exclude)) {
-        return true;
-    }
-    return $file->isFile();
+$exclude = array('.git', '.htaccess','\.zip','\.gz');
+$filter = function ($file, $key, $iterator) use ($exclude) {	
+	foreach($exclude as $key){
+		if(preg_match("/{$key}/", $file->getFilename())){
+			return false;
+		}
+	}	
+	return true;
 };
 $innerIterator = new RecursiveDirectoryIterator(
     $sourcefolder,

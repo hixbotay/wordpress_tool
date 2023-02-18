@@ -4,8 +4,8 @@
  *
  * @package     Kirki
  * @subpackage  Controls
- * @copyright   Copyright (c) 2020, David Vongries
- * @license     https://opensource.org/licenses/MIT
+ * @copyright   Copyright (c) 2017, Aristeides Stathopoulos
+ * @license     http://opensource.org/licenses/https://opensource.org/licenses/MIT
  * @since       2.2.7
  */
 
@@ -20,7 +20,9 @@ class Kirki_Field_Checkbox extends Kirki_Field {
 	 * @access protected
 	 */
 	protected function set_type() {
+
 		$this->type = 'checkbox';
+
 	}
 
 	/**
@@ -29,9 +31,11 @@ class Kirki_Field_Checkbox extends Kirki_Field {
 	 * @access protected
 	 */
 	protected function set_sanitize_callback() {
+
 		if ( ! $this->sanitize_callback ) {
 			$this->sanitize_callback = array( $this, 'sanitize' );
 		}
+
 	}
 
 	/**
@@ -42,7 +46,13 @@ class Kirki_Field_Checkbox extends Kirki_Field {
 	 * @return bool
 	 */
 	public function sanitize( $value = null ) {
-		return ( '0' === $value || 'false' === $value ) ? false : (bool) $value;
+
+		if ( '0' === $value || 'false' === $value ) {
+			return false;
+		}
+
+		return (bool) $value;
+
 	}
 
 	/**
@@ -51,6 +61,8 @@ class Kirki_Field_Checkbox extends Kirki_Field {
 	 * @access protected
 	 */
 	protected function set_default() {
+
 		$this->default = (bool) ( 1 === $this->default || '1' === $this->default || true === $this->default || 'true' === $this->default || 'on' === $this->default );
+
 	}
 }

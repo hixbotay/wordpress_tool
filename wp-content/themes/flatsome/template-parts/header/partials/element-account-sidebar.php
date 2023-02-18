@@ -24,7 +24,7 @@
   <span class="header-account-title">
     <?php _e('Login', 'woocommerce'); ?>
   </span>
-</a>
+</a><!-- .account-login-link -->
 <?php } ?>
 
 <?php

@@ -58,7 +58,7 @@
 		 */
 		do_action( 'woocommerce_after_main_content' );
 		?>
-
+		<?php do_action( 'flatsome_products_page_loader' ); ?>
 	</div><!-- col-fit  -->
 
 	<div class="large-3 col hide-for-medium <?php flatsome_sidebar_classes(); ?>">

@@ -1,15 +1,15 @@
 <?php
 /**
- * Helpers to get the values of a field.
+ * Hekoers to get the values of a field.
  * WARNING: PLEASE DO NOT USE THESE.
  * we only have these for backwards-compatibility purposes.
  * please use get_option() & get_theme_mod() instead.
  *
  * @package     Kirki
  * @category    Core
- * @author      Ari Stathopoulos (@aristath)
- * @copyright   Copyright (c) 2020, David Vongries
- * @license     https://opensource.org/licenses/MIT
+ * @author      Aristeides Stathopoulos
+ * @copyright   Copyright (c) 2017, Aristeides Stathopoulos
+ * @license     http://opensource.org/licenses/https://opensource.org/licenses/MIT
  * @since       1.0
  */
 
@@ -25,7 +25,8 @@ class Kirki_Values {
 	 * @since 3.0.10
 	 */
 	public function __construct() {
-		add_filter( 'kirki_values_get_value', array( $this, 'typography_field_tweaks' ), 10, 2 );
+
+		add_filter( 'kirki/values/get_value', array( $this, 'typography_field_tweaks' ), 10, 2 );
 	}
 
 	/**
@@ -38,6 +39,7 @@ class Kirki_Values {
 	 * @return array
 	 */
 	public function typography_field_tweaks( $value, $field_id ) {
+
 		if ( isset( Kirki::$fields[ $field_id ] ) && isset( Kirki::$fields[ $field_id ]['type'] ) ) {
 			if ( 'kirki-typography' === Kirki::$fields[ $field_id ]['type'] ) {
 
@@ -47,10 +49,7 @@ class Kirki_Values {
 
 				// Combine font-family and font-backup.
 				if ( isset( $value['font-family'] ) && isset( $value['font-backup'] ) ) {
-					$backup = trim( $value['font-backup'] );
-					if ( ! empty( $backup ) ) {
-						$value['font-family'] .= ', ' . $backup;
-					}
+					$value['font-family'] .= ', ' . $value['font-backup'];
 					unset( $value['font-backup'] );
 				}
 			}
@@ -96,7 +95,7 @@ class Kirki_Values {
 				$default_value = Kirki::$fields[ $field_id ]['default'];
 			}
 			$value = get_theme_mod( $field_id, $default_value );
-			return apply_filters( 'kirki_values_get_value', $value, $field_id );
+			return apply_filters( 'kirki/values/get_value', $value, $field_id );
 		}
 
 		if ( 'option' === Kirki::$config[ $config_id ]['option_type'] ) {
@@ -114,17 +113,19 @@ class Kirki_Values {
 				$setting_modified = str_replace( ']', '', str_replace( Kirki::$config[ $config_id ]['option_name'] . '[', '', $field_id ) );
 
 				$default_value = ( isset( Kirki::$fields[ $field_id ] ) && isset( Kirki::$fields[ $field_id ]['default'] ) ) ? Kirki::$fields[ $field_id ]['default'] : '';
-				$value         = ( isset( $options[ $setting_modified ] ) ) ? $options[ $setting_modified ] : $default_value;
-				$value         = maybe_unserialize( $value );
-				return apply_filters( 'kirki_values_get_value', $value, $field_id );
+				$value = ( isset( $options[ $setting_modified ] ) ) ? $options[ $setting_modified ] : $default_value;
+				$value = maybe_unserialize( $value );
+				return apply_filters( 'kirki/values/get_value', $value, $field_id );
 			}
 
 			// Each option separately saved in the db.
 			$value = get_option( $field_id, Kirki::$fields[ $field_id ]['default'] );
-			return apply_filters( 'kirki_values_get_value', $value, $field_id );
+			return apply_filters( 'kirki/values/get_value', $value, $field_id );
 
-		}
-		return apply_filters( 'kirki_values_get_value', $value, $field_id );
+		} // End if().
+
+		return apply_filters( 'kirki/values/get_value', $value, $field_id );
+
 	}
 
 	/**
@@ -141,7 +142,7 @@ class Kirki_Values {
 			$value = get_theme_mod( $field['settings'], $field['default'] );
 		} elseif ( isset( $field['option_type'] ) && 'option' === $field['option_type'] ) {
 			if ( isset( $field['option_name'] ) && '' !== $field['option_name'] ) {
-				$all_values     = get_option( $field['option_name'], array() );
+				$all_values = get_option( $field['option_name'], array() );
 				$sub_setting_id = str_replace( array( ']', $field['option_name'] . '[' ), '', $field['settings'] );
 				if ( isset( $all_values[ $sub_setting_id ] ) ) {
 					$value = $all_values[ $sub_setting_id ];
@@ -150,6 +151,8 @@ class Kirki_Values {
 				$value = get_option( $field['settings'], $field['default'] );
 			}
 		}
+
 		return $value;
+
 	}
 }

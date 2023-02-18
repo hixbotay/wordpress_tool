@@ -6,7 +6,7 @@ add_ux_builder_shortcode( 'col', array(
     'category' => __( 'Layout' ),
     'template' => flatsome_ux_builder_template( 'col.html' ),
     'tools' => 'shortcodes/col/col-tools.directive.html',
-    'info' => '{{ span }}/12 {{ label }}',
+    'info' => '{{ span }}/12',
     'require' => array( 'row' ),
     'wrap'   => false,
     'inline' => true,
@@ -21,12 +21,7 @@ add_ux_builder_shortcode( 'col', array(
     ),
 
     'options' => array(
-	    'label' => array(
-		    'full_width'  => true,
-		    'type'        => 'textfield',
-		    'heading'     => 'Label',
-		    'placeholder' => 'Enter admin label here..',
-	    ),
+
         'span' => array(
             'type' => 'col-slider',
             'heading' => 'Width',
@@ -37,6 +32,8 @@ add_ux_builder_shortcode( 'col', array(
             'max' => 12,
             'min' => 1,
         ),
+
+        'visibility'  => require( __DIR__ . '/commons/visibility.php' ),
 
         'force_first' => array(
             'type' => 'select',
@@ -58,7 +55,6 @@ add_ux_builder_shortcode( 'col', array(
             'type' => 'margins',
             'heading' => 'Padding',
             'full_width' => true,
-            'responsive' => true,
             'min' => 0,
             'max' => 200,
             'step' => 1,
@@ -68,9 +64,8 @@ add_ux_builder_shortcode( 'col', array(
             'type' => 'margins',
             'heading' => 'Margin',
             'full_width' => true,
-            'responsive' => true,
-            'min' => -500,
-            'max' => 500,
+            'min' => -200,
+            'max' => 200,
             'step' => 1,
         ),
 
@@ -89,14 +84,7 @@ add_ux_builder_shortcode( 'col', array(
             'position' => 'bottom right',
             'helpers' => require( __DIR__ . '/helpers/colors.php' ),
         ),
-	    'bg_radius' => array(
-		    'type'    => 'slider',
-		    'heading' => __( 'Bg Radius' ),
-		    'unit'    => 'px',
-		    'default' => 0,
-		    'max'     => 100,
-		    'min'     => 0,
-	    ),
+
         'color' => array(
             'type' => 'radio-buttons',
             'heading' => 'Color',
@@ -106,15 +94,7 @@ add_ux_builder_shortcode( 'col', array(
                 ''  => array( 'title' => 'Dark'),
             ),
         ),
-	    'sticky' => array(
-		    'type'    => 'radio-buttons',
-		    'heading' => 'Sticky',
-		    'default' => '',
-		    'options' => array(
-			    'true' => array( 'title' => 'On' ),
-			    ''     => array( 'title' => 'Off' ),
-		    ),
-	    ),
+
         'text_depth' => array(
               'type' => 'slider',
               'heading' => __('Text Shadow'),
@@ -155,6 +135,12 @@ add_ux_builder_shortcode( 'col', array(
             'heading' => 'Tooltip',
         ),
 
+        'class' => array(
+            'type' => 'textfield',
+            'heading' => 'Class',
+            'default' => '',
+        ),
+
         'parallax' => array(
             'type' => 'slider',
             'vertical' => true,
@@ -181,7 +167,5 @@ add_ux_builder_shortcode( 'col', array(
             'max' => 5,
             'min' => 0,
         ),
-	    'border_options' => require( __DIR__ . '/commons/border.php' ),
-        'advanced_options' => require( __DIR__ . '/commons/advanced.php'),
     ),
 ) );

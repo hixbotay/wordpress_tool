@@ -1,9 +1,14 @@
 /* global wp, _customizePostPreviewedQueriedObject */
 jQuery( document ).ready( function() {
 
-	var self = {
-		queriedPost: ( ! _.isUndefined( _customizePostPreviewedQueriedObject ) ) ? _customizePostPreviewedQueriedObject : null
+	var self;
+
+	self = {
+		queriedPost: null
 	};
+	if ( ! _.isUndefined( _customizePostPreviewedQueriedObject ) ) {
+		self.queriedPost = _customizePostPreviewedQueriedObject;
+	}
 
 	// Send the queried post object to the Customizer pane when ready.
 	wp.customize.bind( 'preview-ready', function() {
