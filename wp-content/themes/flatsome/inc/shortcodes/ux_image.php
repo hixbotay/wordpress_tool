@@ -1,32 +1,38 @@
 <?php
 function ux_image( $atts, $content = null ) {
 	extract( shortcode_atts( array(
-		'_id'             => 'image_' . rand(),
-		'id'              => '',
-		'org_img'         => '',
-		'caption'         => '',
-		'animate'         => '',
-		'animate_delay'   => '',
-		'lightbox'        => '',
-		'height'          => '',
-		'image_overlay'   => '',
-		'image_hover'     => '',
-		'image_hover_alt' => '',
-		'image_size'      => 'large',
-		'icon'            => '',
-		'width'           => '',
-		'margin'          => '',
-		'position_x'      => '',
-		'position_x__sm'  => '',
-		'position_x__md'  => '',
-		'position_y'      => '',
-		'position_y__sm'  => '',
-		'position_y__md'  => '',
-		'depth'           => '',
-		'parallax'        => '',
-		'depth_hover'     => '',
-		'link'            => '',
-		'target'          => '_self',
+		'_id'                 => 'image_' . rand(),
+		'class'               => '',
+		'visibility'          => '',
+		'id'                  => '',
+		'org_img'             => '',
+		'caption'             => '',
+		'animate'             => '',
+		'animate_delay'       => '',
+		'lightbox'            => '',
+		'lightbox_image_size' => 'large',
+		'lightbox_caption'    => '',
+		'image_title'         => '',
+		'height'              => '',
+		'image_overlay'       => '',
+		'image_hover'         => '',
+		'image_hover_alt'     => '',
+		'image_size'          => 'large',
+		'icon'                => '',
+		'width'               => '',
+		'margin'              => '',
+		'position_x'          => '',
+		'position_x__sm'      => '',
+		'position_x__md'      => '',
+		'position_y'          => '',
+		'position_y__sm'      => '',
+		'position_y__md'      => '',
+		'depth'               => '',
+		'parallax'            => '',
+		'depth_hover'         => '',
+		'link'                => '',
+		'target'              => '_self',
+		'rel'                 => '',
 	), $atts ) );
 
 	if ( empty( $id ) ) {
@@ -39,18 +45,25 @@ function ux_image( $atts, $content = null ) {
 		$atts['width'] = '100';
 	}
 
-	$classes       = array();
+	$classes = array();
+	if ( $class ) $classes[] = $class;
+	if ( $visibility ) $classes[] = $visibility;
+
 	$classes_inner = array( 'img-inner' );
-	$classes_img   = array();
 	$image_meta    = wp_prepare_attachment_for_js( $id );
+	$image_title   = filter_var( $image_title, FILTER_VALIDATE_BOOLEAN );
+	$link_atts     = array(
+		'target' => $target,
+		'rel'    => array( $rel ),
+	);
 
 	if ( is_numeric( $id ) ) {
 		if ( ! $org_img ) {
-			$org_img = wp_get_attachment_image_src( $id, 'large' );
-			$org_img = $org_img[0];
+			$org_img = wp_get_attachment_image_src( $id, $lightbox_image_size );
+			$org_img = $org_img ? $org_img[0] : '';
 		}
 		if ( $caption && $caption == 'true' ) {
-			$caption = $image_meta['caption'];
+			$caption = is_array( $image_meta ) ? $image_meta['caption'] : '';
 		}
 	} else {
 		if ( ! $org_img ) {
@@ -71,10 +84,11 @@ function ux_image( $atts, $content = null ) {
 				$image_overlay = 'rgba(0,0,0,.2)';
 			}
 		}
-		$link_start = '<a href="' . $link . '" target="' . $target . '" class="' . $link_class . '">';
+		$link_start = '<a class="' . $link_class . '" href="' . $link . '"' . flatsome_parse_target_rel( $link_atts ) . '>';
 		$link_end   = '</a>';
 	} elseif ( $lightbox ) {
-		$link_start = '<a class="image-lightbox lightbox-gallery" href="' . $org_img . '" title="' . $caption . '">';
+		$title      = $lightbox_caption ? $image_meta['caption'] : '';
+		$link_start = '<a class="image-lightbox lightbox-gallery" title="' . esc_attr( $title ) . '" href="' . $org_img . '">';
 		$link_end   = '</a>';
 	}
 
@@ -116,7 +130,6 @@ function ux_image( $atts, $content = null ) {
 
 	$classes       = implode( " ", $classes );
 	$classes_inner = implode( " ", $classes_inner );
-	$classes_img   = implode( " ", $classes_img );
 
 	ob_start();
 	?>
@@ -125,7 +138,7 @@ function ux_image( $atts, $content = null ) {
 		<?php if ( $parallax ) echo '<div ' . $parallax . '>'; ?>
 		<?php if ( $animate ) echo '<div data-animate="' . $animate . '">'; ?>
 		<div class="<?php echo $classes_inner; ?> dark" <?php echo get_shortcode_inline_css( $css_image_height ); ?>>
-			<?php echo flatsome_get_image( $id, $image_size, $caption ); ?>
+			<?php echo flatsome_get_image( $id, $image_size, $caption, false, $image_title ); ?>
 			<?php if ( $image_overlay ) { ?>
 				<div class="overlay" style="background-color: <?php echo $image_overlay; ?>"></div>
 			<?php } ?>

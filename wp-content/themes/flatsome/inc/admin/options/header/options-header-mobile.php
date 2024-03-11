@@ -79,16 +79,144 @@ Flatsome_Option::add_field( 'option', array(
 	),
 ));
 
+Flatsome_Option::add_field( 'option', array(
+	'type'        => 'radio',
+	'settings'    => 'mobile_submenu_parent_behavior',
+	'label'       => __( 'Menu item behavior', 'flatsome' ),
+	'description' => __( 'Click behavior for menu items with a submenu', 'flatsome' ),
+	'section'     => 'header_mobile',
+	'transport'   => 'refresh',
+	'default'     => '',
+	'choices'     => array(
+		''       => __( 'Open link', 'flatsome' ),
+		'toggle' => __( 'Toggle submenu', 'flatsome' ),
+	),
+) );
+
+Flatsome_Option::add_field( 'option', array(
+	'type'            => 'radio',
+	'settings'        => 'mobile_submenu_effect',
+	'label'           => __( 'Submenu effect', 'flatsome' ),
+	'section'         => 'header_mobile',
+	'transport'       => 'refresh',
+	'default'         => 'accordion',
+	'choices'         => array(
+		'accordion' => __( 'Accordion', 'flatsome' ),
+		'slide'     => __( 'Slide', 'flatsome' ),
+	),
+	'active_callback' => array(
+		array(
+			'setting'  => 'mobile_overlay',
+			'operator' => '!=',
+			'value'    => 'center',
+		),
+	),
+) );
+
+Flatsome_Option::add_field( 'option', array(
+	'type'            => 'select',
+	'settings'        => 'mobile_submenu_levels',
+	'label'           => __( 'Submenu levels', 'flatsome' ),
+	'section'         => 'header_mobile',
+	'transport'       => 'refresh',
+	'default'         => '1',
+	'choices'         => array(
+		'1' => __( '1 level', 'flatsome' ),
+		'2' => __( '2 levels', 'flatsome' ),
+	),
+	'active_callback' => array(
+		array(
+			'setting'  => 'mobile_overlay',
+			'operator' => '!=',
+			'value'    => 'center',
+		),
+		array(
+			'setting'  => 'mobile_submenu_effect',
+			'operator' => '===',
+			'value'    => 'slide',
+		),
+	),
+) );
+
+Flatsome_Option::add_field( 'option', array(
+	'type'              => 'textarea',
+	'settings'          => 'mobile_sidebar_top_content',
+	'label'             => __( 'Top content', 'flatsome' ),
+	'section'           => 'header_mobile',
+	'sanitize_callback' => 'flatsome_custom_sanitize',
+	'default'           => '',
+) );
+
+Flatsome_Option::add_field( 'option', array(
+	'type'     => 'radio-buttonset',
+	'settings' => 'mobile_sidebar_tabs',
+	'label'    => __( 'Tabs', 'flatsome' ),
+	'section'  => 'header_mobile',
+	'default'  => '0',
+	'choices'  => array(
+		'0' => __( 'None', 'flatsome' ),
+		'2' => __( '2 Tabs', 'flatsome' ),
+	),
+) );
+
+Flatsome_Option::add_field( 'option', array(
+	'type'            => 'text',
+	'settings'        => 'mobile_sidebar_tab_text',
+	'label'           => __( 'Tab 1 text', 'flatsome' ),
+	'section'         => 'header_mobile',
+	'default'         => '',
+	'active_callback' => array(
+		array(
+			'setting'  => 'mobile_sidebar_tabs',
+			'operator' => '!=',
+			'value'    => false,
+		),
+	),
+) );
+
 Flatsome_Option::add_field( 'option',  array(
   'type'        => 'sortable',
   'settings'     => 'mobile_sidebar',
-  'label'       => __( 'Menu Elements', 'flatsome-admin' ),
+  'label'       => __( 'Menu elements', 'flatsome' ),
   'section'     => 'header_mobile',
   'transport'   => $transport,
   'multiple' => 10,
   'default'     => flatsome_header_mobile_sidebar(),
   'choices'     => $nav_elements
 ));
+
+Flatsome_Option::add_field( 'option', array(
+	'type'            => 'text',
+	'settings'        => 'mobile_sidebar_tab_2_text',
+	'label'           => __( 'Tab 2 text', 'flatsome' ),
+	'section'         => 'header_mobile',
+	'default'         => '',
+	'active_callback' => array(
+		array(
+			'setting'  => 'mobile_sidebar_tabs',
+			'operator' => '!=',
+			'value'    => false,
+		),
+	),
+) );
+
+Flatsome_Option::add_field( 'option', array(
+	'type'            => 'sortable',
+	'settings'        => 'mobile_sidebar_tab_2',
+	'label'           => __( 'Menu elements tab 2', 'flatsome' ),
+	'section'         => 'header_mobile',
+	'transport'       => flatsome_customizer_transport(),
+	'multiple'        => 10,
+	'default'         => '',
+	'choices'         => $nav_elements,
+	'active_callback' => array(
+		array(
+			'setting'  => 'mobile_sidebar_tabs',
+			'operator' => '!=',
+			'value'    => false,
+		),
+	),
+) );
 
 Flatsome_Option::add_field( 'option', array(
 	'type'        => 'radio-image',

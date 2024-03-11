@@ -70,6 +70,14 @@ Flatsome_Option::add_field( 'option',  array(
 	),
 ));
 
+Flatsome_Option::add_field( 'option', array(
+	'type'     => 'checkbox',
+	'settings' => 'portfolio_share',
+	'label'    => __( 'Show share icons', 'flatsome' ),
+	'section'  => 'fl-portfolio',
+	'default'  => 1,
+) );
+
 Flatsome_Option::add_field( 'option',  array(
   'type'        => 'checkbox',
   'settings'     => 'portfolio_related',
@@ -96,6 +104,32 @@ Flatsome_Option::add_field( '', array(
     'default'     => '<div class="options-title-divider">Archive Page</div>',
 ) );
 
+Flatsome_Option::add_field( 'option', array(
+	'type'     => 'select',
+	'settings' => 'portfolio_archive_orderby',
+	'label'    => __( 'Portfolio Items Orderby', 'flatsome-admin' ),
+	'section'  => 'fl-portfolio',
+	'default'  => 'menu_order',
+	'choices'  => array(
+		'title'      => 'Title',
+		'name'       => 'Name',
+		'date'       => 'Date',
+		'menu_order' => 'Menu Order',
+	),
+));
+
+Flatsome_Option::add_field( 'option', array(
+	'type'     => 'select',
+	'settings' => 'portfolio_archive_order',
+	'label'    => __( 'Portfolio Items Order', 'flatsome-admin' ),
+	'section'  => 'fl-portfolio',
+	'default'  => 'desc',
+	'choices'  => array(
+		'desc' => 'DESC',
+		'asc'  => 'ASC',
+	),
+));
+
 Flatsome_Option::add_field( 'option',  array(
 	'type'        => 'radio-image',
 	'settings'     => 'portfolio_style',
@@ -113,7 +147,7 @@ Flatsome_Option::add_field( 'option',  array(
 Flatsome_Option::add_field( 'option',  array(
   'type'        => 'select',
   'settings'     => 'portfolio_height',
-  'label'       => __( 'Image height', 'flatsome-admin' ),
+  'label'       => __( 'Image Height', 'flatsome-admin' ),
   'section'     => 'fl-portfolio',
   'default'     => 0,
   'choices'     => array(
@@ -123,10 +157,116 @@ Flatsome_Option::add_field( 'option',  array(
     '56%' => '16:9 (Widescreen)',
     '100%' => '1:1 (Square)',
     '125%' => 'Portrait',
-    '100%' => '2:1 (Tall)',
+    '200%' => '2:1 (Tall)',
   ),
 ));
 
+Flatsome_Option::add_field( 'option',  array(
+	'type'     => 'slider',
+	'settings' => 'portfolio_archive_image_radius',
+	'label'    => __( 'Image Radius (%)', 'flatsome-admin' ),
+	'section'  => 'fl-portfolio',
+	'default'  => 0,
+	'choices'  => array(
+		'min'  => 0,
+		'max'  => 100,
+		'step' => 1,
+	),
+));
+
+Flatsome_Option::add_field( 'option',  array(
+	'type'     => 'select',
+	'settings' => 'portfolio_archive_image_size',
+	'label'    => __( 'Image Size', 'flatsome-admin' ),
+	'section'  => 'fl-portfolio',
+	'default'  => 'medium',
+	'choices'  => array(
+		'large'     => 'Large',
+		'medium'    => 'Medium',
+		'thumbnail' => 'Thumbnail',
+		'original'  => 'Original',
+	),
+));
+
+Flatsome_Option::add_field( 'option',  array(
+	'type'     => 'slider',
+	'settings' => 'portfolio_archive_depth',
+	'label'    => __( 'Item Depth', 'flatsome-admin' ),
+	'section'  => 'fl-portfolio',
+	'default'  => 0,
+	'choices'  => array(
+		'min'  => 0,
+		'max'  => 5,
+		'step' => 1,
+	),
+));
+
+Flatsome_Option::add_field( 'option',  array(
+	'type'     => 'slider',
+	'settings' => 'portfolio_archive_depth_hover',
+	'label'    => __( 'Item Depth :hover', 'flatsome-admin' ),
+	'section'  => 'fl-portfolio',
+	'default'  => 0,
+	'choices'  => array(
+		'min'  => 0,
+		'max'  => 5,
+		'step' => 1,
+	),
+));
+
+Flatsome_Option::add_field( 'option',  array(
+	'type'     => 'radio-buttonset',
+	'settings' => 'portfolio_archive_spacing',
+	'label'    => __( 'Column Spacing', 'flatsome-admin' ),
+	'section'  => 'fl-portfolio',
+	'default'  => 'small',
+	'choices'  => array(
+		'collapse' => 'Collapse',
+		'xsmall'   => 'X Small',
+		'small'    => 'Small',
+		'normal'   => 'Normal',
+		'large'    => 'Large',
+	),
+));
+
+Flatsome_Option::add_field( 'option', array(
+	'type'     => 'slider',
+	'settings' => 'portfolio_archive_columns',
+	'label'    => __( 'Items per row - Desktop', 'flatsome-admin' ),
+	'section'  => 'fl-portfolio',
+	'default'  => 4,
+	'choices'  => array(
+		'min'  => 1,
+		'max'  => 6,
+		'step' => 1,
+	),
+) );
+
+Flatsome_Option::add_field( 'option', array(
+	'type'     => 'slider',
+	'settings' => 'portfolio_archive_columns_tablet',
+	'label'    => __( 'Items per row - Tablet', 'flatsome-admin' ),
+	'section'  => 'fl-portfolio',
+	'default'  => 3,
+	'choices'  => array(
+		'min'  => 1,
+		'max'  => 4,
+		'step' => 1,
+	),
+) );
+
+Flatsome_Option::add_field( 'option', array(
+	'type'     => 'slider',
+	'settings' => 'portfolio_archive_columns_mobile',
+	'label'    => __( 'Items per row - Mobile', 'flatsome-admin' ),
+	'section'  => 'fl-portfolio',
+	'default'  => 2,
+	'choices'  => array(
+		'min'  => 1,
+		'max'  => 3,
+		'step' => 1,
+	),
+) );
 
 Flatsome_Option::add_field( 'option',  array(
 	'type'        => 'radio-image',
@@ -196,7 +336,7 @@ function flatsome_refresh_portfolio_partials( WP_Customize_Manager $wp_customize
 		'selector' => '.portfolio-single-page',
 		'settings' => array('portfolio_style','portfolio_layout','portfolio_title'),
 		'render_callback' => function() {
-		    return get_template_part('template-parts/portfolio/single-portfolio', flatsome_option('portfolio_layout'));
+		    get_template_part('template-parts/portfolio/single-portfolio', flatsome_option('portfolio_layout'));
 		},
 	) );
 
@@ -204,7 +344,7 @@ function flatsome_refresh_portfolio_partials( WP_Customize_Manager $wp_customize
 		'selector' => '.portfolio-archive',
 		'settings' => array('portfolio_archive_title','portfolio_archive_filter','portfolio_style','portfolio_archive_filter_style'),
 		'render_callback' => function() {
-		    return  get_template_part('template-parts/portfolio/archive-portfolio', flatsome_option('portfolio_archive_layout'));
+		    get_template_part('template-parts/portfolio/archive-portfolio', flatsome_option('portfolio_archive_layout'));
 		},
 	) );
 

@@ -19,7 +19,7 @@ class Elements extends Collection {
       'name' => $tag,
       'class' => 'UxBuilder\Elements\Element',
       'category' => __( 'Content' ),
-      'message'  => __( 'Add elements', 'ux_builder' ),
+      'message'  => __( 'Add elements', 'ux-builder' ),
       'info'     => '',
       'image'    => false,
       'inline'   => false,
@@ -44,6 +44,7 @@ class Elements extends Collection {
       'scroll_to' => true,
       'add_buttons' => false,
       'addable_spots' => false,
+      'has_presets' => false,
       'tools_controller' => ux_builder_to_pascalcase( "${tag}ToolsController" ),
       'shortcode_controller' => ux_builder_to_pascalcase( "${tag}ShortcodeController" ),
       'template' => null,
@@ -70,9 +71,11 @@ class Elements extends Collection {
 
     if ( empty( $data['presets'] ) ) {
       array_push( $data['presets'], array(
-        'name' => __( 'Default', 'ux_builder' ),
+        'name' => __( 'Default', 'ux-builder' ),
         'content' => $data['type'] == 'normal' ? "[{$tag}]" : "[{$tag}][/{$tag}]",
       ));
+    } else if ( is_array( $data['presets'] ) && count( $data['presets'] ) > 1 ) {
+      $data['has_presets'] = true;
     }
 
     // Indicate if template should be loaded from server.
@@ -91,6 +94,13 @@ class Elements extends Collection {
   */
   public function get( $tag = null ) {
     $tag = $this->extract_tag_name( $tag );
+
+    // `[ux_text]` shortcodes isn't registered in UX Builder,
+    // so we want to treat them like `[text]` elements.
+    if ( 'ux_text' === $tag && isset( $this->items['text'] ) ) {
+      return $this->items['text'];
+    }
+
     if ( $tag && isset( $this->items[$tag] ) ) {
       return $this->items[$tag];
     } else if ( $tag && ! isset( $this->items[$tag] ) ) {

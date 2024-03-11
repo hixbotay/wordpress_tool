@@ -35,14 +35,8 @@ add_ux_builder_shortcode( 'ux_image', array(
             'type' => 'select',
             'heading' => 'Image Size',
             'param_name' => 'image_size',
-            'default' => '',
-            'options' => array(
-                '' => 'Normal',
-                'large' => 'Large',
-                'medium' => 'Medium',
-                'thumbnail' => 'Thumbnail',
-                'original' => 'Original',
-            )
+            'default' => 'large',
+            'options' => flatsome_ux_builder_image_sizes(),
         ),
         'width' => array(
           'type' => 'slider',
@@ -88,6 +82,15 @@ add_ux_builder_shortcode( 'ux_image', array(
                 'true'  => array( 'title' => 'On'),
             ),
         ),
+
+        'lightbox_image_size' => array(
+	        'type'       => 'select',
+	        'heading'    => __( 'Lightbox Image Size' ),
+	        'conditions' => 'lightbox == "true"',
+	        'default'    => 'large',
+	        'options'    => flatsome_ux_builder_image_sizes(),
+        ),
+
         'caption' => array(
             'type' => 'radio-buttons',
             'heading' => __('Caption'),
@@ -97,6 +100,28 @@ add_ux_builder_shortcode( 'ux_image', array(
                 'true'  => array( 'title' => 'On'),
             ),
         ),
+
+		'lightbox_caption'    => array(
+			'type'       => 'radio-buttons',
+			'heading'    => __( 'Caption on Lightbox' ),
+			'conditions' => 'lightbox == "true"',
+			'default'    => '',
+			'options'    => array(
+				''     => array( 'title' => 'Off' ),
+				'true' => array( 'title' => 'On' ),
+			),
+		),
+
+		'image_title' => array(
+			'type'    => 'radio-buttons',
+			'heading' => __( 'Title' ),
+			'default' => '',
+			'options' => array(
+				''      => array( 'title' => 'Off' ),
+				'true'  => array( 'title' => 'On' ),
+			),
+		),
+
         'image_overlay' => array(
             'type' => 'colorpicker',
             'heading' => __( 'Image Overlay' ),
@@ -146,7 +171,7 @@ add_ux_builder_shortcode( 'ux_image', array(
 
         'depth_hover' => array(
             'type' => 'slider',
-            'heading' => 'Depth :Hover',
+            'heading' => 'Depth :hover',
             'default' => '0',
             'max' => '5',
             'min' => '0',
@@ -170,5 +195,6 @@ add_ux_builder_shortcode( 'ux_image', array(
         ),
         'link_options' => require( __DIR__ . '/commons/links.php' ),
         'position_options' => $position_options,
+        'advanced_options' => require( __DIR__ . '/commons/advanced.php'),
     ),
 ) );

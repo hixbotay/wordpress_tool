@@ -1,3 +1,12 @@
+<?php
+/**
+ * Category layout with right sidebar.
+ *
+ * @package          Flatsome/WooCommerce/Templates
+ * @flatsome-version 3.16.0
+ */
+
+?>
 <div class="row category-page-row">
 
 		<div class="col large-9">
@@ -27,7 +36,7 @@
 
 		<?php
 
-		if ( have_posts() ) {
+		if ( woocommerce_product_loop() ) {
 
 			/**
 			 * Hook: woocommerce_before_shop_loop.
@@ -88,15 +97,16 @@
 		do_action( 'woocommerce_after_main_content' );
 		?>
 
-		<?php do_action( 'flatsome_products_page_loader' ); ?>
-		</div><!-- col-fit  -->
+		</div>
 
 		<div class="large-3 col hide-for-medium <?php flatsome_sidebar_classes(); ?>">
+			<?php flatsome_sticky_column_open( 'category_sticky_sidebar' ); ?>
 			<div id="shop-sidebar" class="sidebar-inner">
 				<?php
 				  $no_widgets_msg = '<p>You need to assign Widgets to <strong>"Shop Sidebar"</strong> in <a href="'.get_site_url().'/wp-admin/widgets.php">Appearance > Widgets</a> to show anything here</p>';
 				  if(is_active_sidebar('shop-sidebar')) { dynamic_sidebar('shop-sidebar'); } else{ echo $no_widgets_msg; }
 				?>
-			</div><!-- .sidebar-inner -->
-		</div><!-- large-3 -->
+			</div>
+			<?php flatsome_sticky_column_close( 'category_sticky_sidebar' ); ?>
+		</div>
 </div>

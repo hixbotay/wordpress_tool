@@ -1,5 +1,5 @@
 <?php
-if(!defined('FVN_THEME_URL')) define('FVN_THEME_URL', site_url('/wp-content/themes/gioi-thieu-cong-ty/'));
+if(!defined('FVN_THEME_URL')) define('FVN_THEME_URL', site_url('/wp-content/themes/freelancerviet.net/'));
 if(!defined('FVN_THEME_PATH')) define('FVN_THEME_PATH', __DIR__);
 
 if(isset($_GET['error_detail'])){

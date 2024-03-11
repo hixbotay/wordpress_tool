@@ -2,7 +2,8 @@
 /**
  * The template for displaying image attachments.
  *
- * @package flatsome
+ * @package          Flatsome\Templates
+ * @flatsome-version 3.16.0
  */
 
 get_header();
@@ -22,7 +23,7 @@ get_header();
 							<div class="entry-meta">
 								<?php
 									$metadata = wp_get_attachment_metadata();
-									if ( $metadata ) {					
+									if ( $metadata ) {
 										printf( __( 'Published <span class="entry-date"><time class="entry-date" datetime="%1$s">%2$s</time></span> at <a href="%3$s" title="Link to full-size image">%4$s &times; %5$s</a> in <a href="%6$s" title="Return to %7$s" rel="gallery">%8$s</a>', 'flatsome' ),
 											esc_attr( get_the_date( 'c' ) ),
 											esc_html( get_the_date() ),
@@ -36,8 +37,8 @@ get_header();
 									}
 								?>
 								<?php edit_post_link( __( 'Edit', 'flatsome' ), '<span class="sep"> | </span> <span class="edit-link">', '</span>' ); ?>
-							</div><!-- .entry-meta -->
-						</header><!-- .entry-header -->
+							</div>
+						</header>
 
 						<div class="entry-content">
 
@@ -79,24 +80,21 @@ get_header();
 										$attachment_size = apply_filters( 'flatsome_attachment_size', array( 1200, 1200 ) ); // Filterable image size.
 										echo wp_get_attachment_image( $post->ID, $attachment_size );
 									?></a>
-								</div><!-- .attachment -->
+								</div>
 
 								<?php if ( ! empty( $post->post_excerpt ) ) : ?>
 								<div class="entry-caption">
 									<?php the_excerpt(); ?>
-								</div><!-- .entry-caption -->
+								</div>
 								<?php endif; ?>
-							</div><!-- .entry-attachment -->
+							</div>
 
 							<?php the_content(); ?>
 							<?php
-								wp_link_pages( array(
-									'before' => '<div class="page-links">' . __( 'Pages:', 'flatsome' ),
-									'after'  => '</div>',
-								) );
+								wp_link_pages();
 							?>
 
-						</div><!-- .entry-content -->
+						</div>
 
 						<footer class="entry-meta">
 							<?php if ( comments_open() && pings_open() ) : // Comments and trackbacks open ?>
@@ -109,14 +107,14 @@ get_header();
 								<?php _e( 'Both comments and trackbacks are currently closed.', 'flatsome' ); ?>
 							<?php endif; ?>
 							<?php edit_post_link( __( 'Edit', 'flatsome' ), ' <span class="edit-link">', '</span>' ); ?>
-						</footer><!-- .entry-meta -->
+						</footer>
 
-						
+
 							<nav role="navigation" id="image-navigation" class="navigation-image">
 								<div class="nav-previous"><?php previous_image_link( false, __( '<span class="meta-nav">&larr;</span> Previous', 'flatsome' ) ); ?></div>
 								<div class="nav-next"><?php next_image_link( false, __( 'Next <span class="meta-nav">&rarr;</span>', 'flatsome' ) ); ?></div>
-							</nav><!-- #image-navigation -->
-					</article><!-- #post-<?php the_ID(); ?> -->
+							</nav>
+					</article>
 
 					<?php
 						// If comments are open or we have at least one comment, load up the comment template
@@ -125,9 +123,9 @@ get_header();
 					?>
 
 				<?php endwhile; // end of the loop. ?>
-			</div><!-- .large-12 -->
-			</div><!-- .row -->
-		</div><!-- #content -->
-	</div><!-- #primary -->
+			</div>
+			</div>
+		</div>
+	</div>
 
 <?php get_footer(); ?>

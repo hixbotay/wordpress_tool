@@ -10,88 +10,99 @@
  * happen. When this occurs the version of the template file will be bumped and
  * the readme will list any important changes.
  *
- * @see 	    http://docs.woothemes.com/document/template-structure/
- * @author 		WooThemes
- * @package 	WooCommerce/Templates
- * @version     3.0.0
+ * @see              https://docs.woocommerce.com/document/template-structure/
+ * @package          WooCommerce/Templates
+ * @version          3.0.0
+ * @flatsome-version 3.16.0
  */
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-global $product, $woocommerce_loop;
-
-// Fallback to WC.2x Versions.
-if(!fl_woocommerce_version_check('3.0.0') ) {
-  wc_get_template( 'woocommerce/single-product/w2-up-sells.php' );
-  return;
-}
-
 if ( $upsells ) : ?>
-  <?php if(get_theme_mod('product_upsell','sidebar') !== 'sidebar') {
 
-      $type = get_theme_mod('related_products','slider');
+	<?php
+	if ( get_theme_mod( 'product_upsell', 'sidebar' ) !== 'sidebar' ) :
 
-      if($type == 'grid') $type = 'row';
+		$type             = get_theme_mod( 'related_products', 'slider' );
+		$repeater_classes = array();
 
-      $repater['type'] = $type;
-      $repater['columns'] = get_theme_mod('related_products_pr_row','4');
-      $repater['slider_style'] = 'reveal';
-      $repater['row_spacing'] = 'small';
+		if ( $type == 'grid' ) {
+			$type = 'row';
+		}
 
-      if(count($upsells) < $repater['columns']){
-        $repater['type'] = 'row';
-      }
-  ?>
-	<div class="up-sells upsells upsells-wrapper product-section">
+		if ( get_theme_mod('category_force_image_height' ) ) $repeater_classes[] = 'has-equal-box-heights';
+		if ( get_theme_mod('equalize_product_box' ) ) $repeater_classes[] = 'equalize-box';
 
-  		<h3 class="product-section-title product-section-title-upsell pt-half pb-half uppercase">
-  			<?php _e( 'You may also like&hellip;', 'woocommerce' ) ?>
-  		</h3>
+		$repeater['type']         = $type;
+		$repeater['columns']      = get_theme_mod( 'related_products_pr_row', 4 );
+		$repeater['columns__md']  = get_theme_mod( 'related_products_pr_row_tablet', 3 );
+		$repeater['columns__sm']  = get_theme_mod( 'related_products_pr_row_mobile', 2 );
+		$repeater['class']        = implode( ' ', $repeater_classes );
+		$repeater['slider_style'] = 'reveal';
+		$repeater['row_spacing']  = 'small';
 
-			<?php echo get_flatsome_repeater_start($repater); ?>
+		if ( count( $upsells ) < $repeater['columns'] ) {
+			$repeater['type'] = 'row';
+		}
+		?>
+		<div class="up-sells upsells products upsells-wrapper product-section">
+			<?php
+			$heading = apply_filters( 'woocommerce_product_upsells_products_heading', __( 'You may also like&hellip;', 'woocommerce' ) );
 
-      <?php foreach ( $upsells as $upsell ) : ?>
+			if ( $heading ) :
+				?>
+				<h3 class="product-section-title product-section-title-upsell pt-half pb-half uppercase">
+					<?php echo esc_html( $heading ); ?>
+				</h3>
+			<?php endif; ?>
 
-        <?php
-          $post_object = get_post( $upsell->get_id() );
+			<?php get_flatsome_repeater_start( $repeater ); ?>
 
-          setup_postdata( $GLOBALS['post'] =& $post_object );
+			<?php foreach ( $upsells as $upsell ) :
+				$post_object = get_post( $upsell->get_id() );
 
-          wc_get_template_part( 'content', 'product' ); ?>
+				setup_postdata( $GLOBALS['post'] =& $post_object ); // phpcs:ignore WordPress.WP.GlobalVariablesOverride.Prohibited, Squiz.PHP.DisallowMultipleAssignments.Found
 
-      <?php endforeach; ?>
+				wc_get_template_part( 'content', 'product' );
+			endforeach;
+			?>
 
-			<?php echo get_flatsome_repeater_end($repater); ?>
+			<?php get_flatsome_repeater_end( $repeater ); ?>
+		</div>
+	<?php else : ?>
 
-	</div>
-  <?php } else { ?>
+		<aside class="widget widget-upsell">
+			<?php
+			$heading = apply_filters( 'woocommerce_product_upsells_products_heading', __( 'You may also like&hellip;', 'woocommerce' ) );
 
-  <aside class="widget widget-upsell">
+			if ( $heading ) :
+				?>
+				<h3 class="widget-title shop-sidebar">
+					<?php echo esc_html( $heading ); ?>
+					<div class="is-divider small"></div>
+				</h3>
+			<?php endif; ?>
+			<!-- Upsell List style -->
+			<ul class="product_list_widget">
+				<?php foreach ( $upsells as $upsell ) : ?>
 
-    <h3 class="widget-title shop-sidebar">
-      <?php _e( 'You may also like&hellip;', 'woocommerce' ) ?>
-      <div class="is-divider small"></div>
-    </h3>
+					<?php
+					$post_object = get_post( $upsell->get_id() );
 
-    <!-- Upsell List style -->
-    <ul class="product_list_widget">
-    <?php foreach ( $upsells as $upsell ) : ?>
+					setup_postdata( $GLOBALS['post'] =& $post_object ); // phpcs:ignore WordPress.WP.GlobalVariablesOverride.Prohibited, Squiz.PHP.DisallowMultipleAssignments.Found
 
-      <?php
-          $post_object = get_post( $upsell->get_id() );
+					wc_get_template_part( 'content', 'product-small' );
+					?>
 
-          setup_postdata( $GLOBALS['post'] =& $post_object );
+				<?php endforeach; ?>
+			</ul>
+		</aside>
 
-          wc_get_template_part( 'content', 'product-small' ); ?>
+	<?php endif; ?>
 
-      <?php endforeach; ?>
-    </ul><!-- row -->
-  </aside>
-
-  <?php } ?>
-
-<?php endif;
+	<?php
+endif;
 
 wp_reset_postdata();

@@ -6,7 +6,9 @@
  * @return  tring
  */
 function ux_builder_mode() {
-  return 'frontend';
+  return array_key_exists( 'ux_builder', $_GET)
+    ? $_GET['ux_builder']
+    : 'frontend';
 }
 
 /**
@@ -15,6 +17,10 @@ function ux_builder_mode() {
  * @return  boolean
  */
 function ux_builder_is_active() {
+  if ( defined( 'FLATSOME_TESTSUITE' ) ) {
+    return true;
+  }
+
   return (
     ux_builder_is_iframe() ||
     ux_builder_is_editor() ||
@@ -31,7 +37,11 @@ function ux_builder_is_active() {
  * @return  boolean
  */
 function ux_builder_is_editor() {
-  return array_key_exists( 'page', $_GET ) && $_GET['page'] == 'uxbuilder';
+  return (
+    array_key_exists( 'app', $_GET ) &&
+    array_key_exists( 'type', $_GET ) &&
+    $_GET['app'] === 'uxbuilder'
+  );
 }
 
 /**

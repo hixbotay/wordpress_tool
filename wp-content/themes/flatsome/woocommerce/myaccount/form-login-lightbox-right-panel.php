@@ -2,7 +2,7 @@
 /**
  * Login Form - Lightbox Right Pane
  *
- * This template can be overridden by copying it to yourtheme/woocommerce/myaccount/form-login.php.
+ * This template can be overridden by copying it to yourtheme/woocommerce/myaccount/form-login-lightbox-right-panel.php.
  *
  * HOWEVER, on occasion WooCommerce will need to update template files and you
  * (the theme developer) will need to copy the new files to your theme to
@@ -10,9 +10,10 @@
  * happen. When this occurs the version of the template file will be bumped and
  * the readme will list any important changes.
  *
- * @see     https://docs.woocommerce.com/document/template-structure/
- * @package WooCommerce/Templates
- * @version 4.1.0
+ * @see              https://docs.woocommerce.com/document/template-structure/
+ * @package          Flatsome\Templates
+ * @version          7.0.1
+ * @flatsome-version 3.16.2
  */
 
 if ( ! defined( 'ABSPATH' ) ) {
@@ -81,7 +82,7 @@ do_action( 'woocommerce_before_customer_login_form' ); ?>
 							<input class="woocommerce-form__input woocommerce-form__input-checkbox" name="rememberme" type="checkbox" id="rememberme" value="forever" /> <span><?php esc_html_e( 'Remember me', 'woocommerce' ); ?></span>
 						</label>
 						<?php wp_nonce_field( 'woocommerce-login', 'woocommerce-login-nonce' ); ?>
-						<button type="submit" class="woocommerce-button button woocommerce-form-login__submit" name="login" value="<?php esc_attr_e( 'Log in', 'woocommerce' ); ?>"><?php esc_html_e( 'Log in', 'woocommerce' ); ?></button>
+						<button type="submit" class="woocommerce-button button woocommerce-form-login__submit<?php if ( fl_woocommerce_version_check( '7.0.1' ) ) { echo esc_attr( wc_wp_theme_get_element_class_name( 'button' ) ? ' ' . wc_wp_theme_get_element_class_name( 'button' ) : '' ); } ?>" name="login" value="<?php esc_attr_e( 'Log in', 'woocommerce' ); ?>"><?php esc_html_e( 'Log in', 'woocommerce' ); ?></button>
 					</p>
 					<p class="woocommerce-LostPassword lost_password">
 						<a href="<?php echo esc_url( wp_lostpassword_url() ); ?>"><?php esc_html_e( 'Lost your password?', 'woocommerce' ); ?></a>

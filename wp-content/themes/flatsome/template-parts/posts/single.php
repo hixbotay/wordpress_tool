@@ -1,4 +1,12 @@
-<?php if ( have_posts() ) : ?>
+<?php
+/**
+ * Posts single.
+ *
+ * @package          Flatsome\Templates
+ * @flatsome-version 3.16.0
+ */
+
+if ( have_posts() ) : ?>
 
 <?php /* Start the Loop */ ?>
 
@@ -12,8 +20,8 @@
 			}
 		?>
 		<?php get_template_part( 'template-parts/posts/content', 'single' ); ?>
-	</div><!-- .article-inner -->
-</article><!-- #-<?php the_ID(); ?> -->
+	</div>
+</article>
 
 <?php endwhile; ?>
 

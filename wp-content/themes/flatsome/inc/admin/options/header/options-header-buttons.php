@@ -57,6 +57,17 @@ Flatsome_Option::add_field( 'option',
 
 Flatsome_Option::add_field( 'option',
 	array(
+		'type'        => 'text',
+		'settings'    => 'header_button_1_link_rel',
+		'transport'   => $transport,
+		'default'     => '',
+		'label'       => __( 'Rel', 'flatsome-admin' ),
+		'section'     => 'header_buttons',
+	)
+);
+
+Flatsome_Option::add_field( 'option',
+	array(
 		'type'      => 'text',
 		'settings'  => 'header_button_1_radius',
 		'transport' => $transport,
@@ -126,7 +137,7 @@ Flatsome_Option::add_field( 'option',
 	array(
 		'type'      => 'slider',
 		'settings'  => 'header_button_1_depth_hover',
-		'label'     => __( 'Depth:hover', 'flatsome-admin' ),
+		'label'     => __( 'Depth :hover', 'flatsome-admin' ),
 		'section'   => 'header_buttons',
 		'default'   => 0,
 		'choices'   => array(
@@ -183,6 +194,17 @@ Flatsome_Option::add_field( 'option',
 			'_self'  => __( 'Same window', 'flatsome-admin' ),
 			'_blank' => __( 'New window', 'flatsome-admin' ),
 		),
+	)
+);
+
+Flatsome_Option::add_field( 'option',
+	array(
+		'type'        => 'text',
+		'settings'    => 'header_button_2_link_rel',
+		'transport'   => $transport,
+		'default'     => '',
+		'label'       => __( 'Rel', 'flatsome-admin' ),
+		'section'     => 'header_buttons',
 	)
 );
 
@@ -258,7 +280,7 @@ Flatsome_Option::add_field( 'option',
 	array(
 		'type'      => 'slider',
 		'settings'  => 'header_button_2_depth_hover',
-		'label'     => __( 'Depth:hover', 'flatsome-admin' ),
+		'label'     => __( 'Depth :hover', 'flatsome-admin' ),
 		'section'   => 'header_buttons',
 		'default'   => 0,
 		'choices'   => array(

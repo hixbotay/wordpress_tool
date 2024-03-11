@@ -1,7 +1,6 @@
 <?php
 // Get Product Lists
 function ux_list_products( $args ) {
-	global $post, $woocommerce, $product;
 
 	if ( isset( $args ) ) {
 		$options = $args;
@@ -28,22 +27,19 @@ function ux_list_products( $args ) {
 			$order = 'asc';
 		}
 
-		// Get Category.
-		$cat = '';
-		if ( isset( $options['cat'] ) ) {
-			if ( is_numeric( $options['cat'] ) && get_term( $options['cat'] ) ) {
-				$cat = get_term( $options['cat'] )->slug;
-			} else {
-				$cat = $options['cat'];
-			}
-		}
-
-		$tags = '';
+		$tags = array();
 		if ( isset( $options['tags'] ) ) {
-			if ( is_numeric( $options['tags'] ) ) {
-				$options['tags'] = get_term( $options['tags'] )->slug;
-			}
-			$tags = $options['tags'];
+			$_tags = array_filter( array_map( 'trim', explode( ',', $options['tags'] ) ) );
+			$tags  = array_map( function ( $tag ) {
+				if ( is_numeric( $tag ) ) {
+					$term = get_term( $tag );
+					if ( $term instanceof WP_Term ) {
+						return $term->slug;
+					}
+				}
+
+				return $tag;
+			}, $_tags );
 		}
 
 		$offset = '';
@@ -69,19 +65,12 @@ function ux_list_products( $args ) {
 
 	switch ( $show ) {
 		case 'featured':
-			if ( fl_woocommerce_version_check( '3.0.0' ) ) {
-				$query_args['tax_query'][] = array(
-					'taxonomy' => 'product_visibility',
-					'field'    => 'name',
-					'terms'    => 'featured',
-					'operator' => 'IN',
-				);
-			} else {
-				$query_args['meta_query'][] = array(
-					'key'   => '_featured',
-					'value' => 'yes',
-				);
-			}
+			$query_args['tax_query'][] = array(
+				'taxonomy' => 'product_visibility',
+				'field'    => 'name',
+				'terms'    => 'featured',
+				'operator' => 'IN',
+			);
 			break;
 		case 'onsale':
 			$query_args['post__in'] = array_merge( array( 0 ), wc_get_product_ids_on_sale() );
@@ -113,8 +102,16 @@ function ux_list_products( $args ) {
 			$query_args['orderby'] = 'date';
 	}
 
-	if ( ! empty( $cat ) ) {
-		$query_args = ux_maybe_add_category_args( $query_args, $cat, 'IN' );
+	$query_args = ux_maybe_add_category_args( $query_args, $options['cat'], 'IN' );
+
+	if ( isset( $options['out_of_stock'] ) && $options['out_of_stock'] === 'exclude' ) {
+		$product_visibility_term_ids = wc_get_product_visibility_term_ids();
+		$query_args['tax_query'][]   = array(
+			'taxonomy' => 'product_visibility',
+			'field'    => 'term_taxonomy_id',
+			'terms'    => $product_visibility_term_ids['outofstock'],
+			'operator' => 'NOT IN',
+		);
 	}
 
 	$results = new WP_Query( $query_args );
@@ -122,58 +119,82 @@ function ux_list_products( $args ) {
 	return $results;
 } // List products
 
-
-function ux_maybe_add_category_args( $args, $category, $operator ) {
+/**
+ * Set categories query args if not empty.
+ *
+ * @param array  $query_args Query args.
+ * @param string $category   Shortcode category attribute value.
+ * @param string $operator   Query Operator.
+ *
+ * @return array $query_args
+ */
+function ux_maybe_add_category_args( $query_args, $category, $operator ) {
 	if ( ! empty( $category ) ) {
-		if ( empty( $args['tax_query'] ) ) {
-			$args['tax_query'] = array(); // @codingStandardsIgnoreLine
+
+		if ( empty( $query_args['tax_query'] ) ) {
+			$query_args['tax_query'] = array(); // @codingStandardsIgnoreLine
 		}
-		$args['tax_query'][] = array(
-			array(
-				'taxonomy' => 'product_cat',
-				'terms'    => array_map( 'sanitize_title', explode( ',', $category ) ),
-				'field'    => 'slug',
-				'operator' => $operator,
-			),
+
+		$categories = array_map( 'sanitize_title', explode( ',', $category ) );
+		$field      = 'slug';
+
+		if ( is_numeric( $categories[0] ) ) {
+			$field      = 'term_id';
+			$categories = array_map( 'absint', $categories );
+			// Check numeric slugs.
+			foreach ( $categories as $cat ) {
+				$the_cat = get_term_by( 'slug', $cat, 'product_cat' );
+				if ( false !== $the_cat ) {
+					$categories[] = $the_cat->term_id;
+				}
+			}
+		}
+
+		$query_args['tax_query'][] = array(
+			'taxonomy' => 'product_cat',
+			'terms'    => $categories,
+			'field'    => $field,
+			'operator' => $operator,
 		);
 	}
 
-	return $args;
+	return $query_args;
 }
 
 global $pagenow;
-if ( is_admin() && isset( $_GET['activated'] ) && $pagenow == 'themes.php' ) {
+if ( ! get_theme_mod( 'activated_before' ) && is_admin() && isset( $_GET['activated'] ) && $pagenow == 'themes.php' ) {
 	/**
 	 * Set Default WooCommerce Image sizes upon theme activation.
 	 */
 	function flatsome_woocommerce_image_dimensions() {
-		$single = array(
-			'width'  => '600', // px
-			'height' => '600', // px
-			'crop'   => 1    // true
+		$single  = array(
+			'width'  => '510',
+			'height' => '600',
+			'crop'   => 1,
 		);
 		$catalog = array(
-			'width'  => '300', // px
-			'height' => '300', // px
-			'crop'   => 1    // true
-		);
-		$thumbnail = array(
-			'width'  => '150', // px
-			'height' => '150', // px
-			'crop'   => 1    // true
+			'width'  => '247',
+			'height' => '300',
+			'crop'   => 1,
 		);
 
-		if ( fl_woocommerce_version_check( '3.3.0' ) ) {
-			update_option( 'woocommerce_single_image_width', $single['width'] );
-			update_option( 'woocommerce_thumbnail_image_width', $catalog['width'] );
-			update_option( 'woocommerce_thumbnail_cropping', 'uncropped' );
-			update_option( 'woocommerce_thumbnail_cropping_custom_width', 5 );
-			update_option( 'woocommerce_thumbnail_cropping_custom_height', 6 );
-		} else {
-			update_option( 'shop_single_image_size', $single ); // Single product image.
-			update_option( 'shop_catalog_image_size', $catalog ); // Product category thumbs.
-			update_option( 'shop_thumbnail_image_size', $thumbnail ); // Image gallery thumbs.
+		update_option( 'woocommerce_single_image_width', $single['width'] );
+		update_option( 'woocommerce_thumbnail_image_width', $catalog['width'] );
+		update_option( 'woocommerce_thumbnail_cropping', 'custom' );
+		update_option( 'woocommerce_thumbnail_cropping_custom_width', 5 );
+		update_option( 'woocommerce_thumbnail_cropping_custom_height', 6 );
+	}
+
+	add_action( 'init', 'flatsome_woocommerce_image_dimensions', 1 );
+
+	/**
+	 * Set a theme mod to retrieve first activation state from.
+	 */
+	function flatsome_first_activation_state() {
+		if ( ! get_theme_mod( 'activated_before' ) ) {
+			set_theme_mod( 'activated_before', true );
 		}
 	}
-	add_action( 'init', 'flatsome_woocommerce_image_dimensions', 1 );
+
+	add_action( 'shutdown', 'flatsome_first_activation_state' );
 }

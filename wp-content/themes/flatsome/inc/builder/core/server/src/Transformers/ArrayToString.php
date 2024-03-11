@@ -6,6 +6,8 @@ use UxBuilder\Options\Options;
 use UxBuilder\Collections\Elements;
 
 class ArrayToString extends Transformer {
+  protected $in_block = false;
+  protected $use_blocks = false;
 
   /**
    * @var array
@@ -17,8 +19,9 @@ class ArrayToString extends Transformer {
    */
   protected $elements;
 
-  public function __construct( Elements $elements ) {
+  public function __construct( Elements $elements, $use_blocks = false ) {
     $this->elements = $elements;
+    $this->use_blocks = $use_blocks;
     $this->nested = array();
   }
 
@@ -34,21 +37,63 @@ class ArrayToString extends Transformer {
 
     foreach ( $array as $item ) {
       $shortcode = $this->elements->get( $item['tag'] );
+
+      if ( $item['tag'] !== 'ux_gutenberg' && ! $this->in_block ) {
+        $string .= $this->start_html_block( $container === null );
+      } else if ( $item['tag'] === 'ux_gutenberg' && $this->in_block ) {
+        $string .= $this->end_html_block( $container === null );
+      }
+
       $nested = $this->increase_nested( $item['tag'] );
       $tag = $this->generate_tag( $item, $nested );
       $options = $this->options_to_string( $item, $shortcode );
       $content = $this->get_content( $item );
 
-      $string .= str_replace(
-        array( '{tag}', '{options}', '{content}' ),
-        array( $tag, $options, $content, ),
-        $shortcode['template_shortcode']
-      );
+      $template_shortcode = $shortcode['template_shortcode'];
+
+      if ( is_callable( $shortcode['template_shortcode'] ) ) {
+        $template_shortcode = call_user_func_array(
+          $shortcode['template_shortcode'],
+          array( $item, $options, $content, $container )
+        );
+      }
+
+      if ( is_string( $template_shortcode ) ) {
+        $string .= str_replace(
+          array( '{tag}', '{options}', '{content}' ),
+          array( $tag, $options, $content, ),
+          $template_shortcode
+        );
+      }
 
       $this->decrease_nested( $item['tag'] );
     }
 
+    if ( $this->in_block ) {
+      $string .= $this->end_html_block( $container === null );
+    }
+
     return $string;
+  }
+
+  protected function start_html_block( $is_root ) {
+    if (! $is_root) return '';
+
+    $this->in_block = true;
+
+    return $this->use_blocks
+      ? "\n<!-- wp:flatsome/uxbuilder -->\n"
+      : '';
+  }
+
+  protected function end_html_block( $is_root ) {
+    if (! $is_root) return '';
+
+    $this->in_block = false;
+
+    return $this->use_blocks
+      ? "\n<!-- /wp:flatsome/uxbuilder -->\n"
+      : '';
   }
 
   /**

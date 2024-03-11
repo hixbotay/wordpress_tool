@@ -2,6 +2,8 @@
 // [ux_price_table]
 function ux_price_table( $atts, $content = null ){
   extract( shortcode_atts( array(
+    'class' => '',
+    'visibility' => '',
     'title' => 'Title',
     'price' => '$99.99',
     'description' => '',
@@ -17,12 +19,18 @@ function ux_price_table( $atts, $content = null ){
     'button_text' => '',
     'button_link' => '',
   ), $atts ) );
+
+  if($visibility == 'hidden') return;
+
   ob_start();
 
   $classes = array('pricing-table','ux_price_table');
   $classes_wrapper = array('pricing-table-wrapper');
 
   $classes[] = 'text-center';
+
+  if( $class ) $classes[] = $class;
+  if( $visibility ) $classes[] = $visibility;
 
   if($color == 'dark') $classes_wrapper[] = 'dark';
   if($depth) $classes[] = 'box-shadow-'.$depth;
@@ -47,7 +55,7 @@ function ux_price_table( $atts, $content = null ){
       <?php } ?>
     </div>
     <div class="pricing-table-items items">
-      <?php echo flatsome_contentfix($content); ?>
+      <?php echo do_shortcode( $content ); ?>
     </div>
     <?php if($button_text) { ?>
     <div class="cta-button">

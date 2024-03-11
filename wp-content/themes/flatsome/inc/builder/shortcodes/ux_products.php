@@ -24,11 +24,52 @@ $options = array(
 ),
 'layout_options' => require( __DIR__ . '/commons/repeater-options.php' ),
 'layout_options_slider' => require( __DIR__ . '/commons/repeater-slider.php' ),
+'box_options' => array(
+	'type'    => 'group',
+	'heading' => __( 'Box' ),
+	'options' => array(
+		'show_cat' => array(
+			'type'    => 'checkbox',
+			'heading' => __( 'Category' ),
+			'default' => 'true',
+		),
+		'show_title' => array(
+			'type'    => 'checkbox',
+			'heading' => __( 'Title' ),
+			'default' => 'true',
+		),
+		'show_rating' => array(
+			'type'    => 'checkbox',
+			'heading' => __( 'Rating' ),
+			'default' => 'true',
+		),
+		'show_price' => array(
+			'type'    => 'checkbox',
+			'heading' => __( 'Price' ),
+			'default' => 'true',
+		),
+		'show_add_to_cart' => array(
+			'type'    => 'checkbox',
+			'heading' => __( 'Add To Cart' ),
+			'default' => 'true',
+		),
+		'show_quick_view' => array(
+			'type'    => 'checkbox',
+			'heading' => __( 'Quick View' ),
+			'default' => 'true',
+		),
+		'equalize_box' => array(
+			'type'    => 'checkbox',
+			'heading' => __( 'Equalize Items' ),
+			'default' => 'false',
+		),
+	),
+),
 'post_options' => require( __DIR__ . '/commons/repeater-posts.php' ),
 'filter_posts' => array(
     'type' => 'group',
     'heading' => __( 'Filter Posts' ),
-    'conditions' => 'ids === ""',
+    'conditions' => 'ids == ""',
     'options' => array(
          'orderby' => array(
             'type' => 'select',
@@ -38,6 +79,7 @@ $options = array(
                 'normal' => 'Normal',
                 'title' => 'Title',
                 'sales' => 'Sales',
+                'price' => 'Price',
                 'rand' => 'Random',
                 'date' => 'Date'
             )
@@ -60,7 +102,16 @@ $options = array(
                 'featured' => 'Featured',
                 'onsale' => 'On Sale',
             )
-        )
+        ),
+         'out_of_stock' => array(
+	         'type'    => 'select',
+	         'heading' => __( 'Out Of Stock' ),
+	         'default' => '',
+	         'options' => array(
+		         ''        => 'Include',
+		         'exclude' => 'Exclude',
+	         ),
+         ),
     )
 )
 );
@@ -76,9 +127,10 @@ $options['layout_options']['options']['depth_hover']['conditions'] = 'style !== 
 $options['post_options']['options']['tags'] = array(
   'type' => 'select',
   'heading' => 'Tag',
-  'conditions' => 'ids === ""',
+  'conditions' => 'ids == ""',
   'default' => '',
   'config' => array(
+	  'multiple' => true,
       'placeholder' => 'Select...',
       'termSelect' => array(
           'post_type' => 'product',

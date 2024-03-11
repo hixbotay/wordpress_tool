@@ -32,6 +32,13 @@ add_ux_builder_shortcode( 'logo',
 				'heading' => 'Image',
 				'default' => '',
 			),
+			'image_size' => array(
+				'type'       => 'select',
+				'heading'    => 'Image Size',
+				'param_name' => 'image_size',
+				'default'    => 'original',
+				'options'    => flatsome_ux_builder_image_sizes(),
+			),
 			'title'  => array(
 				'type'    => 'textfield',
 				'heading' => __( 'Title' ),
@@ -62,6 +69,7 @@ add_ux_builder_shortcode( 'logo',
 				'min'     => 0,
 			),
 			'link_options' => require( __DIR__ . '/commons/links.php' ),
+			'advanced_options' => require( __DIR__ . '/commons/advanced.php'),
 		),
 	)
 );

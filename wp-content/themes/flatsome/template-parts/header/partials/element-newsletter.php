@@ -1,4 +1,11 @@
 <?php
+/**
+ * Newsletter element.
+ *
+ * @package          Flatsome\Templates
+ * @flatsome-version 3.16.0
+ */
+
 $icon_style = get_theme_mod( 'newsletter_icon_style', 'plain' );
 $label      = get_theme_mod( 'header_newsletter_label', 'Newsletter' );
 $title      = get_theme_mod( 'header_newsletter_title', 'Sign up for Newsletter' );
@@ -12,18 +19,20 @@ if ( ! $newsletter_block ) {
 $auto_open  = get_theme_mod( 'header_newsletter_auto_open', false );
 $auto_timer = get_theme_mod( 'header_newsletter_auto_timer', 3000 );
 $auto_show  = get_theme_mod( 'header_newsletter_auto_show', 'always' );
+$version    = get_theme_mod( 'header_newsletter_version', '1' );
 
 $behavior  = $auto_open ? ' auto_open="true"' : '';
 $behavior .= $auto_open ? ' auto_timer="' . $auto_timer . '"' : '';
 $behavior .= $auto_open ? ' auto_show="' . $auto_show . '"' : '';
+$behavior .= ' version="' . $version . '"';
 
 ?>
 <li class="header-newsletter-item has-icon">
 
 <?php if($icon_style && $icon_style !== 'plain') echo '<div class="header-button">'; ?>
-<a href="#header-newsletter-signup" class="tooltip <?php if($icon_style) echo get_flatsome_icon_class($icon_style, 'small'); ?>" 
+<a href="#header-newsletter-signup" class="tooltip <?php if($icon_style) echo get_flatsome_icon_class($icon_style, 'small'); ?>"
   title="<?php echo $title; ?>">
-  
+
   <?php if($icon_style) { ?>
     <i class="icon-envelop"></i>
   <?php } ?>
@@ -33,7 +42,7 @@ $behavior .= $auto_open ? ' auto_show="' . $auto_show . '"' : '';
       <?php echo $label; ?>
     </span>
   <?php } ?>
-</a><!-- .newsletter-link -->
+</a>
 <?php if($icon_style && $icon_style !== 'plain') echo '</div>'; ?>
 <?php if(!$newsletter_block){ ?>
 <?php $content = '<h3 class="uppercase">'.$title.'</h3><p class="lead">'.$sub_title.'</p>'.get_theme_mod('header_newsletter_shortcode','[contact-form-7 id="7042" title="Newsletter Vertical"]'); ?>

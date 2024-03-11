@@ -111,12 +111,6 @@ add_ux_builder_shortcode( 'section', array(
 			'heading'     => 'Admin label',
 			'placeholder' => 'Enter admin label...',
 		),
-		'class'      => array(
-			'type'    => 'textfield',
-			'heading' => 'Class',
-			'default' => '',
-		),
-		'visibility' => require( __DIR__ . '/commons/visibility.php' ),
 
 		'background_options' => require( __DIR__ . '/commons/background.php' ),
 		'layout_options'     => array(
@@ -187,7 +181,9 @@ add_ux_builder_shortcode( 'section', array(
 				),
 			),
 		),
+		'shape_divider_options' => require( __DIR__ . '/commons/shape-divider.php' ),
 		'border_options'     => require( __DIR__ . '/commons/border.php' ),
 		'video_options'      => require( __DIR__ . '/commons/video.php' ),
+	 	'advanced_options' => require( __DIR__ . '/commons/advanced.php'),
 	),
 ) );

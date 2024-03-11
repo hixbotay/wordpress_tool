@@ -1,3 +1,12 @@
+<?php
+/**
+ * Category layout with no sidebar.
+ *
+ * @package          Flatsome/WooCommerce/Templates
+ * @flatsome-version 3.16.0
+ */
+
+?>
 <div class="row category-page-row">
 
 		<div class="col large-12">
@@ -27,7 +36,7 @@
 
 		<?php
 
-		if ( have_posts() ) {
+		if ( woocommerce_product_loop() ) {
 
 			/**
 			 * Hook: woocommerce_before_shop_loop.
@@ -88,6 +97,5 @@
 		do_action( 'woocommerce_after_main_content' );
 		?>
 
-		<?php do_action( 'flatsome_products_page_loader' ); ?>
-		</div><!-- .large-12  -->
-</div><!-- .row -->
+		</div>
+</div>

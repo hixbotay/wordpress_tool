@@ -1,3 +1,12 @@
+<?php
+/**
+ * Contact element.
+ *
+ * @package          Flatsome\Templates
+ * @flatsome-version 3.16.0
+ */
+
+?>
 <li class="header-contact-wrapper">
 	<?php
 		$class = '';
@@ -13,15 +22,15 @@
 	<ul id="header-contact" class="nav <?php echo $nav; ?> header-contact">
 		<?php if(flatsome_option('contact_location')){ ?>
 			<li class="<?php echo $class; ?>">
-			  <a target="_blank" href="https://maps.google.com/?q=<?php echo flatsome_option('contact_location'); ?>" title="<?php echo flatsome_option('contact_location'); ?>" class="<?php echo $class_link;?>">
+			  <a target="_blank" rel="noopener noreferrer" href="https://maps.google.com/?q=<?php echo flatsome_option('contact_location'); ?>" title="<?php echo flatsome_option('contact_location'); ?>" class="<?php echo $class_link;?>">
 			  	 <?php echo get_flatsome_icon('icon-map-pin-fill',$icon_size); ?>
 			     <span>
-			     	<?php 
+			     	<?php
 			     	$location_label = flatsome_option('contact_location_label');
 		       		if($location_label && $label){
 		       			echo $location_label;
 		       		} else if($label){
-		       			echo _e('Location','flatsome');
+		       			_e('Location','flatsome');
 			    	} ?>
 			     </span>
 			  </a>
@@ -40,13 +49,13 @@
 		       		if($contact_label && $label) {
 		       			echo $contact_label;
 		       		} else if($label){
-		       			echo _e('Contact','flatsome');
+		       			_e('Contact','flatsome');
 			    	} ?>
 			       </span>
 			  </a>
 			</li>
 			<?php } ?>
-		
+
 			<?php
 			$contact_hours = get_theme_mod('contact_hours','08:00 - 17:00');
 			if($contact_hours){

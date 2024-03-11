@@ -13,13 +13,17 @@ if ( ! function_exists( 'flatsome_wishlist_integrations_scripts' ) ) {
 	function flatsome_wishlist_integrations_scripts() {
 		global $integrations_uri;
 
-		wp_deregister_style( 'yith-wcwl-font-awesome' );
-		wp_deregister_style( 'yith-wcwl-font-awesome-ie7' );
+		wp_dequeue_style( 'yith-wcwl-main' );
 		wp_deregister_style( 'yith-wcwl-main' );
+		wp_dequeue_style( 'yith-wcwl-font-awesome' );
+		wp_deregister_style( 'yith-wcwl-font-awesome' );
+
+		// TODO 4.0 Move and apply on AJAX search plugin.
+		wp_dequeue_style( 'yith_wcas_frontend' );
 		wp_deregister_style( 'yith_wcas_frontend' );
 
-		wp_enqueue_script( 'flatsome-woocommerce-wishlist',  $integrations_uri . '/wc-yith-wishlist/wishlist.js', array( 'jquery', 'flatsome-js' ), '3.4', true );
-		wp_enqueue_style( 'flatsome-woocommerce-wishlist', $integrations_uri . '/wc-yith-wishlist/wishlist.css', 'flatsome-woocommerce-style', '3.4' );
+		wp_enqueue_script( 'flatsome-woocommerce-wishlist',  $integrations_uri . '/wc-yith-wishlist/wishlist.js', array( 'jquery', 'flatsome-js' ), '3.10.2', true );
+		wp_enqueue_style( 'flatsome-woocommerce-wishlist', $integrations_uri . '/wc-yith-wishlist/wishlist.css', 'flatsome-woocommerce-style', '3.10.2' );
 	}
 }
 add_action( 'wp_enqueue_scripts', 'flatsome_wishlist_integrations_scripts' );
@@ -29,7 +33,12 @@ if ( ! function_exists( 'flatsome_wishlist_account_item' ) ) {
 	 * Add wishlist button to my account dropdown
 	 */
 	function flatsome_wishlist_account_item() {
-		$wishlist_page = yith_wcwl_object_id( get_option( 'yith_wcwl_wishlist_page_id' ) );
+		$page_id = get_option( 'yith_wcwl_wishlist_page_id' );
+		if ( ! $page_id ) {
+			return;
+		}
+
+		$wishlist_page = yith_wcwl_object_id( $page_id );
 		?>
 		<li class="wishlist-account-element <?php if ( is_page( $wishlist_page ) ) echo 'active'; ?>">
 			<a href="<?php echo YITH_WCWL()->get_wishlist_url(); ?>"><?php echo get_the_title( $wishlist_page ); ?></a>
@@ -49,7 +58,7 @@ if ( ! function_exists( 'flatsome_product_wishlist_button' ) ) {
 		if ( ! $icon ) $icon = 'heart';
 		?>
 		<div class="wishlist-icon">
-			<button class="wishlist-button button is-outline circle icon">
+			<button class="wishlist-button button is-outline circle icon" aria-label="<?php echo __( 'Wishlist', 'flatsome' ); ?>">
 				<?php echo get_flatsome_icon( 'icon-' . $icon ); ?>
 			</button>
 			<div class="wishlist-popup dark">

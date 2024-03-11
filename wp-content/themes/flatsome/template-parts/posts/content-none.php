@@ -4,15 +4,15 @@
  *
  * @link https://codex.wordpress.org/Template_Hierarchy
  *
- * @package flatsome
+ * @package          Flatsome\Templates
+ * @flatsome-version 3.16.0
  */
 
 ?>
-
 <section class="no-results not-found">
 	<header class="page-title">
 		<h1 class="page-title"><?php esc_html_e( 'Nothing Found', 'flatsome' ); ?></h1>
-	</header><!-- .page-title -->
+	</header>
 
 	<div class="page-content">
 		<?php if ( is_home() && current_user_can( 'publish_posts' ) ) : ?>
@@ -30,5 +30,5 @@
 			<?php get_search_form(); ?>
 
 		<?php endif; ?>
-	</div><!-- .page-content -->
-</section><!-- .no-results -->
+	</div>
+</section>

@@ -31,7 +31,17 @@ if(!function_exists('flatsome_html_cart_sidebar')) {
 // Continue Shopping button
 if(!function_exists('flatsome_continue_shopping')) {
   function flatsome_continue_shopping(){
-    echo wc_get_template_part('cart/continue-shopping');
+    wc_get_template_part('cart/continue-shopping');
   }
 }
 add_action('woocommerce_cart_actions', 'flatsome_continue_shopping', 10);
+
+
+// Move Privacy policy to bottom
+function flatsome_fix_policy_text(){
+  if(function_exists('wc_checkout_privacy_policy_text')) {
+    remove_action( 'woocommerce_checkout_terms_and_conditions', 'wc_checkout_privacy_policy_text', 20 );
+    add_action( 'woocommerce_checkout_after_order_review', 'wc_checkout_privacy_policy_text', 1 );
+  }
+}
+add_action( 'init', 'flatsome_fix_policy_text', 10);

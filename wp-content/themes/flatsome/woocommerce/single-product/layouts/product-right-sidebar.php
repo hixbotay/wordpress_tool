@@ -1,3 +1,12 @@
+<?php
+/**
+ * Product with right sidebar.
+ *
+ * @package          Flatsome/WooCommerce/Templates
+ * @flatsome-version 3.16.0
+ */
+
+?>
 <div class="product-container">
 <div class="product-main">
 <div class="row mb-0 content-row">
@@ -32,7 +41,7 @@
 			do_action( 'woocommerce_single_product_summary' );
 		?>
 
-	</div><!-- .summary -->
+	</div>
 
 	<div id="product-sidebar" class="col large-3 hide-for-medium <?php flatsome_sidebar_classes(); ?>">
 		<?php
@@ -50,8 +59,8 @@
 		?>
 	</div>
 
-</div><!-- .row -->
-</div><!-- .product-main -->
+</div>
+</div>
 
 <div class="product-footer">
 	<div class="container">
@@ -65,6 +74,6 @@
 			 */
 			do_action( 'woocommerce_after_single_product_summary' );
 		?>
-	</div><!-- container -->
-</div><!-- product-footer -->
-</div><!-- .product-container -->
+	</div>
+</div>
+</div>

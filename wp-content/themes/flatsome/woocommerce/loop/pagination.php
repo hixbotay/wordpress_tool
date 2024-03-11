@@ -2,18 +2,14 @@
 /**
  * Pagination - Show numbered pagination for catalog pages
  *
- * @author 		WooThemes
- * @package 	WooCommerce/Templates
- * @version     3.3.1
+ * @author           WooThemes
+ * @package          WooCommerce/Templates
+ * @version          3.3.1
+ * @flatsome-version 3.16.0
  */
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
-}
-
-if ( ! fl_woocommerce_version_check( '3.3.0' ) ) {
-	wc_get_template( 'back-comp/loop/w32-pagination.php' );
-	return;
 }
 
 $total   = isset( $total ) ? $total : wc_get_loop_prop( 'total_pages' );

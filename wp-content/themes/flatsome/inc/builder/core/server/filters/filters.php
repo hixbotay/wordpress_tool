@@ -9,21 +9,21 @@
  */
 add_filter( 'ux_builder_preprocess_array_content', function (  $content, $tag, $options ) {
 
-  // Don'r run if old content support is disabled.
+  // Don't run if old content support is disabled.
   if(!get_theme_mod('flatsome_fallback', 1)) return $content;
 
   // Convert old product shortcodes
   $prod_shortcodes = array('/ux_latest_products/', '/ux_bestseller_products/','/ux_featured_products/', '/ux_sale_products/','/product_lookbook/','/ux_custom_products/','/products_pinterest_style/');
   $content = preg_replace( $prod_shortcodes, 'ux_products fix="$0"', $content );
 
-  // fix old product categories
+  // Fix old product categories
   $content = preg_replace( '/ux_product_categories_grid/', 'ux_product_categories type="grid"', $content );
 
   // Convert old background to section
   $content = preg_replace( '/\[background/', '[section', $content );
   $content = preg_replace( '/\[\/background/', '[/section', $content );
 
-  // fix old tabgroups
+  // Fix old tabgroups
   $content = preg_replace( '/tabgroup_vertical/', 'tabgroup type="vertical"', $content );
 
   // Convert ____ to dividers.
@@ -100,7 +100,7 @@ add_filter( 'ux_builder_preprocess_array_content', function (  $content, $tag, $
  */
 add_filter( 'ux_builder_preprocess_array_options', function ( $options, $tag ) {
 
-  // Don'r run if old content support is disabled.
+  // Don't run if old content support is disabled.
   if(!get_theme_mod('flatsome_fallback', 1)) return $options;
 
   // Fix Old titles
@@ -167,6 +167,23 @@ add_filter( 'ux_builder_preprocess_array_options', function ( $options, $tag ) {
     if ( isset( $options['bg'] ) && strpos( $options['bg'], '#' ) !== false ) {
       $options['bg_color'] = $options['bg'];
       $options['bg'] = false;
+    }
+  }
+
+    if ( $tag == 'blog_posts' ) {
+    // Move old category attributes to cat attribute.
+    if ( isset( $options['category'] ) ) {
+      $options['cat'] = $options['category'];
+      $options['category'] = false;
+
+      // Convert category names to category ids
+      $new_cat = explode(',', $options['cat']);
+
+      foreach ($new_cat as $key => $value) {
+        $cat_id[] = get_cat_id($value);
+      }
+
+      $options['cat'] = implode(',', $cat_id);
     }
   }
 

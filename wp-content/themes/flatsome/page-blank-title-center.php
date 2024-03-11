@@ -1,8 +1,12 @@
 <?php
-/*
-Template name: Default Template (Center title)
-*/
-get_header(); 
+/**
+ * Template name: Page - Container - Center Title
+ *
+ * @package          Flatsome\Templates
+ * @flatsome-version 3.16.0
+ */
+
+get_header();
 ?>
 
 <?php do_action( 'flatsome_before_page' ); ?>
@@ -22,12 +26,14 @@ get_header();
 						<?php if ( comments_open() || '0' != get_comments_number() ){
 							comments_template(); } ?>
 					</div>
-					
+
 
 		<?php endwhile; // end of the loop. ?>
 
 
-</div><!-- #content -->
-</div><!-- .row -->
+</div>
+</div>
+
+<?php do_action( 'flatsome_after_page' ); ?>
 
 <?php get_footer(); ?>

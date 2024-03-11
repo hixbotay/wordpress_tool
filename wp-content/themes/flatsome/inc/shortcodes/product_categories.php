@@ -1,7 +1,7 @@
 <?php
 
 // [ux_product_categories]
-function ux_product_categories($atts, $content = null, $tag) {
+function ux_product_categories($atts, $content = null, $tag = '' ) {
   $sliderrandomid = rand();
   extract( shortcode_atts( array (
 
@@ -17,6 +17,8 @@ function ux_product_categories($atts, $content = null, $tag) {
       'parent'     => 'false',
       'offset' => '',
       'show_count' => 'true',
+      'class' => '',
+      'visibility' => '',
 
       // Layout
       'style' => 'badge',
@@ -92,9 +94,11 @@ function ux_product_categories($atts, $content = null, $tag) {
         'offset' => $offset,
     );
 
+	ob_start();
+
     $product_categories = get_terms( 'product_cat', $args );
 
-    if ( !empty($parent) ) $product_categories = wp_list_filter( $product_categories, array( 'parent' => $parent ) );
+	if ( ! empty( $parent ) ) $product_categories = wp_list_filter( $product_categories, array( 'parent' => $parent === 'false' ? 0 : $parent ) );
     if ( !empty($number) ) $product_categories = array_slice( $product_categories, 0, $number );
 
     $classes_box = array('box','box-category','has-hover');
@@ -107,7 +111,7 @@ function ux_product_categories($atts, $content = null, $tag) {
       $current_grid = 0;
       $grid = flatsome_get_grid($grid);
       $grid_total = count($grid);
-      echo flatsome_get_grid_height($grid_height, $_id);
+      flatsome_get_grid_height($grid_height, $_id);
     }
 
     // Add Animations
@@ -147,34 +151,36 @@ function ux_product_categories($atts, $content = null, $tag) {
     );
 
     // Repeater options
-    $repater['id'] = $_id;
-    $repater['tag'] = $tag;
-    $repater['type'] = $type;
-    $repater['style'] = $style;
-    $repater['format'] = $image_height;
-    $repater['slider_style'] = $slider_nav_style;
-    $repater['slider_nav_color'] = $slider_nav_color;
-    $repater['slider_nav_position'] = $slider_nav_position;
-    $repater['slider_bullets'] = $slider_bullets;
-    $repater['auto_slide'] = $auto_slide;
-    $repater['row_spacing'] = $col_spacing;
-    $repater['row_width'] = $width;
-    $repater['columns'] = $columns;
-    $repater['columns__sm'] = $columns__sm;
-    $repater['columns__md'] = $columns__md;
-    $repater['depth'] = $depth;
-    $repater['depth_hover'] = $depth_hover;
+    $repeater['id'] = $_id;
+    $repeater['class'] = $class;
+    $repeater['visibility'] = $visibility;
+    $repeater['tag'] = $tag;
+    $repeater['type'] = $type;
+    $repeater['style'] = $style;
+    $repeater['format'] = $image_height;
+    $repeater['slider_style'] = $slider_nav_style;
+    $repeater['slider_nav_color'] = $slider_nav_color;
+    $repeater['slider_nav_position'] = $slider_nav_position;
+    $repeater['slider_bullets'] = $slider_bullets;
+    $repeater['auto_slide'] = $auto_slide;
+	$repeater['infinitive'] = $infinitive;
+    $repeater['row_spacing'] = $col_spacing;
+    $repeater['row_width'] = $width;
+    $repeater['columns'] = $columns;
+    $repeater['columns__sm'] = $columns__sm;
+    $repeater['columns__md'] = $columns__md;
+    $repeater['depth'] = $depth;
+    $repeater['depth_hover'] = $depth_hover;
 
-    ob_start();
 
-    echo get_flatsome_repeater_start($repater);
+    get_flatsome_repeater_start($repeater);
 
     if ( $product_categories ) {
       foreach ( $product_categories as $category ) {
 
         $classes_col = array('product-category','col');
 
-        $thumbnail_size   = apply_filters( 'single_product_small_thumbnail_size', 'shop_catalog' );
+        $thumbnail_size   = apply_filters( 'single_product_archive_thumbnail_size', 'woocommerce_thumbnail' );
 
         if($image_size) $thumbnail_size = $image_size;
 
@@ -191,17 +197,16 @@ function ux_product_categories($atts, $content = null, $tag) {
             if($grid[$current]['size'] == 'medium') $thumbnail_size = 'medium';
         }
 
-        $thumbnail_id = get_woocommerce_term_meta( $category->term_id, 'thumbnail_id', true  );
+        $thumbnail_id = get_term_meta( $category->term_id, 'thumbnail_id', true  );
 
         if ( $thumbnail_id ) {
           $image = wp_get_attachment_image_src( $thumbnail_id, $thumbnail_size);
-          $image = $image[0];
+          $image = $image ? $image[0] : wc_placeholder_img_src();
         } else {
           $image = wc_placeholder_img_src();
         }
 
-        ?>
-        <div class="<?php echo implode(' ', $classes_col); ?>" <?php echo $animate;?>>
+        ?><div class="<?php echo implode(' ', $classes_col); ?>" <?php echo $animate;?>>
             <div class="col-inner">
               <?php do_action( 'woocommerce_before_subcategory', $category ); ?>
                 <div class="<?php echo implode(' ', $classes_box); ?> ">
@@ -211,7 +216,7 @@ function ux_product_categories($atts, $content = null, $tag) {
                   <?php if($image_overlay){ ?><div class="overlay" style="background-color: <?php echo $image_overlay;?>"></div><?php } ?>
                   <?php if($style == 'shade'){ ?><div class="shade"></div><?php } ?>
                   </div>
-                </div><!-- box-image -->
+                </div>
                 <div class="box-text <?php echo implode(' ', $classes_text); ?>" <?php echo get_shortcode_inline_css($css_args); ?>>
                   <div class="box-text-inner">
                       <h5 class="uppercase header-title">
@@ -219,7 +224,10 @@ function ux_product_categories($atts, $content = null, $tag) {
                       </h5>
                       <?php if($show_count) { ?>
                       <p class="is-xsmall uppercase count <?php if($style == 'overlay') echo 'show-on-hover hover-reveal reveal-small'; ?>">
-                        <?php if ( $category->count > 0 ) echo apply_filters( 'woocommerce_subcategory_count_html', ' ' . $category->count . ' '.__('Products','woocommerce').'', $category); ?>
+	                      <?php if ( $category->count > 0 ) {
+		                      echo apply_filters( 'woocommerce_subcategory_count_html', $category->count . ' ' . ( $category->count > 1 ? __( 'Products', 'woocommerce' ) : __( 'Product', 'woocommerce' ) ), $category );
+	                      }
+	                      ?>
                       </p>
                       <?php } ?>
                       <?php
@@ -229,18 +237,17 @@ function ux_product_categories($atts, $content = null, $tag) {
                         do_action( 'woocommerce_after_subcategory_title', $category );
                       ?>
 
-                  </div><!-- .box-text-inner -->
-                </div><!-- .box-text -->
-                </div><!-- .box -->
+                  </div>
+                </div>
+                </div>
             <?php do_action( 'woocommerce_after_subcategory', $category ); ?>
-            </div><!-- .col-inner -->
-            </div><!-- .col -->
-        <?php
+            </div>
+            </div><?php
       }
     }
     woocommerce_reset_loop();
 
-    echo get_flatsome_repeater_end($repater);
+    get_flatsome_repeater_end($repeater);
 
     $content = ob_get_contents();
     ob_end_clean();

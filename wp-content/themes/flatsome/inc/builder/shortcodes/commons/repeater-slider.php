@@ -22,6 +22,7 @@ return array(
 'slider_nav_position' => array(
     'type' => 'select',
     'heading' => "Nav Position",
+    'conditions' => 'slider_nav_style !== "reveal"',
     'default' => 'inside',
     'options' => array(
         'inside' => 'Inside',
@@ -50,6 +51,15 @@ return array(
         '6000' => '6 sec.',
         '7000' => '7 sec.',
     )
+),
+'infinitive'          => array(
+	'type'    => 'select',
+	'heading' => "Infinitive",
+	'default' => '',
+	'options' => array(
+		'false' => 'Disable',
+		''      => 'Enable',
+	),
 ),
 )
 );

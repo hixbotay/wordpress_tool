@@ -1,4 +1,4 @@
-<div class="tabbed-content">
+<div class="tabbed-content {{ shortcode.options.class }} {{ shortcode.options.visibility }}">
     <h4 ng-if="shortcode.options.title" class="uppercase text-{{ shortcode.options.align }}">
         {{ shortcode.options.title }}
     </h4>
@@ -8,12 +8,12 @@
             ng-repeat="shortcode in $customCtrl.shortcode.children track by shortcode.$id"
             ng-class="{ 'active': $customCtrl.shortcode.states.activeTab === shortcode.index }">
             <a href="javascript:void(0);"
-                ng-click="$customCtrl.setTab($index); $event.stopPropagation();">
+               ng-click="$customCtrl.setTab($index); $event.stopPropagation();">
                 {{ shortcode.options.title }}
             </a>
         </li>
     </ul>
     <div class="tab-panels">
-        <content />
+        <content></content>
     </div>
 </div>

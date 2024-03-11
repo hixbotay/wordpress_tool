@@ -1,6 +1,12 @@
-<?php if(is_woocommerce_activated()){ ?>
-<?php global $woocommerce;
-  
+<?php
+/**
+ * Cart element.
+ *
+ * @package          Flatsome\Templates
+ * @flatsome-version 3.16.0
+ */
+
+if(is_woocommerce_activated() && flatsome_is_wc_cart_available() ) {
   // Get Cart replacement for catalog_mode
   if(get_theme_mod('catalog_mode')) { get_template_part('template-parts/header/partials/element','cart-replace'); return;}
   $cart_style = get_theme_mod('header_cart_style','dropdown');
@@ -9,7 +15,7 @@
   $icon = get_theme_mod('cart_icon','basket');
   $cart_title = get_theme_mod('header_cart_title', 1);
   $cart_total = get_theme_mod('header_cart_total', 1);
-  $disable_mini_cart = ( is_cart() || is_checkout() ) && apply_filters( 'flatsome_disable_mini_cart', true );
+  $disable_mini_cart = apply_filters( 'flatsome_disable_mini_cart', is_cart() || is_checkout() );
   if ( $disable_mini_cart ) {
     $cart_style = 'link';
   }
@@ -21,35 +27,33 @@
 <a href="<?php echo esc_url( wc_get_cart_url() ); ?>" title="<?php _e('Cart', 'woocommerce'); ?>" class="header-cart-link <?php echo get_flatsome_icon_class($icon_style, 'small'); ?>">
 
 <?php } else if($cart_style == 'off-canvas') { ?>
-
-<a href="<?php echo esc_url( wc_get_cart_url() ); ?>" class="header-cart-link off-canvas-toggle nav-top-link <?php echo get_flatsome_icon_class($icon_style, 'small'); ?>" data-open="#cart-popup" data-class="off-canvas-cart" title="<?php _e('Cart', 'woocommerce'); ?>" data-pos="right">
-
+	<a href="<?php echo esc_url( wc_get_cart_url() ); ?>" class="header-cart-link off-canvas-toggle nav-top-link <?php echo get_flatsome_icon_class($icon_style, 'small'); ?>" data-open="#cart-popup" data-class="off-canvas-cart" title="<?php _e('Cart', 'woocommerce'); ?>" data-pos="right">
 <?php } ?>
-  
+
 <?php  if($cart_total || $cart_title) { ?>
 <span class="header-cart-title">
   <?php if($cart_title) { ?> <?php _e('Cart', 'woocommerce'); ?> <?php } ?>
   <?php /* divider */ if($cart_total && $cart_title) { ?>/<?php } ?>
   <?php if($cart_total) { ?>
-    <span class="cart-price"><?php echo $woocommerce->cart->get_cart_subtotal(); ?></span>
+    <span class="cart-price"><?php echo WC()->cart->get_cart_subtotal(); ?></span>
   <?php } ?>
 </span>
 <?php } ?>
 
 <?php
 if(get_theme_mod('custom_cart_icon')) { ?>
-  <span class="image-icon header-cart-icon" data-icon-label="<?php echo $woocommerce->cart->cart_contents_count; ?>">
-    <img class="cart-img-icon" alt="<?php _e('Cart', 'woocommerce'); ?>" src="<?php echo do_shortcode(get_theme_mod('custom_cart_icon')); ?>"/> 
-  </span><!-- .cart-img-inner -->
-<?php } 
+  <span class="image-icon header-cart-icon" data-icon-label="<?php echo WC()->cart->cart_contents_count; ?>">
+    <img class="cart-img-icon" alt="<?php _e('Cart', 'woocommerce'); ?>" src="<?php echo do_shortcode(get_theme_mod('custom_cart_icon')); ?>"/>
+  </span>
+<?php }
 else { ?>
   <?php if(!$icon_style) { ?>
   <span class="cart-icon image-icon">
-    <strong><?php echo $woocommerce->cart->cart_contents_count; ?></strong>
-  </span> 
+    <strong><?php echo WC()->cart->cart_contents_count; ?></strong>
+  </span>
   <?php } else { ?>
   <i class="icon-shopping-<?php echo $icon;?>"
-    data-icon-label="<?php echo $woocommerce->cart->cart_contents_count; ?>">
+    data-icon-label="<?php echo WC()->cart->cart_contents_count; ?>">
   </i>
   <?php } ?>
 <?php }  ?>
@@ -60,14 +64,14 @@ else { ?>
  <ul class="nav-dropdown <?php flatsome_dropdown_classes(); ?>">
     <li class="html widget_shopping_cart">
       <div class="widget_shopping_cart_content">
-        <?php echo woocommerce_mini_cart(); ?>
+        <?php woocommerce_mini_cart(); ?>
       </div>
     </li>
     <?php if($custom_cart_content){
       echo '<li class="html">'.do_shortcode($custom_cart_content).'</li>';
       }
     ?>
- </ul><!-- .nav-dropdown -->
+ </ul>
 <?php }  ?>
 
 <?php if($cart_style == 'off-canvas') { ?>
@@ -80,7 +84,7 @@ else { ?>
           <div class="is-divider"></div>
       </div>
       <div class="widget_shopping_cart_content">
-          <?php echo woocommerce_mini_cart(); ?>
+          <?php woocommerce_mini_cart(); ?>
       </div>
       <?php if($custom_cart_content) {
         echo '<div class="header-cart-content">'.do_shortcode($custom_cart_content).'</div>'; }
@@ -92,5 +96,6 @@ else { ?>
 <?php } ?>
 </li>
 <?php } else {
-  echo '<li><a class="element-error tooltip" title="WooCommerce needed">-</a></li>'; }
+	fl_header_element_error( 'woocommerce' );
+}
 ?>

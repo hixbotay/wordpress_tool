@@ -1,3 +1,12 @@
+<?php
+/**
+ * Post-entry footer.
+ *
+ * @package          Flatsome\Templates
+ * @flatsome-version 3.16.0
+ */
+
+?>
 <footer class="entry-meta clearfix">
 	<?php if ( 'post' == get_post_type() ) : // Hide category and tag text for pages on Search ?>
 		<?php
@@ -23,4 +32,4 @@
 	<?php if ( ! post_password_required() && ( comments_open() || '0' != get_comments_number() ) ) : ?>
 	<span class="comments-link pull-right"><?php comments_popup_link( __( 'Leave a comment', 'flatsome' ), __( '<strong>1</strong> Comment', 'flatsome' ), __( '<strong>%</strong> Comments', 'flatsome' ) ); ?></span>
 	<?php endif; ?>
-</footer><!-- .entry-meta -->
+</footer>

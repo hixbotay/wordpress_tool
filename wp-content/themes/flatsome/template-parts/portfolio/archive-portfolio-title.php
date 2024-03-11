@@ -1,3 +1,12 @@
+<?php
+/**
+ * Portfolio archive title.
+ *
+ * @package          Flatsome\Templates
+ * @flatsome-version 3.16.0
+ */
+
+?>
 <div class="page-title">
 	<div class="page-title-inner container flex-row">
 	 	<div class="flex-col flex-grow">
@@ -9,5 +18,5 @@
 				} else { the_title(); } ?>
 			</h1>
 	 	</div>
-	</div><!-- flex-row -->
-</div><!-- .page-title -->
+	</div>
+</div>

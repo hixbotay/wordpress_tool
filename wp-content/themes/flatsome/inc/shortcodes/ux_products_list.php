@@ -1,10 +1,8 @@
 <?php
 
 // Flatsome Products
-function ux_products_list($atts, $content = null, $tag) {
-  global $woocommerce;
-
-  extract(shortcode_atts(array(
+function ux_products_list($atts, $content = null, $tag = '' ) {
+  extract( $atts = shortcode_atts( array(
     'title' => '',
     'ids' => '',
     'products' => '8',
@@ -14,7 +12,8 @@ function ux_products_list($atts, $content = null, $tag) {
     'orderby' => '', // normal, sales, rand, date
     'order' => '',
     'tags' => '',
-    'show' => '' //featured, onsale
+    'show' => '', //featured, onsale
+    'out_of_stock' => '', // exclude.
 
   ), $atts));
 
@@ -43,7 +42,7 @@ function ux_products_list($atts, $content = null, $tag) {
     if ( $products->have_posts() ) : ?>
 
         <?php while ( $products->have_posts() ) : $products->the_post(); ?>
-          <?php echo wc_get_template_part( 'content', 'product-small' ); ?>
+          <?php wc_get_template_part( 'content', 'product-small' ); ?>
         <?php endwhile; // end of the loop. ?>
 
       <?php

@@ -1,4 +1,12 @@
-<?php if ( have_posts() ) : ?>
+<?php
+/**
+ * Posts archive.
+ *
+ * @package          Flatsome\Templates
+ * @flatsome-version 3.16.0
+ */
+
+if ( have_posts() ) : ?>
 <div id="post-list">
 
 <?php /* Start the Loop */ ?>
@@ -9,8 +17,8 @@
 		<?php get_template_part('template-parts/posts/partials/entry-header', flatsome_option('blog_posts_header_style') ); ?>
 		<?php get_template_part('template-parts/posts/content', 'default' ); ?>
 		<?php get_template_part('template-parts/posts/partials/entry-footer', 'default' ); ?>
-	</div><!-- .article-inner -->
-</article><!-- #-<?php the_ID(); ?> -->
+	</div>
+</article>
 
 <?php endwhile; ?>
 

@@ -2,7 +2,8 @@
 /**
  * The blog template file.
  *
- * @package flatsome
+ * @package          Flatsome\Templates
+ * @flatsome-version 3.16.0
  */
 
 get_header();
@@ -11,6 +12,6 @@ get_header();
 
 <div id="content" class="blog-wrapper blog-archive page-wrapper">
 		<?php get_template_part( 'template-parts/posts/layout', get_theme_mod('blog_layout','right-sidebar') ); ?>
-</div><!-- .page-wrapper .blog-wrapper -->
+</div>
 
 <?php get_footer(); ?>

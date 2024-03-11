@@ -3,7 +3,10 @@
 function title_shortcode( $atts, $content = null ){
   extract( shortcode_atts( array(
     '_id' => 'title-'.rand(),
-    'text' => '',
+    'class' => '',
+    'visibility' => '',
+    'text' => 'Lorem ipsum dolor sit amet...',
+    'tag_name' => 'h3',
     'sub_text' => '',
     'style' => 'normal',
     'size' => '100',
@@ -16,10 +19,12 @@ function title_shortcode( $atts, $content = null ){
     'color' => '',
     'width' => '',
     'icon' => '',
-    'tag'
   ), $atts ) );
 
-  if(!$text && !$link_text) return;
+  $classes = array('container', 'section-title-container');
+  if ( $class ) $classes[] = $class;
+  if ( $visibility ) $classes[] = $visibility;
+  $classes = implode(' ', $classes);
 
   $link_output = '';
   if($link) $link_output = '<a href="'.$link.'" target="'.$target.'">'.$link_text.get_flatsome_icon('icon-angle-right').'</a>';
@@ -50,8 +55,7 @@ function title_shortcode( $atts, $content = null ){
     $css_args_title[] = array( 'attribute' => 'color', 'value' => $color);
   }
 
-  return '<div class="container section-title-container" '.get_shortcode_inline_css($css_args).'><h3 class="section-title section-title-'.$style.'"><b></b><span class="section-title-main" '.get_shortcode_inline_css($css_args_title).'>'.$icon.$atts['text'].$small_text.'</span><b></b>'.$link_output.'</h3></div><!-- .section-title -->';
-
+  return '<div class="'.$classes.'" '.get_shortcode_inline_css($css_args).'><'. $tag_name . ' class="section-title section-title-'.$style.'"><b></b><span class="section-title-main" '.get_shortcode_inline_css($css_args_title).'>'.$icon.$text.$small_text.'</span><b></b>'.$link_output.'</' . $tag_name .'></div>';
 }
 add_shortcode('title', 'title_shortcode');
 
@@ -89,7 +93,7 @@ if($align === 'right'){
   $align_start ='<div class="text-right">';
   $align_end = '</div>';
 }
-return $align_start.'<div class="is-divider divider clearfix" '.get_shortcode_inline_css($css_args).'></div>'.$align_end.'<!-- .divider -->';
+return $align_start.'<div class="is-divider divider clearfix" '.get_shortcode_inline_css($css_args).'></div>'.$align_end;
 
 }
 add_shortcode('divider', 'divider_shortcode');

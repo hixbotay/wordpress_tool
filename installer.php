@@ -233,11 +233,9 @@ function generateDb($mysql_host,$mysql_username,$mysql_password,$mysql_database)
 			throw new Exception('Create DB error '.$conn->error);
 		}
 	}else{
-		if($_POST['drop_db_existed']){
-			if(!$conn->query('DROP DATABASE '.$mysql_database)){
+		if(!$conn->query('DROP DATABASE '.$mysql_database)){
 				throw new Exception('drop DB error '.$conn->error);
 			}
-		}
 	}
 	return true;
 }

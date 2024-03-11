@@ -1,7 +1,11 @@
 <?php
-/*
-Template name: Page - Full Width - Transparent header
-*/
+/**
+ * Template name: Page - Full Width - Transparent Header
+ *
+ * @package          Flatsome\Templates
+ * @flatsome-version 3.16.0
+ */
+
 get_header(); ?>
 
 <?php do_action( 'flatsome_before_page' ); ?>
@@ -10,7 +14,7 @@ get_header(); ?>
 			<?php while ( have_posts() ) : the_post(); ?>
 
 				<?php the_content(); ?>
-			
+
 			<?php endwhile; // end of the loop. ?>
 </div>
 

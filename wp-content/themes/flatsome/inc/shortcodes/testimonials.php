@@ -6,6 +6,8 @@ function flatsome_testimonial($atts, $content = null) {
   $sliderrandomid = rand();
   extract(shortcode_atts(array(
     'name' => '',
+    'class' => '',
+    'visibility' => '',
     'company' => '',
     'stars' => '5',
     'font_size' => '',
@@ -21,6 +23,9 @@ function flatsome_testimonial($atts, $content = null) {
   $classes_img = array('icon-box-img','testimonial-image','circle');
   
   $classes[] = 'icon-box-'.$pos;
+  if ( $class ) $classes[] = $class;
+  if ( $visibility ) $classes[] = $visibility;
+
   if($pos == 'center') $classes[] = 'text-center';
   if($pos == 'left' || $pos == 'top') $classes[] = 'text-left';
   if($pos == 'right') $classes[] = 'text-right';
@@ -46,7 +51,7 @@ function flatsome_testimonial($atts, $content = null) {
         <div class="icon-box-text p-last-0">
           <?php if($stars > 0) echo $star_row; ?>
   				<div class="testimonial-text line-height-small italic test_text first-reset last-reset is-italic">
-            <?php echo $content; ?>
+            <?php echo do_shortcode( $content ); ?>
           </div>
           <div class="testimonial-meta pt-half">
              <strong class="testimonial-name test_name"><?php echo $name; ?></strong>
@@ -54,7 +59,7 @@ function flatsome_testimonial($atts, $content = null) {
              <span class="testimonial-company test_company"><?php echo $company; ?></span>
           </div>
         </div>
-  </div><!-- .icon-box -->
+  </div>
 
   <?php
   $content = ob_get_contents();

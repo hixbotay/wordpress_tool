@@ -48,7 +48,7 @@ add_ux_builder_shortcode( 'ux_video', array(
 
         'depth_hover' => array(
             'type' => 'slider',
-            'heading' => 'Depth :Hover',
+            'heading' => 'Depth :hover',
             'default' => '0',
             'max' => '5',
             'min' => '0',
@@ -57,5 +57,6 @@ add_ux_builder_shortcode( 'ux_video', array(
                 'class' => 'box-shadow-{{ value }}-hover'
             )
         ),
+        'advanced_options' => require( __DIR__ . '/commons/advanced.php'),
     ),
 ) );

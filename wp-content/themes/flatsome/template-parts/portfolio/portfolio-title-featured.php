@@ -1,3 +1,12 @@
+<?php
+/**
+ * Portfolio title featured image background.
+ *
+ * @package          Flatsome\Templates
+ * @flatsome-version 3.16.0
+ */
+
+?>
 <div class="page-title portfolio-featured-title featured-title no-overflow">
 
 	<div class="page-title-bg fill">
@@ -13,5 +22,5 @@
 			<h1 class="entry-title is-xlarge uppercase"><?php the_title(); ?></h1>
 			<?php do_action('flatsome_portfolio_title_after'); ?>
 	 	</div>
-	</div><!-- flex-row -->
-</div><!-- .page-title -->
+	</div>
+</div>

@@ -1,4 +1,12 @@
-<?php if(!flatsome_option('portfolio_title')) { ?>
+<?php
+/**
+ * Portfolio summary.
+ *
+ * @package          Flatsome\Templates
+ * @flatsome-version 3.16.0
+ */
+
+if(!flatsome_option('portfolio_title')) { ?>
 	<div class="featured_item_cats breadcrumbs mb-half">
 		<?php echo get_the_term_list( get_the_ID(), 'featured_item_category', '', '<span class="divider">|</span>', '' ); ?>
 	</div>
@@ -7,9 +15,11 @@
 
 <?php the_excerpt();?>
 
-<div class="portfolio-share">
-	<?php echo do_shortcode('[share style="small"]')?>
-</div>
+<?php if ( get_theme_mod( 'portfolio_share', 1 ) ) : ?>
+	<div class="portfolio-share">
+		<?php echo do_shortcode( '[share style="small"]' ) ?>
+	</div>
+<?php endif; ?>
 
 <?php if(get_the_term_list( get_the_ID(), 'featured_item_tag')) { ?>
 <div class="item-tags is-small bt pt-half uppercase">

@@ -2,21 +2,22 @@
 /**
  * The template for displaying the footer.
  *
- * @package flatsome
+ * @package          Flatsome\Templates
+ * @flatsome-version 3.16.0
  */
 
 global $flatsome_opt;
 ?>
 
-</main><!-- #main -->
+</main>
 
 <footer id="footer" class="footer-wrapper">
 
 	<?php do_action('flatsome_footer'); ?>
 
-</footer><!-- .footer-wrapper -->
+</footer>
 
-</div><!-- #wrapper -->
+</div>
 
 <?php wp_footer(); ?>
 

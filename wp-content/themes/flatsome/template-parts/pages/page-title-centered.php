@@ -1,3 +1,12 @@
+<?php
+/**
+ * Page title centered.
+ *
+ * @package          Flatsome\Templates
+ * @flatsome-version 3.16.0
+ */
+
+?>
 <div class="page-title <?php flatsome_header_title_classes() ?>">
 
 	<div class="page-title-bg fill"><div class="page-title-bg-overlay"></div></div>
@@ -7,5 +16,5 @@
 	 		<h1 class="page-title uppercase"><?php echo get_the_title() ?></h1>
 	 		<div class="is-divider"></div>
 	 	</div>
-	</div><!-- flex-row -->
-</div><!-- .page-title -->
+	</div>
+</div>
